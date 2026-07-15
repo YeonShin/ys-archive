@@ -5,10 +5,6 @@ export const metadata: Metadata = {
   description: "Web Developer Portfolio",
 };
 
-export default function PortfolioLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
