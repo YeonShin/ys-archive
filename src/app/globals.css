@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -36,6 +36,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* 다크모드 브랜드 컬러 */
+  --brand-primary: #dcb38a;
+  --brand-secondary: #a89484;
+  --brand-neutral-dark: #fbf9f6;
+  --brand-neutral-light: oklch(0.145 0 0);
+  --brand-neutral-muted: oklch(0.205 0 0);
 }
 
 @theme inline {
@@ -80,6 +87,19 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* 브랜드 컬러 테마 직접 매핑 */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-neutral-dark: var(--brand-neutral-dark);
+  --color-brand-neutral-light: var(--brand-neutral-light);
+  --color-brand-neutral-muted: var(--brand-neutral-muted);
+
+  /* 특수 흐림 효과 테마 직접 매핑 */
+  --blur-3px: 3px;
+  --blur-4px: 4px;
+  --backdrop-blur-3px: 3px;
+  --backdrop-blur-4px: 4px;
 }
 
 :root {
@@ -115,14 +135,30 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* 라이트모드 브랜드 컬러 */
+  --brand-primary: #c88a54;
+  --brand-secondary: #8e7765;
+  --brand-neutral-dark: #2e221a;
+  --brand-neutral-light: #fbf9f6;
+  --brand-neutral-muted: #f3ece3;
 }
 
 @layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    background-color: var(--brand-neutral-light);
+    color: var(--brand-neutral-dark);
+  }
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+    box-sizing: inherit;
   }
   html {
     @apply font-sans;
