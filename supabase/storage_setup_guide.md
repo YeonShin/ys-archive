@@ -25,24 +25,15 @@ VALUES (
 ON CONFLICT (id) DO NOTHING;
 
 -- ========================================================
--- 2. Public Read (모든 외부 방문자 읽기 전용) RLS 정책 설정
+-- 2. 관리자(인증된 사용자) 관리 정책 (SELECT/INSERT/UPDATE/DELETE 전체 허용)
 -- ========================================================
-CREATE POLICY "Public Read Access for portfolio-assets"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'portfolio-assets');
 
 -- 서비스 롤 또는 인증된 관리자만 CUD(업로드/수정/삭제) 가능하도록 설정
-CREATE POLICY "Admin Insert Access for portfolio-assets"
-  ON storage.objects FOR INSERT
-  WITH CHECK (bucket_id = 'portfolio-assets' AND auth.role() = 'authenticated');
-
-CREATE POLICY "Admin Update Access for portfolio-assets"
-  ON storage.objects FOR UPDATE
-  USING (bucket_id = 'portfolio-assets' AND auth.role() = 'authenticated');
-
-CREATE POLICY "Admin Delete Access for portfolio-assets"
-  ON storage.objects FOR DELETE
-  USING (bucket_id = 'portfolio-assets' AND auth.role() = 'authenticated');
+CREATE POLICY "Admin Full Access for portfolio-assets"
+  ON storage.objects FOR ALL
+  TO authenticated
+  USING (bucket_id = 'portfolio-assets')
+  WITH CHECK (bucket_id = 'portfolio-assets');
 
 -- ========================================================
 -- 3. 하위 계층 디렉토리 구조 자동 생성 (.keep 더미 생성)

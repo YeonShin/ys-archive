@@ -14,9 +14,11 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING;
 
-CREATE POLICY "Public Read Access for portfolio-assets"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'portfolio-assets');
+CREATE POLICY "Admin Full Access for portfolio-assets"
+  ON storage.objects FOR ALL
+  TO authenticated
+  USING (bucket_id = 'portfolio-assets')
+  WITH CHECK (bucket_id = 'portfolio-assets');
 
 INSERT INTO storage.objects (bucket_id, name, owner, metadata)
 VALUES 
