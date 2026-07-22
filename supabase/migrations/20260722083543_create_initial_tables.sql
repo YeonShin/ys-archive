@@ -68,3 +68,17 @@ CREATE TABLE public.contact (
   url TEXT NOT NULL,
   description TEXT
 );
+
+--  추가 설정 --
+
+-- 1. moddatetime 확장 및 guestbook updated_at 트리거
+CREATE EXTENSION IF NOT EXISTS moddatetime SCHEMA extensions;
+CREATE TRIGGER handle_updated_at_guestbook
+  BEFORE UPDATE ON public.guestbook
+  FOR EACH ROW
+  EXECUTE PROCEDURE extensions.moddatetime(updated_at);
+
+
+-- 2. 정렬 성능 최적화를 위한 인덱스(Index) 생성
+CREATE INDEX idx_projects_priority ON public.projects (priority DESC);
+CREATE INDEX idx_experiences_started_at ON public.experiences (started_at DESC);
