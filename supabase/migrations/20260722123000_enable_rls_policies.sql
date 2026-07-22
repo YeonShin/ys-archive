@@ -1,4 +1,17 @@
 -- ========================================================
+-- 0. 테이블 기본 접근 권한 (GRANT)
+-- ========================================================
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+
+-- anon(익명 사용자): SELECT(조회) 및 guestbook INSERT(방명록 작성) 권한 부여
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon;
+GRANT INSERT ON public.guestbook TO anon;
+
+-- authenticated(관리자): 전체 권한 부여
+GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+
+-- ========================================================
 -- 1. 전체 6개 테이블 Row Level Security (RLS) 활성화
 -- ========================================================
 ALTER TABLE public.portfolio_content ENABLE ROW LEVEL SECURITY;
