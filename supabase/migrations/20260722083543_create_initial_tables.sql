@@ -1,6 +1,6 @@
 -- 1. portfolio_content 테이블 (Intro, About Me 관리 - 단일 레코드)
 CREATE TABLE public.portfolio_content (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY CHECK (id = 1),
   hero_title TEXT NOT NULL,
   hero_description TEXT NOT NULL,
   profile_image_url TEXT,
