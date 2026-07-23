@@ -100,4 +100,20 @@ Order elements inside a React component as follows:
 - **Export Rules**: Default Named Exports (`export const ...`) for utility files. Default Export (`export default ...`) only for React components and Custom Hook entry files.
 - **Styling**: No inline styles (`style={{ ... }}`). For CSS Modules, use `camelCase` class names. For Tailwind CSS, ensure classes are sorted automatically using `prettier-plugin-tailwindcss`.
 
+<!-- BEGIN: accessibility-and-responsive-conventions -->
+
+## 7. Accessibility (a11y) & Responsive Web Standards
+
+- **Mobile-First Responsive Design**:
+  - Apply a **Mobile-First approach**: write base styles for mobile screens first, then build up desktop layouts using Tailwind breakpoints (`sm:`, `md:`, `lg:`, `xl:`).
+  - Avoid fixed layout widths (e.g., `w-[1200px]`). Always use fluid responsive widths with constraints (e.g., `w-full max-w-screen-xl`).
+  - Prevent horizontal overflow (`overflow-x`) on screens as small as 375px.
+  - Interactive elements (buttons, links, filter chips) must maintain a minimum touch target size of **44x44px** on touch devices.
+
+- **Screen Reader & Keyboard Accessibility**:
+  - **Meaningful Alternatives**: All images (`<img>` or Next.js `<Image>`) must have descriptive `alt` text. Decorative icons/images must use `aria-hidden="true"`.
+  - **Icon-Only Controls**: Any `<button>` or `<a>` containing only an icon MUST include an explicit `aria-label` attribute describing its action.
+  - **Focus Indicators**: Never disable outline completely (`outline-none`). Always maintain clear visual focus rings for keyboard users via `focus-visible:ring-2` (or equivalent Tailwind utilities).
+  - **Modal & Overlay Semantics**: Slide-over panels, dialogs, and modals must follow WAI-ARIA standards (`role="dialog"`, `aria-modal="true"`, `aria-labelledby`) and preserve keyboard focus traps.
+
 <!-- END:project-coding-conventions -->
