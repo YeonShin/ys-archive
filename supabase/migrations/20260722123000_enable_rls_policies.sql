@@ -59,11 +59,26 @@ CREATE POLICY "Allow anon select on contact"
 -- 3. guestbook 전용 정책 (Anon Insert & is_public 조건부 Select)
 -- ========================================================
 
--- guestbook: Anon 공개글(is_public = true)만 조회 허용
-CREATE POLICY "Allow anon select public guestbook"
-  ON public.guestbook FOR SELECT
-  TO anon
-  USING (is_public = true);
+-- anon 사용자가 guestbook 원본 테이블을 직접 조회할 수 없도록 권한 회수
+REVOKE SELECT ON public.guestbook FROM anon;
+
+-- 원본 테이블 대신 조회할 수 있는 마스킹 전용 View 생성
+CREATE OR REPLACE VIEW public.guestbook_public_view AS
+SELECT 
+  id,
+  nickname,
+  -- is_public이 true면 원본 노출, false면 마스킹 텍스트 노출
+  CASE 
+    WHEN is_public = true THEN content 
+    ELSE '비공개로 작성된 글입니다.' 
+  END as content,
+  is_public,
+  created_at,
+  updated_at
+FROM public.guestbook;
+
+-- 생성된 view에 조회 권한 부여
+GRANT SELECT ON public.guestbook_public_view TO anon;
 
 -- guestbook: Anon 방명록 작성(Insert) 허용
 CREATE POLICY "Allow anon insert on guestbook"
