@@ -32,6 +32,24 @@ npx supabase db push
 
 ---
 
+## 🔐 2. Supabase Auth 관리자(어드민) 계정 생성 및 보안 설정
+
+원격 데이터베이스에 마이그레이션을 적용한 후, 어드민 대시보드 접근 및 RLS의 `authenticated` 권한(CUD 권한) 사용을 위한 관리자 계정을 생성합니다.
+
+### Step 1. 어드민 전용 계정 수동 생성
+
+1. **Supabase Dashboard** 접속 후 해당 프로젝트 선택
+2. 좌측 메뉴 **Authentication** -> **Users** 클릭
+3. 우측 상단 **Add User** -> **Create User** 선택
+4. 관리자로 사용할 이메일과 비밀번호 입력 후 **Auto Confirm User** 체크 상태로 생성
+
+### Step 2. 무단 회원가입 방지 (신규 회원가입 Disable)
+
+불특정 다수의 무단 회원가입을 차단하여 어드민 대시보드 시스템 보안성을 확보합니다.
+
+1. **Authentication** -> **Providers** (또는 **Auth Settings**) 이동
+2. **User Signups** 항목의 **Allow new users to sign up** 옵션을 **OFF (Disable)**로 변경 후 저장
+
 ## 📊 데이터베이스 스키마 및 RLS 접근 제어 정책
 
 마이그레이션 파일(`20260722083543_create_initial_tables.sql`, `20260722123000_enable_rls_policies.sql`)을 통해 데이터베이스 스키마와 RLS 정책이 적용됩니다.
