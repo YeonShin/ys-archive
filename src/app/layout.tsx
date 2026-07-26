@@ -39,11 +39,11 @@ const themeInitializerScript = `
   })()
 `;
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html
       lang="en"
@@ -62,9 +62,14 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full flex-col">
         <ThemeProvider>
-          {children} <ThemeToggle />
+          {children}
+          <div className="fixed top-6 right-6 z-50 hidden lg:flex">
+            <ThemeToggle />
+          </div>
         </ThemeProvider>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -1,16 +1,21 @@
 import type { Metadata } from 'next';
 
 import DotNavigation from '@/features/portfolio/components/DotNavigation';
+import MobileNav from '@/features/portfolio/components/MobileNav';
 
 export const metadata: Metadata = {
   title: 'Developer Portfolio',
   description: 'Web Developer Portfolio',
 };
 
-export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
+const PortfolioLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <DotNavigation /> {children}
+      <DotNavigation />
+      <MobileNav />
+      {children}
     </>
   );
-}
+};
+
+export default PortfolioLayout;
