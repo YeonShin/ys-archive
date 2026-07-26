@@ -1,17 +1,16 @@
 'use client';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useActiveSection } from '@/hooks/useActiveSecction';
+import { PORTFOLIO_SECTIONS } from '@/features/portfolio/constants/sections';
+import { useActiveSection } from '@/hooks/useActiveSection';
 import { cn } from '@/lib/utils';
 
-const SECTIONS = ['hero', 'about', 'experience', 'tech', 'projects', 'contact'];
-
 const DotNavigation = () => {
-  const { activeSection, scrollTo } = useActiveSection(SECTIONS);
+  const { activeSection, scrollTo } = useActiveSection(PORTFOLIO_SECTIONS);
   return (
     <TooltipProvider delayDuration={100}>
       <nav className="fixed top-1/2 right-6 z-50 hidden -translate-y-1/2 flex-col gap-6 lg:flex">
-        {SECTIONS.map((id) => (
+        {PORTFOLIO_SECTIONS.map((id) => (
           <Tooltip key={id}>
             <TooltipTrigger asChild>
               <button
