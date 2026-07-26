@@ -1,4 +1,4 @@
-export default function Home() {
+const Home = () => {
   return (
     <main className="bg-brand-neutral-light flex flex-1 flex-col items-center justify-center font-sans">
       <section
@@ -44,4 +44,6 @@ export default function Home() {
       </section>
     </main>
   );
-}
+};
+
+export default Home;

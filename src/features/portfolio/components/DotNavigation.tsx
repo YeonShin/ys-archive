@@ -10,7 +10,7 @@ const DotNavigation = () => {
   const { activeSection, scrollTo } = useActiveSection(SECTIONS);
   return (
     <TooltipProvider delayDuration={100}>
-      <nav className="fixed top-1/2 right-6 z-50 flex -translate-y-1/2 flex-col gap-6">
+      <nav className="fixed top-1/2 right-6 z-50 hidden -translate-y-1/2 flex-col gap-6 lg:flex">
         {SECTIONS.map((id) => (
           <Tooltip key={id}>
             <TooltipTrigger asChild>

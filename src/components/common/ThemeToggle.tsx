@@ -5,14 +5,14 @@ import { Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/theme-provider';
 
-export default function ThemeToggle() {
+const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       onClick={toggleTheme}
       aria-label="Toggle Dark Mode"
-      className="bg-brand-neutral-muted text-brand-neutral-dark hover:bg-brand-secondary/20 fixed top-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full shadow-sm transition-colors"
+      className="bg-brand-neutral-muted text-brand-neutral-dark hover:bg-brand-secondary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-sm transition-colors"
     >
       <span className="relative flex h-full w-full items-center justify-center">
         <Sun
@@ -30,4 +30,6 @@ export default function ThemeToggle() {
       </span>
     </button>
   );
-}
+};
+
+export default ThemeToggle;
