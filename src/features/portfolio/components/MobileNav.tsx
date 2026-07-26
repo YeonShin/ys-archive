@@ -6,13 +6,12 @@ import { Menu } from 'lucide-react';
 
 import ThemeToggle from '@/components/common/ThemeToggle';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { useActiveSection } from '@/hooks/useActiveSecction';
+import { PORTFOLIO_SECTIONS } from '@/features/portfolio/constants/sections';
+import { useActiveSection } from '@/hooks/useActiveSection';
 import { cn } from '@/lib/utils';
 
-const SECTIONS = ['hero', 'about', 'experience', 'tech', 'projects', 'contact'];
-
 const MobileNav = () => {
-  const { activeSection, scrollTo } = useActiveSection(SECTIONS);
+  const { activeSection, scrollTo } = useActiveSection(PORTFOLIO_SECTIONS);
   const [open, setOpen] = useState(false);
 
   const handleMenuClick = (id: string) => {
@@ -34,7 +33,7 @@ const MobileNav = () => {
         >
           <SheetTitle className="text-brand-primary mb-8 text-left">Menu</SheetTitle>
           <nav className="mb-6 flex flex-1 flex-col gap-6">
-            {SECTIONS.map((id) => (
+            {PORTFOLIO_SECTIONS.map((id) => (
               <button
                 key={id}
                 onClick={() => handleMenuClick(id)}
