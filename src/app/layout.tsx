@@ -1,24 +1,28 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { cn } from "@/lib/utils";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono, Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+import ThemeToggle from '@/components/common/ThemeToggle';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Developer Portfolio",
-  description: "Web Developer Portfolio built with Next.js and Supabase",
+  title: '프론트엔드 김연신 | 포트폴리오',
+  description: '프론트엔드 개발자 김연신 포트폴리오 입니다.',
+  keywords: ['프론트엔드', '개발자'],
 };
 
 const themeInitializerScript = `
@@ -44,11 +48,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "h-full",
-        "antialiased",
+        'h-full',
+        'antialiased',
         geistSans.variable,
         geistMono.variable,
-        "font-sans",
+        'font-sans',
         inter.variable,
       )}
       suppressHydrationWarning
@@ -57,7 +61,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitializerScript }} />
       </head>
       <body className="flex min-h-full flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children} <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );
