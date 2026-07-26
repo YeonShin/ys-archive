@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 
+import Footer from '@/components/common/Footer';
 import ThemeToggle from '@/components/common/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/theme-provider';
@@ -66,6 +67,7 @@ const RootLayout = ({
           <div className="fixed top-6 right-6 z-50 hidden lg:flex">
             <ThemeToggle />
           </div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
