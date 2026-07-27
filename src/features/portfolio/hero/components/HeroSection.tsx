@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
+import { Variants, motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import { PORTFOLIO_SECTIONS } from '@/features/portfolio/constants/sections';
@@ -8,30 +9,64 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 
 import { HeroSectionData } from '../types';
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // 자식들이 0.15초 간격으로 순차 실행
+      delayChildren: 0.1, // 자식 애니메이션 시작 전 0.1초 대기
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1], // 부드러운 cubic-bezier 커브
+    },
+  },
+};
+
 const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
   const { scrollTo } = useActiveSection(PORTFOLIO_SECTIONS);
 
   return (
-    <section
+    <motion.section
       id="hero"
       className="relative flex min-h-screen w-full flex-1 flex-col items-center justify-center gap-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <p className="text-brand-primary font-mono tracking-widest uppercase">Frontend Developer</p>
-
-      <h1 className="text-brand-neutral-dark text-center text-7xl font-extrabold">
+      <motion.p
+        variants={itemVariants}
+        className="text-brand-primary font-mono tracking-widest uppercase"
+      >
+        Frontend Developer
+      </motion.p>
+      <motion.h1
+        variants={itemVariants}
+        className="text-brand-neutral-dark text-center text-7xl font-extrabold"
+      >
         <span>{data?.heroTitle || '프론트엔드 개발자'}</span>
         <br />
         <span className="to-brand-primary from-brand-secondary bg-linear-to-r bg-clip-text text-transparent">
           김연신
         </span>
         <span>입니다</span>
-      </h1>
-
-      <p className="text-brand-secondary text-md max-w-md text-center leading-relaxed">
+      </motion.h1>
+      <motion.p
+        variants={itemVariants}
+        className="text-brand-secondary text-md max-w-md text-center leading-relaxed"
+      >
         {data?.heroDescription || 'React를 이용해 웹 개발을 하고 있습니다.'}
-      </p>
-
-      <div className="flex gap-4">
+      </motion.p>
+      <motion.div variants={itemVariants} className="flex gap-4">
         <Button variant="outline" className="border-2 p-5" onClick={() => scrollTo('about')}>
           <ArrowRight /> More About Me
         </Button>
@@ -39,8 +74,16 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
         <Button variant="dark" className="p-5" onClick={() => scrollTo('projects')}>
           <ArrowRight /> See My Projets
         </Button>
-      </div>
-    </section>
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div className="mx-auto h-12 w-px bg-linear-to-b from-[#c88a54] to-transparent" />
+      </motion.div>
+    </motion.section>
   );
 };
 
