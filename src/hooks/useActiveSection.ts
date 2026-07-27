@@ -15,10 +15,37 @@ export const useActiveSection = (sectionIds: readonly string[]) => {
       { threshold: 0, rootMargin: '-40% 0px -40% 0px' },
     );
 
-    sectionIds.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
+    const observedElements = new Set<string>();
+
+    const observeElements = () => {
+      sectionIds.forEach((id) => {
+        if (!observedElements.has(id)) {
+          const element = document.getElementById(id);
+          if (element) {
+            observer.observe(element);
+            observedElements.add(id);
+          }
+        }
+      });
+      return observedElements.size === sectionIds.length;
+    };
+
+    // 초기 렌더링 시 등록 시도
+    if (!observeElements()) {
+      //  DOM에 아직 없는 요소가 있다면 MutationObserver로 감지 후 등록
+      const mutationObserver = new MutationObserver(() => {
+        if (observeElements()) {
+          mutationObserver.disconnect();
+        }
+      });
+
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+      return () => {
+        observer.disconnect();
+        mutationObserver.disconnect();
+      };
+    }
 
     return () => observer.disconnect();
   }, [sectionIds]);
