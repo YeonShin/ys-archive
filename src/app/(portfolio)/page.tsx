@@ -1,12 +1,14 @@
-const Home = () => {
+import { Suspense } from 'react';
+
+import HeroContainer from '@/features/portfolio/hero/components/HeroContainer';
+import HeroSkeleton from '@/features/portfolio/hero/components/HeroSkeleton';
+
+const PortfolioPage = async () => {
   return (
     <main className="bg-brand-neutral-light flex flex-1 flex-col items-center justify-center font-sans">
-      <section
-        id="hero"
-        className="flex min-h-screen w-full flex-1 flex-col items-center justify-center"
-      >
-        HeroSection
-      </section>
+      <Suspense fallback={<HeroSkeleton />}>
+        <HeroContainer />
+      </Suspense>
 
       <section
         id="about"
@@ -46,4 +48,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default PortfolioPage;
