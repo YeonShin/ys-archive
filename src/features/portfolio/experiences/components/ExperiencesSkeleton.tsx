@@ -7,12 +7,7 @@ const ExperiencesSkeleton = () => {
       className="bg-brand-neutral-muted flex min-h-screen w-full flex-col items-center py-24 md:py-32"
     >
       <div className="flex w-full max-w-4xl flex-col gap-10">
-        <SectionHeader
-          data={{
-            title: 'Journey',
-            korTitle: '경력 / 학력',
-          }}
-        />
+        <SectionHeader title="Journey" korTitle="경력 / 학력" />
 
         <ul className="flex flex-col gap-6">
           {[1, 2, 3].map((item) => (
