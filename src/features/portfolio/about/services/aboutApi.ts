@@ -13,7 +13,7 @@ export const fetchAboutData = async (): Promise<AboutSectionData | null> => {
       .single();
 
     if (error || !data) {
-      console.error('[heroApi.fetchHeroData] Failed to fetch hero data:', error);
+      console.error('[aboutApi.fetchHeroData] Failed to fetch hero data:', error);
       return null;
     }
 
