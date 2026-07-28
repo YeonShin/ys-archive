@@ -57,9 +57,15 @@ export const useActiveSection = (sectionIds: readonly string[]) => {
 
       document.body.style.pointerEvents = 'none';
 
-      setTimeout(() => {
+      const handleScrollEnd = () => {
         document.body.style.pointerEvents = 'auto';
-      }, 1000);
+        window.removeEventListener('scrollend', handleScrollEnd);
+        clearTimeout(fallbackTimeout);
+      };
+
+      window.addEventListener('scrollend', handleScrollEnd);
+
+      const fallbackTimeout = setTimeout(handleScrollEnd, 1000);
     }
   };
 
