@@ -1,10 +1,11 @@
 'use client';
 
+import { ReactNode } from 'react';
+
 import { ArrowUpRight } from 'lucide-react';
 import { Variants, motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
-import Markdown from '@/components/ui/markdown';
 
 import { AboutSectionData } from '../types';
 
@@ -30,7 +31,13 @@ const itemVariants: Variants = {
   },
 };
 
-const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
+const AboutSection = ({
+  data,
+  children,
+}: {
+  data: AboutSectionData | null;
+  children?: ReactNode;
+}) => {
   return (
     <section
       id="about"
@@ -87,7 +94,7 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
             variants={itemVariants}
             className="flex w-full max-w-lg flex-col items-start gap-8"
           >
-            <Markdown content={data?.aboutText || ''} className="w-full" />
+            {children}
 
             {data?.resumeUrl && (
               <Button
