@@ -1,11 +1,34 @@
 'use client';
 
 import { ArrowUpRight } from 'lucide-react';
+import { Variants, motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import Markdown from '@/components/ui/markdown';
 
 import { AboutSectionData } from '../types';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+    },
+  },
+};
 
 const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
   return (
@@ -13,19 +36,28 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
       id="about"
       className="relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24"
     >
-      <div className="flex flex-col gap-10">
+      <motion.div
+        className="flex flex-col gap-10"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {/* 상단 타이틀 */}
-        <header>
+        <motion.header variants={itemVariants}>
           <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
             About
           </p>
           <h2 className="text-brand-neutral-dark tracking-light text-4xl font-extrabold">
             자기 소개
           </h2>
-        </header>
+        </motion.header>
         <div className="flex flex-col items-center justify-center gap-12 md:flex-row">
           {/* 이미지 영역 */}
-          <figure className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm">
+          <motion.figure
+            variants={itemVariants}
+            className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm"
+          >
             {/* 배경 오프셋 테두리 */}
             <div className="border-brand-primary/30 absolute inset-0 translate-x-4 translate-y-4 rounded-3xl border-2" />
 
@@ -49,9 +81,12 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
               <p className="text-brand-neutral-dark text-sm leading-none font-extrabold">김연신</p>
               <p className="text-brand-primary mt-0.5 font-mono text-xs">Frontend Dev.</p>
             </figcaption>
-          </figure>
+          </motion.figure>
 
-          <article className="flex w-full max-w-lg flex-col items-start gap-8">
+          <motion.article
+            variants={itemVariants}
+            className="flex w-full max-w-lg flex-col items-start gap-8"
+          >
             <Markdown content={data?.aboutText || ''} className="w-full" />
 
             {data?.resumeUrl && (
@@ -71,9 +106,9 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
                 </a>
               </Button>
             )}
-          </article>
+          </motion.article>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -27,7 +27,7 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1], // 부드러운 cubic-bezier 커브
+      ease: [0.22, 1, 0.36, 1],
     },
   },
 };
@@ -41,7 +41,8 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       className="relative flex min-h-screen w-full flex-1 flex-col items-center justify-center gap-6"
       variants={containerVariants}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
     >
       <motion.p
         variants={itemVariants}
