@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 
+import AboutContainer from '@/features/portfolio/about/components/AboutContainer';
+import AboutSkeleton from '@/features/portfolio/about/components/AboutSkeleton';
 import HeroContainer from '@/features/portfolio/hero/components/HeroContainer';
 import HeroSkeleton from '@/features/portfolio/hero/components/HeroSkeleton';
 
@@ -10,12 +12,9 @@ const PortfolioPage = async () => {
         <HeroContainer />
       </Suspense>
 
-      <section
-        id="about"
-        className="flex min-h-screen w-full flex-1 flex-col items-center justify-center"
-      >
-        HeroSection
-      </section>
+      <Suspense fallback={<AboutSkeleton />}>
+        <AboutContainer />
+      </Suspense>
 
       <section
         id="experience"
