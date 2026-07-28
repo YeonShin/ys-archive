@@ -5,34 +5,16 @@ import { ReactNode } from 'react';
 import Image from 'next/image';
 
 import { ArrowUpRight } from 'lucide-react';
-import { Variants, motion } from 'motion/react';
+import { motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import SectionHeader from '@/features/portfolio/components/SectionHeader';
+import { getContainerVariants, getItemVariants } from '@/lib/animations';
 
 import { AboutSectionData } from '../types';
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-    },
-  },
-};
+const containerVariants = getContainerVariants();
+const itemVariants = getItemVariants();
 
 const AboutSection = ({
   data,
