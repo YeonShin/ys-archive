@@ -7,7 +7,7 @@ const AboutSkeleton = () => {
           <p className="bg-brand-neutral-muted mb-3 w-fit animate-pulse rounded-md font-mono text-sm tracking-[0.3em] text-transparent uppercase blur-sm">
             About
           </p>
-          <h2 className="tracking-light bg-brand-neutral-muted w-fit animate-pulse rounded-xl text-4xl font-extrabold text-transparent blur-sm">
+          <h2 className="tracking-light bg-brand-neutral-muted w-fit animate-pulse rounded-xl text-3xl font-extrabold text-transparent blur-sm md:text-4xl">
             자기 소개
           </h2>
         </header>
@@ -15,14 +15,14 @@ const AboutSkeleton = () => {
           {/* 이미지 영역 */}
           <figure className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm">
             {/* 배경 오프셋 테두리 */}
-            <div className="border-brand-primary/30 absolute inset-0 translate-x-4 translate-y-4 animate-pulse rounded-3xl border-2" />
+            <div className="border-brand-primary/30 absolute inset-0 translate-x-2 translate-y-2 animate-pulse rounded-3xl border-2 md:translate-x-4 md:translate-y-4" />
 
             <div className="bg-brand-neutral-muted relative h-full w-full animate-pulse overflow-hidden rounded-3xl shadow-2xl">
               <svg viewBox="0 0 3 4" className="h-auto w-full opacity-0" aria-hidden="true" />
             </div>
 
             {/* 우측 하단 이름 카드 */}
-            <figcaption className="border-brand-primary/30 bg-brand-neutral-muted absolute -right-4 -bottom-4 rounded-2xl border px-4 py-3 shadow-lg">
+            <figcaption className="border-brand-primary/30 bg-brand-neutral-muted absolute right-0 -bottom-4 rounded-2xl border px-4 py-3 shadow-lg md:-right-4">
               <p className="bg-brand-neutral-dark/20 w-fit animate-pulse rounded-sm text-sm leading-none font-extrabold text-transparent blur-sm">
                 김연신
               </p>
