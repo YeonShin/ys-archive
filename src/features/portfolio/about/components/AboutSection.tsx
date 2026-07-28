@@ -2,6 +2,8 @@
 
 import { ReactNode } from 'react';
 
+import Image from 'next/image';
+
 import { ArrowUpRight } from 'lucide-react';
 import { Variants, motion } from 'motion/react';
 
@@ -44,7 +46,7 @@ const AboutSection = ({
       className="relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24"
     >
       <motion.div
-        className="flex flex-col gap-10"
+        className="flex w-full max-w-4xl flex-col gap-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -72,10 +74,12 @@ const AboutSection = ({
             <div className="bg-brand-neutral-muted relative h-full w-full overflow-hidden rounded-3xl shadow-2xl">
               {/* 이미지 */}
               {data?.profileImageUrl && (
-                <img
-                  className="h-full w-full object-cover object-center"
+                <Image
                   src={data.profileImageUrl}
                   alt="프로필 사진"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 400px"
+                  className="object-cover object-center"
                 />
               )}
 
