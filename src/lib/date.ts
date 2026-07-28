@@ -9,7 +9,7 @@ export const formatDate = (
   dateString: string | null | undefined,
   options?: { separator?: string; includeDay?: boolean },
 ) => {
-  if (!dateString) return '현재';
+  if (!dateString || dateString.length < 7) return '현재';
 
   const separator = options?.separator ?? '.';
   const includeDay = options?.includeDay ?? false;
