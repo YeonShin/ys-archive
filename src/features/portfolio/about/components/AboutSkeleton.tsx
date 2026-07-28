@@ -5,12 +5,7 @@ const AboutSkeleton = () => {
     <section className="pointer-events-none relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24 select-none">
       <div className="flex w-full max-w-4xl flex-col gap-10">
         {/* 상단 타이틀 */}
-        <SectionHeader
-          data={{
-            title: 'About',
-            korTitle: '자기 소개',
-          }}
-        />
+        <SectionHeader title="About" korTitle="자기 소개" />
         <div className="flex flex-col items-center justify-center gap-20 md:flex-row">
           {/* 이미지 영역 */}
           <figure className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm">

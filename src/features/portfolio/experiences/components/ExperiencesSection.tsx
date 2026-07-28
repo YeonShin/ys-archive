@@ -32,13 +32,7 @@ const ExperiencesSection = ({ data }: { data: ExperiencesSectionData | null }) =
         viewport={{ once: true, amount: 0.2 }}
         className="flex w-full max-w-4xl flex-col gap-10"
       >
-        <SectionHeader
-          data={{
-            title: 'Journey',
-            korTitle: '경력 / 학력',
-            variants: itemVariants,
-          }}
-        />
+        <SectionHeader title="Journey" korTitle="경력 / 학력" variants={itemVariants} />
 
         <ul className="flex flex-col gap-6">
           {data?.experiences.map((experience, index) => {

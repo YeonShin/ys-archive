@@ -36,13 +36,7 @@ const AboutSection = ({
         viewport={{ once: true, amount: 0.2 }}
       >
         {/* 상단 타이틀 */}
-        <SectionHeader
-          data={{
-            title: 'About',
-            korTitle: '자기 소개',
-            variants: itemVariants,
-          }}
-        />
+        <SectionHeader title="About" korTitle="자기 소개" variants={itemVariants} />
         <div className="flex flex-col items-center justify-center gap-12 md:flex-row">
           {/* 이미지 영역 */}
           <motion.figure

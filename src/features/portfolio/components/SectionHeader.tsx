@@ -8,14 +8,14 @@ interface SectionHeaderProps {
   variants?: Variants;
 }
 
-const SectionHeader = ({ data }: { data: SectionHeaderProps }) => {
+const SectionHeader = ({ title, korTitle, variants }: SectionHeaderProps) => {
   return (
-    <motion.header variants={data.variants}>
+    <motion.header variants={variants}>
       <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
-        {data.title}
+        {title}
       </p>
       <h2 className="text-brand-neutral-dark tracking-light text-3xl font-extrabold md:text-4xl">
-        {data.korTitle}
+        {korTitle}
       </h2>
     </motion.header>
   );
