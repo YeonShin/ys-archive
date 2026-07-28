@@ -1,7 +1,7 @@
 const AboutSkeleton = () => {
   return (
     <section className="pointer-events-none relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24 select-none">
-      <div className="flex flex-col gap-10">
+      <div className="flex w-full max-w-4xl flex-col gap-10">
         {/* 상단 타이틀 */}
         <header>
           <p className="bg-brand-neutral-muted mb-3 w-fit animate-pulse rounded-md font-mono text-sm tracking-[0.3em] text-transparent uppercase blur-sm">
