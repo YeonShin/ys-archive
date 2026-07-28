@@ -41,7 +41,7 @@ const ExperiencesSection = ({ data }: { data: ExperiencesSectionData | null }) =
   return (
     <section
       id="experience"
-      className="bg-brand-neutral-muted flex min-h-screen w-full flex-col items-center py-24 md:py-32"
+      className="bg-brand-neutral-muted flex min-h-screen w-full flex-col items-center px-6 py-24 md:py-32"
     >
       <motion.div
         variants={containerVariants}
