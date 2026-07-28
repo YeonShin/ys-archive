@@ -1,16 +1,16 @@
+import SectionHeader from '@/features/portfolio/components/SectionHeader';
+
 const AboutSkeleton = () => {
   return (
     <section className="pointer-events-none relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24 select-none">
       <div className="flex w-full max-w-4xl flex-col gap-10">
         {/* 상단 타이틀 */}
-        <header>
-          <p className="bg-brand-neutral-muted mb-3 w-fit animate-pulse rounded-md font-mono text-sm tracking-[0.3em] text-transparent uppercase blur-sm">
-            About
-          </p>
-          <h2 className="tracking-light bg-brand-neutral-muted w-fit animate-pulse rounded-xl text-3xl font-extrabold text-transparent blur-sm md:text-4xl">
-            자기 소개
-          </h2>
-        </header>
+        <SectionHeader
+          data={{
+            title: 'About',
+            korTitle: '자기 소개',
+          }}
+        />
         <div className="flex flex-col items-center justify-center gap-20 md:flex-row">
           {/* 이미지 영역 */}
           <figure className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm">

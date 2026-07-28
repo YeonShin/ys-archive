@@ -8,6 +8,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { Variants, motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
+import SectionHeader from '@/features/portfolio/components/SectionHeader';
 
 import { AboutSectionData } from '../types';
 
@@ -43,7 +44,7 @@ const AboutSection = ({
   return (
     <section
       id="about"
-      className="relative flex min-h-screen w-full flex-1 items-center justify-center px-6 py-24"
+      className="relative flex min-h-screen w-full items-center justify-center px-6 py-24"
     >
       <motion.div
         className="flex w-full max-w-4xl flex-col gap-10"
@@ -53,14 +54,13 @@ const AboutSection = ({
         viewport={{ once: true, amount: 0.2 }}
       >
         {/* 상단 타이틀 */}
-        <motion.header variants={itemVariants}>
-          <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
-            About
-          </p>
-          <h2 className="text-brand-neutral-dark tracking-light text-3xl font-extrabold md:text-4xl">
-            자기 소개
-          </h2>
-        </motion.header>
+        <SectionHeader
+          data={{
+            title: 'About',
+            korTitle: '자기 소개',
+            variants: itemVariants,
+          }}
+        />
         <div className="flex flex-col items-center justify-center gap-12 md:flex-row">
           {/* 이미지 영역 */}
           <motion.figure
