@@ -54,6 +54,12 @@ export const useActiveSection = (sectionIds: readonly string[]) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+
+      document.body.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        document.body.style.pointerEvents = 'auto';
+      }, 1000);
     }
   };
 
