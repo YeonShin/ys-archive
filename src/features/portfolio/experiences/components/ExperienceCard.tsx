@@ -6,6 +6,7 @@ import { Pin, Play } from 'lucide-react';
 import { AnimatePresence, motion, useInView } from 'motion/react';
 
 import { formatDate } from '@/lib/date';
+import { cn } from '@/lib/utils';
 
 import { ExperienceItem } from '../types';
 
@@ -23,13 +24,14 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
 
   const open = hovered || pinned;
 
-  const dotClasses = `bg-brand-primary z-10 h-3.5 w-3.5 shrink-0 rounded-full transition-shadow duration-500 ease-out ${
+  const dotClasses = cn(
+    'bg-brand-primary z-10 h-3.5 w-3.5 shrink-0 rounded-full transition-shadow duration-500 ease-out',
     pinned
       ? 'ring-brand-primary/30 ring-6'
       : hovered
         ? 'ring-brand-primary/15 ring-4'
-        : 'ring-brand-primary/0 ring-0'
-  }`;
+        : 'ring-brand-primary/0 ring-0',
+  );
 
   return (
     <motion.li
@@ -65,11 +67,12 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
         role="button"
         tabIndex={0}
         aria-expanded={open}
-        className={`focus-visible:ring-brand-primary flex-1 cursor-pointer rounded-2xl p-5 transition-all duration-300 select-none focus-visible:ring-2 focus-visible:outline-none ${
+        className={cn(
+          'focus-visible:ring-brand-primary flex-1 cursor-pointer rounded-2xl p-5 transition-all duration-300 select-none focus-visible:ring-2 focus-visible:outline-none',
           pinned
             ? 'bg-brand-neutral-dark shadow-brand-neutral-dark/20 shadow-2xl'
-            : 'bg-brand-neutral-muted hover:shadow-brand-neutral-dark/15 shadow-none hover:shadow-xl'
-        }`}
+            : 'bg-brand-neutral-muted hover:shadow-brand-neutral-dark/15 shadow-none hover:shadow-xl',
+        )}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         onClick={onPin}
@@ -86,11 +89,14 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
           <div className="flex w-full items-start justify-between md:w-auto">
             <div>
               <h3
-                className={`leading-tight font-bold ${pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark'}`}
+                className={cn(
+                  'leading-tight font-bold',
+                  pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark',
+                )}
               >
                 {experience.title}
               </h3>
-              <p className={`text-brand-secondary mt-0.5 font-mono text-xs`}>
+              <p className="text-brand-secondary mt-0.5 font-mono text-xs">
                 {experience.organization}
               </p>
             </div>
@@ -99,15 +105,15 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
             <motion.div
               animate={{ rotate: pinned ? 45 : 0, scale: hovered && !pinned ? 1.1 : 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:hidden ${
+              className={cn(
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:hidden',
                 pinned
                   ? 'bg-brand-primary/20 text-brand-primary'
-                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent'
-              }`}
+                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent',
+              )}
             >
               <Pin
-                fill={`${pinned ? 'var(--brand-primary)' : 'var(--brand-secondary)'}`}
-                className="h-4 w-4"
+                className={cn('h-4 w-4', pinned ? 'fill-brand-primary' : 'fill-brand-secondary')}
               />
             </motion.div>
           </div>
@@ -118,15 +124,15 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
             <motion.div
               animate={{ rotate: pinned ? 45 : 0, scale: hovered && !pinned ? 1.1 : 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className={`hidden h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:flex ${
+              className={cn(
+                'hidden h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:flex',
                 pinned
                   ? 'bg-brand-primary/20 text-brand-primary'
-                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent'
-              }`}
+                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent',
+              )}
             >
               <Pin
-                fill={`${pinned ? 'var(--brand-primary)' : 'var(--brand-secondary)'}`}
-                className="h-4 w-4"
+                className={cn('h-4 w-4', pinned ? 'fill-brand-primary' : 'fill-brand-secondary')}
               />
             </motion.div>
 
@@ -135,11 +141,12 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
               {experience.techStacks?.map((tech, idx) => (
                 <span
                   key={idx}
-                  className={`rounded-md px-2 py-0.5 font-mono text-xs transition-all duration-300 ${
+                  className={cn(
+                    'rounded-md px-2 py-0.5 font-mono text-xs transition-all duration-300',
                     pinned
                       ? 'bg-brand-primary text-brand-neutral-dark ring-brand-primary/30 ring-1'
-                      : 'bg-brand-neutral-dark text-brand-neutral-muted'
-                  }`}
+                      : 'bg-brand-neutral-dark text-brand-neutral-muted',
+                  )}
                 >
                   {tech}
                 </span>
@@ -167,9 +174,10 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.07, duration: 0.25 }}
-                    className={`flex items-start gap-2 text-sm leading-relaxed ${
-                      pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark'
-                    }`}
+                    className={cn(
+                      'flex items-start gap-2 text-sm leading-relaxed',
+                      pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark',
+                    )}
                   >
                     <div className="text-brand-primary mt-1.25 flex shrink-0 items-center justify-center">
                       <Play size={10} fill="var(--brand-primary)" />
