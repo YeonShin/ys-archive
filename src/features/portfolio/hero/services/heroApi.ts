@@ -8,7 +8,7 @@ export const fetchHeroData = async (): Promise<HeroSectionData | null> => {
   try {
     const { data, error } = await supabase
       .from('portfolio_content')
-      .select('hero_title, hero_description, resume_url')
+      .select('hero_title, hero_description')
       .eq('id', 1)
       .single();
 
