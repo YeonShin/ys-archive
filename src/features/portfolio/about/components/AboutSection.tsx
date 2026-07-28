@@ -48,7 +48,7 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
           <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
             About
           </p>
-          <h2 className="text-brand-neutral-dark tracking-light text-4xl font-extrabold">
+          <h2 className="text-brand-neutral-dark tracking-light text-3xl font-extrabold md:text-4xl">
             자기 소개
           </h2>
         </motion.header>
@@ -59,7 +59,7 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
             className="relative mx-auto aspect-3/4 w-full max-w-70 sm:max-w-sm"
           >
             {/* 배경 오프셋 테두리 */}
-            <div className="border-brand-primary/30 absolute inset-0 translate-x-4 translate-y-4 rounded-3xl border-2" />
+            <div className="border-brand-primary/30 absolute inset-0 translate-x-2 translate-y-2 rounded-3xl border-2 md:translate-x-4 md:translate-y-4" />
 
             {/* 이미지 컨테이너 */}
             <div className="bg-brand-neutral-muted relative h-full w-full overflow-hidden rounded-3xl shadow-2xl">
@@ -77,7 +77,7 @@ const AboutSection = ({ data }: { data: AboutSectionData | null }) => {
             </div>
 
             {/* 우측 하단 이름 카드 */}
-            <figcaption className="border-brand-primary/30 bg-brand-neutral-muted absolute -right-4 -bottom-4 rounded-2xl border px-4 py-3 shadow-lg">
+            <figcaption className="border-brand-primary/30 bg-brand-neutral-muted absolute right-0 -bottom-4 rounded-2xl border px-4 py-3 shadow-lg md:-right-4">
               <p className="text-brand-neutral-dark text-sm leading-none font-extrabold">김연신</p>
               <p className="text-brand-primary mt-0.5 font-mono text-xs">Frontend Dev.</p>
             </figcaption>
