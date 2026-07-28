@@ -23,32 +23,41 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
 
   const open = hovered || pinned;
 
+  const dotClasses = `bg-brand-primary z-10 h-3.5 w-3.5 shrink-0 rounded-full transition-shadow duration-500 ease-out ${
+    pinned
+      ? 'ring-brand-primary/30 ring-6'
+      : hovered
+        ? 'ring-brand-primary/15 ring-4'
+        : 'ring-brand-primary/0 ring-0'
+  }`;
+
   return (
     <motion.li
       ref={ref}
       initial={{ opacity: 0, x: -20 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col gap-6 md:flex-row"
+      className="flex flex-col gap-4 md:flex-row md:gap-6"
     >
+      {/* 모바일 전용 수평 타임라인 */}
+      <div className="flex items-center gap-3 md:hidden">
+        <div className={dotClasses} />
+        <span className="text-brand-primary font-mono text-xs">
+          {`${formatDate(experience.startedAt)} - ${formatDate(experience.endedAt)}`}
+        </span>
+        <div className="bg-brand-primary/30 h-px flex-1" />
+      </div>
+
+      {/* 데스크탑 전용 수직 타임라인 */}
       {/* 기간 */}
-      <div className="w-36 shrink-0 pt-5 text-right font-mono">
-        <p className="text-brand-primary whitescape-nowrap font-mono text-xs leading-relaxed">
+      <div className="hidden w-36 shrink-0 pt-5 text-right font-mono md:block">
+        <p className="text-brand-primary font-mono text-xs leading-relaxed whitespace-nowrap">
           {`${formatDate(experience.startedAt)} - ${formatDate(experience.endedAt)}`}
         </p>
       </div>
 
-      {/* 타임라인 */}
-      <div className="flex shrink-0 flex-col items-center pt-5">
-        <div
-          className={`bg-brand-primary z-10 h-3.5 w-3.5 shrink-0 rounded-full transition-shadow duration-500 ease-out ${
-            pinned
-              ? 'ring-brand-primary/30 ring-6'
-              : hovered
-                ? 'ring-brand-primary/15 ring-4'
-                : 'ring-brand-primary/0 ring-0'
-          }`}
-        />
+      <div className="hidden shrink-0 flex-col items-center pt-5 md:flex">
+        <div className={dotClasses} />
         <div className="bg-brand-primary/30 mt-1 w-px flex-1" /> {/* 세로선 */}
       </div>
 
@@ -72,48 +81,69 @@ const ExperienceCard = ({ experience, index, pinned, onPin }: ExperienceCardProp
         }}
       >
         {/* 경험/학력 항목의 본문 내용 */}
-        <div className="mb-2 flex items-start justify-between gap-3">
-          {/* 타이틀 */}
-          <div>
-            <h3
-              className={`leading-tight font-bold ${pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark'}`}
-            >
-              {experience.title}
-            </h3>
-            <p className={`text-brand-secondary mt-0.5 font-mono text-xs`}>
-              {experience.organization}
-            </p>
-          </div>
+        <div className="mb-2 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          {/* 타이틀 및 모바일 전용 핀 */}
+          <div className="flex w-full items-start justify-between md:w-auto">
+            <div>
+              <h3
+                className={`leading-tight font-bold ${pinned ? 'text-brand-neutral-light' : 'text-brand-neutral-dark'}`}
+              >
+                {experience.title}
+              </h3>
+              <p className={`text-brand-secondary mt-0.5 font-mono text-xs`}>
+                {experience.organization}
+              </p>
+            </div>
 
-          {/* 기술스택 및 핀 */}
-          <div className="flex shrink-0 items-center gap-2">
+            {/* 모바일 전용 핀 */}
             <motion.div
-              animate={{ opacity: open ? 1 : 0, rotate: pinned ? 0 : -45 }}
-              transition={{ duration: 0.2 }}
-              className={`${pinned ? 'text-brand-primary' : 'text-brand-secondary'}`}
-              title={pinned ? '클릭하면 고정 해제' : '클릭하면 고정'}
+              animate={{ rotate: pinned ? 45 : 0, scale: hovered && !pinned ? 1.1 : 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:hidden ${
+                pinned
+                  ? 'bg-brand-primary/20 text-brand-primary'
+                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent'
+              }`}
             >
               <Pin
-                size={14}
                 fill={`${pinned ? 'var(--brand-primary)' : 'var(--brand-secondary)'}`}
+                className="h-4 w-4"
+              />
+            </motion.div>
+          </div>
+
+          {/* 기술스택 리스트 및 데스크탑 전용 핀 */}
+          <div className="flex w-full items-center justify-start gap-2 md:w-auto md:justify-end">
+            {/* 데스크탑 전용 핀 */}
+            <motion.div
+              animate={{ rotate: pinned ? 45 : 0, scale: hovered && !pinned ? 1.1 : 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              className={`hidden h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 md:flex ${
+                pinned
+                  ? 'bg-brand-primary/20 text-brand-primary'
+                  : 'text-brand-secondary hover:bg-brand-secondary/30 bg-transparent'
+              }`}
+            >
+              <Pin
+                fill={`${pinned ? 'var(--brand-primary)' : 'var(--brand-secondary)'}`}
+                className="h-4 w-4"
               />
             </motion.div>
 
-            <div className="flex flex-wrap justify-end gap-1.5">
-              {experience.techStacks?.map((tech) => {
-                return (
-                  <span
-                    className={`rounded-md px-2 py-0.5 font-mono text-xs ${
-                      pinned
-                        ? 'bg-brand-primary text-brand-neutral-dark'
-                        : 'bg-brand-neutral-dark text-brand-neutral-muted'
-                    }`}
-                    key={tech}
-                  >
-                    {tech}
-                  </span>
-                );
-              })}
+            {/* 기술스택 */}
+            <div className="flex flex-1 flex-wrap justify-start gap-1.5 md:flex-initial md:justify-end">
+              {experience.techStacks?.map((tech, idx) => (
+                <span
+                  key={idx}
+                  className={`rounded-md px-2 py-0.5 font-mono text-xs transition-all duration-300 ${
+                    pinned
+                      ? 'bg-brand-primary text-brand-neutral-dark ring-brand-primary/30 ring-1'
+                      : 'bg-brand-neutral-dark text-brand-neutral-muted'
+                  }`}
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
         </div>
