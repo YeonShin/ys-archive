@@ -35,37 +35,37 @@ export type Database = {
     Tables: {
       contact: {
         Row: {
-          created_at: string | null;
+          created_at: string;
           description: string | null;
           icon: string;
           id: string;
           name: string;
-          updated_at: string | null;
+          updated_at: string;
           url: string;
         };
         Insert: {
-          created_at?: string | null;
+          created_at?: string;
           description?: string | null;
           icon: string;
           id?: string;
           name: string;
-          updated_at?: string | null;
+          updated_at?: string;
           url: string;
         };
         Update: {
-          created_at?: string | null;
+          created_at?: string;
           description?: string | null;
           icon?: string;
           id?: string;
           name?: string;
-          updated_at?: string | null;
+          updated_at?: string;
           url?: string;
         };
         Relationships: [];
       };
       experiences: {
         Row: {
-          created_at: string | null;
+          created_at: string;
           description: string | null;
           details: string[] | null;
           ended_at: string | null;
@@ -74,10 +74,10 @@ export type Database = {
           started_at: string;
           tech_stacks: string[] | null;
           title: string;
-          updated_at: string | null;
+          updated_at: string;
         };
         Insert: {
-          created_at?: string | null;
+          created_at?: string;
           description?: string | null;
           details?: string[] | null;
           ended_at?: string | null;
@@ -86,10 +86,10 @@ export type Database = {
           started_at: string;
           tech_stacks?: string[] | null;
           title: string;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Update: {
-          created_at?: string | null;
+          created_at?: string;
           description?: string | null;
           details?: string[] | null;
           ended_at?: string | null;
@@ -98,87 +98,87 @@ export type Database = {
           started_at?: string;
           tech_stacks?: string[] | null;
           title?: string;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };
       guestbook: {
         Row: {
           content: string;
-          created_at: string | null;
+          created_at: string;
           id: string;
-          is_public: boolean | null;
+          is_public: boolean;
           nickname: string;
           password: string;
-          updated_at: string | null;
+          updated_at: string;
         };
         Insert: {
           content: string;
-          created_at?: string | null;
+          created_at?: string;
           id?: string;
-          is_public?: boolean | null;
+          is_public?: boolean;
           nickname: string;
           password: string;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Update: {
           content?: string;
-          created_at?: string | null;
+          created_at?: string;
           id?: string;
-          is_public?: boolean | null;
+          is_public?: boolean;
           nickname?: string;
           password?: string;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };
       portfolio_content: {
         Row: {
           about_text: string;
-          created_at: string | null;
+          created_at: string;
           developer_role: string;
           hero_description: string;
           hero_title: string;
           id: number;
           profile_image_url: string | null;
           resume_url: string | null;
-          updated_at: string | null;
+          updated_at: string;
         };
         Insert: {
           about_text: string;
-          created_at?: string | null;
+          created_at?: string;
           developer_role: string;
           hero_description: string;
           hero_title: string;
           id: number;
           profile_image_url?: string | null;
           resume_url?: string | null;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Update: {
           about_text?: string;
-          created_at?: string | null;
+          created_at?: string;
           developer_role?: string;
           hero_description?: string;
           hero_title?: string;
           id?: number;
           profile_image_url?: string | null;
           resume_url?: string | null;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };
       projects: {
         Row: {
           architecture: Json | null;
-          created_at: string | null;
-          description: string | null;
+          created_at: string;
+          description: string;
           ended_at: string | null;
           id: string;
           images: string[] | null;
           key_features: Json | null;
           links: Json | null;
-          priority: number | null;
+          priority: number;
           retrospective: string | null;
           role: string;
           started_at: string;
@@ -188,18 +188,18 @@ export type Database = {
           thumbnail_url: string;
           title: string;
           troubleshooting: Json | null;
-          updated_at: string | null;
+          updated_at: string;
         };
         Insert: {
           architecture?: Json | null;
-          created_at?: string | null;
-          description?: string | null;
+          created_at?: string;
+          description: string;
           ended_at?: string | null;
           id?: string;
           images?: string[] | null;
           key_features?: Json | null;
           links?: Json | null;
-          priority?: number | null;
+          priority?: number;
           retrospective?: string | null;
           role: string;
           started_at: string;
@@ -209,18 +209,18 @@ export type Database = {
           thumbnail_url: string;
           title: string;
           troubleshooting?: Json | null;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Update: {
           architecture?: Json | null;
-          created_at?: string | null;
-          description?: string | null;
+          created_at?: string;
+          description?: string;
           ended_at?: string | null;
           id?: string;
           images?: string[] | null;
           key_features?: Json | null;
           links?: Json | null;
-          priority?: number | null;
+          priority?: number;
           retrospective?: string | null;
           role?: string;
           started_at?: string;
@@ -230,40 +230,40 @@ export type Database = {
           thumbnail_url?: string;
           title?: string;
           troubleshooting?: Json | null;
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };
       tech_stacks: {
         Row: {
           color: string | null;
-          created_at: string | null;
+          created_at: string;
           icon: string;
           id: string;
           level: Database['public']['Enums']['tech_level_enum'] | null;
           name: string;
           type: Database['public']['Enums']['tech_type_enum'];
-          updated_at: string | null;
+          updated_at: string;
         };
         Insert: {
           color?: string | null;
-          created_at?: string | null;
+          created_at?: string;
           icon: string;
           id?: string;
           level?: Database['public']['Enums']['tech_level_enum'] | null;
           name: string;
           type: Database['public']['Enums']['tech_type_enum'];
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Update: {
           color?: string | null;
-          created_at?: string | null;
+          created_at?: string;
           icon?: string;
           id?: string;
           level?: Database['public']['Enums']['tech_level_enum'] | null;
           name?: string;
           type?: Database['public']['Enums']['tech_type_enum'];
-          updated_at?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };

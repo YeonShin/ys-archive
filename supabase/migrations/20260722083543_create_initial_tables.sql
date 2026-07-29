@@ -12,8 +12,8 @@ CREATE TABLE public.portfolio_content (
   profile_image_url TEXT,
   about_text TEXT NOT NULL,
   resume_url TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- 2. experiences 테이블 (경력/학력 섹션)
@@ -26,8 +26,8 @@ CREATE TABLE public.experiences (
   details TEXT[],
   started_at DATE NOT NULL,
   ended_at DATE DEFAULT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- 3. tech_stacks 테이블 (기술스택 마스터)
@@ -38,8 +38,8 @@ CREATE TABLE public.tech_stacks (
   color VARCHAR,
   type public.tech_type_enum NOT NULL,
   level public.tech_level_enum,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- 4. projects 테이블 (프로젝트 및 상세 정보 - JSONB 하이브리드)
@@ -55,14 +55,14 @@ CREATE TABLE public.projects (
   thumbnail_url TEXT NOT NULL,
   tech_stacks JSONB,
   images TEXT[],
-  description TEXT,
+  description TEXT NOT NULL,
   architecture JSONB,
   key_features JSONB,
   troubleshooting JSONB,
   retrospective TEXT,
-  priority INT DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  priority INT DEFAULT 0 NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- 5. guestbook 테이블 (방명록)
@@ -71,9 +71,9 @@ CREATE TABLE public.guestbook (
   nickname VARCHAR NOT NULL,
   password TEXT NOT NULL,
   content VARCHAR(200) NOT NULL,
-  is_public BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  is_public BOOLEAN DEFAULT TRUE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 -- 6. contact 테이블 (연락수단)
@@ -83,8 +83,8 @@ CREATE TABLE public.contact (
   icon VARCHAR NOT NULL,
   url TEXT NOT NULL,
   description TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
 --  추가 설정 --
