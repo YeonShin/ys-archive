@@ -60,7 +60,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
                   onClick={() => setActive(isActive ? null : category)}
                   aria-pressed={isActive}
                   className={cn(
-                    'rounded-xl px-4 py-2 font-mono text-sm whitespace-nowrap transition-colors duration-200 md:px-5',
+                    'md:text-md flex min-h-11 items-center justify-center rounded-xl px-4 py-2 font-mono text-xs whitespace-nowrap transition-colors duration-200 sm:text-sm md:px-5',
                     isActive
                       ? 'bg-brand-primary text-brand-neutral-light font-bold'
                       : 'text-brand-secondary hover:bg-brand-neutral-light/50',
@@ -77,7 +77,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         <motion.div variants={itemVariants} className="w-full max-w-2xl">
           <TooltipProvider delayDuration={100}>
             <ul
-              className="flex flex-wrap justify-center gap-4 sm:gap-6"
+              className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6"
               aria-label="기술 스택 목록"
             >
               {data.techStack.map((tech) => {
