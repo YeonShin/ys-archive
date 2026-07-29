@@ -173,15 +173,16 @@ export type Database = {
           architecture: Json | null;
           created_at: string | null;
           description: string | null;
+          ended_at: string | null;
           id: string;
           images: string[] | null;
           key_features: Json | null;
           links: Json | null;
-          period: string;
           priority: number | null;
           retrospective: string | null;
           role: string;
-          status: string;
+          started_at: string;
+          status: Database['public']['Enums']['project_status_enum'];
           subtitle: string | null;
           tech_stacks: Json | null;
           thumbnail_url: string;
@@ -193,15 +194,16 @@ export type Database = {
           architecture?: Json | null;
           created_at?: string | null;
           description?: string | null;
+          ended_at?: string | null;
           id?: string;
           images?: string[] | null;
           key_features?: Json | null;
           links?: Json | null;
-          period: string;
           priority?: number | null;
           retrospective?: string | null;
           role: string;
-          status: string;
+          started_at: string;
+          status: Database['public']['Enums']['project_status_enum'];
           subtitle?: string | null;
           tech_stacks?: Json | null;
           thumbnail_url: string;
@@ -213,15 +215,16 @@ export type Database = {
           architecture?: Json | null;
           created_at?: string | null;
           description?: string | null;
+          ended_at?: string | null;
           id?: string;
           images?: string[] | null;
           key_features?: Json | null;
           links?: Json | null;
-          period?: string;
           priority?: number | null;
           retrospective?: string | null;
           role?: string;
-          status?: string;
+          started_at?: string;
+          status?: Database['public']['Enums']['project_status_enum'];
           subtitle?: string | null;
           tech_stacks?: Json | null;
           thumbnail_url?: string;
@@ -298,6 +301,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
+      project_status_enum: 'IN_PROGRESS' | 'LIVE' | 'COMPLETED';
       tech_level_enum: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
       tech_type_enum:
         'FRONTEND' | 'BACKEND' | 'INFRA' | 'DATABASE' | 'MOBILE' | 'DEVOPS' | 'AI_ML' | 'TESTING';
@@ -425,6 +429,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      project_status_enum: ['IN_PROGRESS', 'LIVE', 'COMPLETED'],
       tech_level_enum: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'],
       tech_type_enum: [
         'FRONTEND',

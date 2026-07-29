@@ -1,6 +1,7 @@
--- 0. ENUM 타입 생성 (tech_stacks용)
+-- 0. ENUM 타입 생성 (tech_stacks, projects용)
 CREATE TYPE public.tech_type_enum AS ENUM ('FRONTEND', 'BACKEND', 'INFRA', 'DATABASE', 'MOBILE', 'DEVOPS', 'AI_ML', 'TESTING');
 CREATE TYPE public.tech_level_enum AS ENUM ('BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT');
+CREATE TYPE public.project_status_enum AS ENUM ('IN_PROGRESS', 'LIVE', 'COMPLETED');
 
 -- 1. portfolio_content 테이블 (Intro, About Me 관리 - 단일 레코드)
 CREATE TABLE public.portfolio_content (
@@ -46,8 +47,9 @@ CREATE TABLE public.projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR NOT NULL,
   subtitle VARCHAR,
-  status VARCHAR NOT NULL,
-  period VARCHAR NOT NULL,
+  status public.project_status_enum NOT NULL,
+  started_at DATE NOT NULL,
+  ended_at DATE DEFAULT NULL,
   role VARCHAR NOT NULL,
   links JSONB,
   thumbnail_url TEXT NOT NULL,
