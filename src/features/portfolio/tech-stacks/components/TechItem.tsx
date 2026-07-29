@@ -188,7 +188,7 @@ const TechItem = ({ tech, isFilteredOut }: TechItemProps) => {
             aria-label={`${tech.name}${tech.level ? ` (숙련도: ${tech.level})` : ''}`}
             aria-disabled={isFilteredOut}
             className={cn(
-              'focus-visible:ring-brand-primary flex h-16 w-16 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-20 md:w-20',
+              'focus-visible:ring-brand-primary flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-16 sm:w-16 md:h-20 md:w-20',
               isFilteredOut
                 ? 'pointer-events-none scale-95 opacity-30 blur-sm grayscale'
                 : 'cursor-pointer hover:-translate-y-1 hover:shadow-md',
@@ -197,12 +197,12 @@ const TechItem = ({ tech, isFilteredOut }: TechItemProps) => {
           >
             {IconComponent ? (
               <IconComponent
-                className="text-brand-neutral-light text-3xl md:text-4xl"
+                className="text-brand-neutral-light text-2xl sm:text-3xl md:text-4xl"
                 aria-hidden="true"
               />
             ) : (
               <span
-                className="text-brand-neutral-light font-mono text-xl font-bold md:text-3xl"
+                className="text-brand-neutral-light font-mono text-lg font-bold sm:text-xl md:text-3xl"
                 aria-hidden="true"
               >
                 {tech.icon ? tech.icon.substring(0, 2) : tech.name.substring(0, 2)}
