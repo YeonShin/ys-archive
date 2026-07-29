@@ -35,30 +35,37 @@ export type Database = {
     Tables: {
       contact: {
         Row: {
+          created_at: string | null;
           description: string | null;
           icon: string;
           id: string;
           name: string;
+          updated_at: string | null;
           url: string;
         };
         Insert: {
+          created_at?: string | null;
           description?: string | null;
           icon: string;
           id?: string;
           name: string;
+          updated_at?: string | null;
           url: string;
         };
         Update: {
+          created_at?: string | null;
           description?: string | null;
           icon?: string;
           id?: string;
           name?: string;
+          updated_at?: string | null;
           url?: string;
         };
         Relationships: [];
       };
       experiences: {
         Row: {
+          created_at: string | null;
           description: string | null;
           details: string[] | null;
           ended_at: string | null;
@@ -67,8 +74,10 @@ export type Database = {
           started_at: string;
           tech_stacks: string[] | null;
           title: string;
+          updated_at: string | null;
         };
         Insert: {
+          created_at?: string | null;
           description?: string | null;
           details?: string[] | null;
           ended_at?: string | null;
@@ -77,8 +86,10 @@ export type Database = {
           started_at: string;
           tech_stacks?: string[] | null;
           title: string;
+          updated_at?: string | null;
         };
         Update: {
+          created_at?: string | null;
           description?: string | null;
           details?: string[] | null;
           ended_at?: string | null;
@@ -87,6 +98,7 @@ export type Database = {
           started_at?: string;
           tech_stacks?: string[] | null;
           title?: string;
+          updated_at?: string | null;
         };
         Relationships: [];
       };
@@ -123,33 +135,43 @@ export type Database = {
       portfolio_content: {
         Row: {
           about_text: string;
+          created_at: string | null;
+          developer_role: string;
           hero_description: string;
           hero_title: string;
           id: number;
           profile_image_url: string | null;
           resume_url: string | null;
+          updated_at: string | null;
         };
         Insert: {
           about_text: string;
+          created_at?: string | null;
+          developer_role: string;
           hero_description: string;
           hero_title: string;
           id: number;
           profile_image_url?: string | null;
           resume_url?: string | null;
+          updated_at?: string | null;
         };
         Update: {
           about_text?: string;
+          created_at?: string | null;
+          developer_role?: string;
           hero_description?: string;
           hero_title?: string;
           id?: number;
           profile_image_url?: string | null;
           resume_url?: string | null;
+          updated_at?: string | null;
         };
         Relationships: [];
       };
       projects: {
         Row: {
           architecture: Json | null;
+          created_at: string | null;
           description: string | null;
           id: string;
           images: string[] | null;
@@ -165,9 +187,11 @@ export type Database = {
           thumbnail_url: string;
           title: string;
           troubleshooting: Json | null;
+          updated_at: string | null;
         };
         Insert: {
           architecture?: Json | null;
+          created_at?: string | null;
           description?: string | null;
           id?: string;
           images?: string[] | null;
@@ -183,9 +207,11 @@ export type Database = {
           thumbnail_url: string;
           title: string;
           troubleshooting?: Json | null;
+          updated_at?: string | null;
         };
         Update: {
           architecture?: Json | null;
+          created_at?: string | null;
           description?: string | null;
           id?: string;
           images?: string[] | null;
@@ -201,30 +227,40 @@ export type Database = {
           thumbnail_url?: string;
           title?: string;
           troubleshooting?: Json | null;
+          updated_at?: string | null;
         };
         Relationships: [];
       };
       tech_stacks: {
         Row: {
+          color: string | null;
+          created_at: string | null;
           icon: string;
           id: string;
-          level: string | null;
+          level: Database['public']['Enums']['tech_level_enum'] | null;
           name: string;
-          type: string;
+          type: Database['public']['Enums']['tech_type_enum'];
+          updated_at: string | null;
         };
         Insert: {
+          color?: string | null;
+          created_at?: string | null;
           icon: string;
           id?: string;
-          level?: string | null;
+          level?: Database['public']['Enums']['tech_level_enum'] | null;
           name: string;
-          type: string;
+          type: Database['public']['Enums']['tech_type_enum'];
+          updated_at?: string | null;
         };
         Update: {
+          color?: string | null;
+          created_at?: string | null;
           icon?: string;
           id?: string;
-          level?: string | null;
+          level?: Database['public']['Enums']['tech_level_enum'] | null;
           name?: string;
-          type?: string;
+          type?: Database['public']['Enums']['tech_type_enum'];
+          updated_at?: string | null;
         };
         Relationships: [];
       };
@@ -262,7 +298,9 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      tech_level_enum: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
+      tech_type_enum:
+        'FRONTEND' | 'BACKEND' | 'INFRA' | 'DATABASE' | 'MOBILE' | 'DEVOPS' | 'AI_ML' | 'TESTING';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -386,6 +424,18 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      tech_level_enum: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'],
+      tech_type_enum: [
+        'FRONTEND',
+        'BACKEND',
+        'INFRA',
+        'DATABASE',
+        'MOBILE',
+        'DEVOPS',
+        'AI_ML',
+        'TESTING',
+      ],
+    },
   },
 } as const;

@@ -58,10 +58,12 @@ npx supabase db push
 
 1. `portfolio_content`: 메인 프로필 및 소개 정보 (단일 레코드)
 2. `experiences`: 경력 및 학력 목록
-3. `tech_stacks`: 기술 스택 마스터 정보
+3. `tech_stacks`: 기술 스택 마스터 정보 (ENUM 타입 기반 분류/숙련도)
 4. `projects`: 프로젝트 목록 및 상세 정보 (JSONB 하이브리드)
 5. `guestbook`: 방문자 방명록
 6. `contact`: 연락처 및 소셜 링크
+
+> 💡 **참고**: 모든 테이블은 데이터 무결성을 위해 `created_at` 및 `updated_at` 컬럼을 포함하며, 레코드 변경 시 `moddatetime` 트리거를 통해 `updated_at`이 자동 갱신됩니다.
 
 ### RLS (Row Level Security) 접근 제어 정책 매트릭스
 
