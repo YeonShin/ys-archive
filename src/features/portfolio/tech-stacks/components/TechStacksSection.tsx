@@ -46,7 +46,11 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
 
         {/* 카테고리 필터링 영역 */}
         <motion.div variants={itemVariants} className="mb-14 flex justify-center">
-          <div className="bg-brand-neutral-muted flex max-w-full flex-wrap justify-center gap-1 rounded-2xl p-1.5">
+          <div
+            className="bg-brand-neutral-muted flex max-w-full flex-wrap justify-center gap-1 rounded-2xl p-1.5"
+            role="group"
+            aria-label="기술 스택 카테고리 필터"
+          >
             {categories.map((category) => {
               const isActive = active?.value === category.value;
 
@@ -54,6 +58,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
                 <button
                   key={category.value}
                   onClick={() => setActive(isActive ? null : category)}
+                  aria-pressed={isActive}
                   className={cn(
                     'rounded-xl px-4 py-2 font-mono text-sm whitespace-nowrap transition-colors duration-200 md:px-5',
                     isActive
@@ -71,13 +76,16 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         {/* 기술스택 그리드 영역 */}
         <motion.div variants={itemVariants} className="w-full max-w-2xl">
           <TooltipProvider delayDuration={100}>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+            <ul
+              className="flex flex-wrap justify-center gap-4 sm:gap-6"
+              aria-label="기술 스택 목록"
+            >
               {data.techStack.map((tech) => {
                 const isFilteredOut = active !== null && active.value !== tech.type.value;
 
                 return <TechItem key={tech.id} tech={tech} isFilteredOut={isFilteredOut} />;
               })}
-            </div>
+            </ul>
           </TooltipProvider>
         </motion.div>
       </motion.div>
