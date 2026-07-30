@@ -7,10 +7,14 @@ export const TECH_TYPE = {
   DEVOPS: { value: 'DEVOPS', label: '데브옵스' },
   AI_ML: { value: 'AI_ML', label: 'AI/머신러닝' },
   TESTING: { value: 'TESTING', label: '테스트' },
+  ETC: { value: 'ETC', label: '기타' },
 } as const;
 
 export type TechType = (typeof TECH_TYPE)[keyof typeof TECH_TYPE];
 
+export function isTechType(type: unknown): type is keyof typeof TECH_TYPE {
+  return typeof type === 'string' && type in TECH_TYPE;
+}
 export const TECH_LEVEL: Record<string, string> = {
   EXPERT: '주력 스택',
   ADVANCED: '실무 적용',
@@ -23,9 +27,9 @@ export interface TechItem {
   id: string;
   name: string;
   icon: string;
-  color: string | null;
+  color?: string;
   type: TechType;
-  level: string | null;
+  level?: string;
 }
 
 export interface TechStacksSectionData {

@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 
-import { TECH_LEVEL, TECH_TYPE, TechItem, TechStacksSectionData } from '../types';
+import { TECH_LEVEL, TECH_TYPE, TechItem, TechStacksSectionData, isTechType } from '../types';
 
 export const fetchTechStacksData = async (): Promise<TechStacksSectionData | null> => {
   const supabase = await createClient();
@@ -21,18 +21,15 @@ export const fetchTechStacksData = async (): Promise<TechStacksSectionData | nul
     const techStack: TechItem[] = data.map((item) => {
       const mappedLevel = item.level
         ? TECH_LEVEL[String(item.level).toUpperCase()] || item.level
-        : null;
+        : undefined;
 
       return {
         id: item.id,
         name: item.name,
         icon: item.icon,
-        color: item.color,
-        type: TECH_TYPE[item.type as keyof typeof TECH_TYPE] || {
-          value: item.type,
-          label: item.type,
-        },
-        level: mappedLevel,
+        color: item.color ?? undefined,
+        type: isTechType(item.type) ? TECH_TYPE[item.type] : TECH_TYPE.ETC,
+        level: mappedLevel ?? undefined,
       };
     });
 
