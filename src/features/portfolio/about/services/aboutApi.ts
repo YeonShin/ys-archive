@@ -19,8 +19,8 @@ export const fetchAboutData = async (): Promise<AboutSectionData | null> => {
 
     return {
       aboutText: data.about_text ?? '',
-      profileImageUrl: data.profile_image_url ?? null,
-      resumeUrl: data.resume_url ?? null,
+      profileImageUrl: data.profile_image_url ?? undefined,
+      resumeUrl: data.resume_url ?? undefined,
     };
   } catch (error) {
     console.error('[aboutApi.fetchAboutData] Unexpected error during fetch:', error);
