@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { Project } from '../type';
 import ProjectCardImagePanel from './ProjectCardImagePanel';
 import ProjectCardInfoPanel from './ProjectCardInfoPanel';
+import ProjectDetail from './ProjectDetail';
 
 interface ProjectCardProps {
   project: Project;
@@ -49,7 +50,9 @@ const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
         side="right"
         showCloseButton={false}
         className="w-full overflow-y-auto border-none data-[side=right]:sm:max-w-2xl"
-      ></SheetContent>
+      >
+        <ProjectDetail project={project} />
+      </SheetContent>
     </Sheet>
   );
 };

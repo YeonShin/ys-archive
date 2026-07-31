@@ -1,0 +1,128 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  useCarousel,
+} from '@/components/ui/carousel';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
+
+// 하단 도트(Dots) 인디케이터 컴포넌트
+const CarouselDots = () => {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    let mounted = true;
+    requestAnimationFrame(() => {
+      if (mounted) {
+        setScrollSnaps(api.scrollSnapList());
+        setSelectedIndex(api.selectedScrollSnap());
+      }
+    });
+
+    api.on('select', () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [api]);
+
+  return (
+    <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 space-x-2">
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={index}
+          className={cn(
+            'h-2 w-2 rounded-full transition-all duration-300',
+            index === selectedIndex
+              ? 'bg-brand-primary w-4'
+              : 'bg-brand-secondary/70 hover:bg-brand-secondary',
+          )}
+          onClick={() => api?.scrollTo(index)}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
+};
+
+interface ImageCarouselProps {
+  images?: string[];
+}
+
+const ImageCarousel = ({ images }: ImageCarouselProps) => {
+  if (!images) {
+    return null;
+  }
+
+  return (
+    <>
+      {images.length > 0 && (
+        <Carousel className="group relative mb-8 w-full">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="border-brand-neutral-muted bg-brand-neutral-muted/30 relative aspect-video w-full overflow-hidden rounded-xl border">
+                      <Image
+                        fill
+                        unoptimized
+                        src={image}
+                        alt={`screenshot ${index + 1}`}
+                        className="cursor-pointer object-cover"
+                      />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent
+                    showCloseButton={false}
+                    className="max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:max-w-[90vw]"
+                  >
+                    <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                      <Image
+                        fill
+                        unoptimized
+                        src={image}
+                        alt={`screenshot ${index + 1}`}
+                        className="object-contain"
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* 좌우 네비게이션 버튼 */}
+          <CarouselPrevious
+            size="icon-sm"
+            className="bg-brand-neutral-dark text-brand-neutral-light hover:bg-brand-neutral-dark/80 hover:text-brand-neutral-light left-4 border-none"
+          />
+          <CarouselNext
+            size="icon-sm"
+            className="bg-brand-neutral-dark text-brand-neutral-light hover:bg-brand-neutral-dark/80 hover:text-brand-neutral-light right-4 border-none"
+          />
+
+          {/* 하단 도트 인디케이터 */}
+          <CarouselDots />
+        </Carousel>
+      )}
+    </>
+  );
+};
+
+export default ImageCarousel;
