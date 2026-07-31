@@ -24,7 +24,7 @@ export const fetchProjectsData = async (): Promise<ProjectsSectionData | null> =
       .order('started_at', { ascending: false });
 
     if (error || !data) {
-      console.error('[projectsApi.fetchProjectssData] Failed to fetch projects data:', error);
+      console.error('[projectsApi.fetchProjectsData] Failed to fetch projects data:', error);
       return null;
     }
 

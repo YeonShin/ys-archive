@@ -109,9 +109,9 @@ const ProjectCardInfoPanel = ({ project }: { project: Project }) => {
 
       {/* 기술스택 */}
       <div className="flex flex-1 flex-wrap justify-start gap-1.5 md:flex-initial">
-        {project.techStacks?.map((tech, idx) => (
+        {project.techStacks?.map((tech) => (
           <span
-            key={idx}
+            key={tech.name}
             className={cn(
               'bg-brand-neutral-dark text-brand-neutral-muted rounded-lg px-2 py-1.5 font-mono text-xs transition-all duration-300',
             )}
