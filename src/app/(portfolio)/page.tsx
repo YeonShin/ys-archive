@@ -6,6 +6,8 @@ import ExperiencesContainer from '@/features/portfolio/experiences/components/Ex
 import ExperiencesSkeleton from '@/features/portfolio/experiences/components/ExperiencesSkeleton';
 import HeroContainer from '@/features/portfolio/hero/components/HeroContainer';
 import HeroSkeleton from '@/features/portfolio/hero/components/HeroSkeleton';
+import ProjectsContainer from '@/features/portfolio/projects/components/ProjectsContainer';
+import ProjectsSkeleton from '@/features/portfolio/projects/components/ProjectsSkeleton';
 import TechStacksContainer from '@/features/portfolio/tech-stacks/components/TechStacksContainer';
 import TechStacksSkeleton from '@/features/portfolio/tech-stacks/components/TechStacksSkeleton';
 
@@ -28,12 +30,9 @@ const PortfolioPage = async () => {
         <TechStacksContainer />
       </Suspense>
 
-      <section
-        id="projects"
-        className="flex min-h-screen w-full flex-1 flex-col items-center justify-center"
-      >
-        HeroSection
-      </section>
+      <Suspense fallback={<ProjectsSkeleton />}>
+        <ProjectsContainer />
+      </Suspense>
 
       <section
         id="contact"
