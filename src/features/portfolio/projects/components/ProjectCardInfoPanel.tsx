@@ -17,7 +17,7 @@ const ProjectCardInfoPanel = ({ project }: { project: Project }) => {
       )}
 
       {/* 프로젝트 명 + 서비스 유무 */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <h3 className="text-brand-primary text-4xl leading-none font-extrabold tracking-tight">
           {project.title}
         </h3>
