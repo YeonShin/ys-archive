@@ -19,3 +19,24 @@ export const formatDate = (
 
   return slicedDate.replaceAll('-', separator);
 };
+
+/**
+ * 두 날짜 문자열 사이의 기간을 주(week) 단위로 계산하는 유틸리티 함수.
+ * @param startDate - 시작 날짜
+ * @param endDate - 종료 날짜 (없을 경우 현재 기준)
+ * @returns 기간(주 단위) (예: 12)
+ */
+export const calculateDurationInWeeks = (startDate: string, endDate?: string | null): number => {
+  const start = new Date(startDate);
+  const end = endDate ? new Date(endDate) : new Date();
+
+  // 날짜 파싱 실패 시 0 반환
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    return 0;
+  }
+
+  const diffMs = end.getTime() - start.getTime();
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  return Math.round(diffDays / 7);
+};
