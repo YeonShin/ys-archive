@@ -32,19 +32,17 @@ const ProjectsSection = ({ data }: { data: ProjectsSectionData | null }) => {
     >
       <div className="flex w-full max-w-6xl flex-col gap-10">
         <SectionHeader title="Projects" korTitle="프로젝트" variants={itemVariants} />
-        {projects
-          .sort((a, b) => b.priority - a.priority)
-          .map((project, index) => {
-            const isEven = index % 2 === 0;
-            return (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                isEven={isEven}
-                variant={itemVariants}
-              />
-            );
-          })}
+        {projects.map((project, index) => {
+          const isEven = index % 2 === 0;
+          return (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              isEven={isEven}
+              variant={itemVariants}
+            />
+          );
+        })}
       </div>
     </motion.section>
   );
