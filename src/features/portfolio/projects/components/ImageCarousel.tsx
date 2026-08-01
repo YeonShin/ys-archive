@@ -72,7 +72,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
   return (
     <>
       {images.length > 0 && (
-        <Carousel className="group relative mb-8 w-full">
+        <Carousel className="group relative w-full">
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
@@ -84,21 +84,23 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                         unoptimized
                         src={image}
                         alt={`screenshot ${index + 1}`}
-                        className="cursor-pointer object-cover"
+                        className="cursor-zoom-in object-cover"
                       />
                     </div>
                   </DialogTrigger>
                   <DialogContent
                     showCloseButton={false}
-                    className="max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:max-w-[90vw]"
+                    className="max-w-4xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
                   >
-                    <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                    <div className="relative overflow-hidden rounded-xl">
                       <Image
-                        fill
+                        width={0}
+                        height={0}
+                        sizes="100vw"
                         unoptimized
                         src={image}
                         alt={`screenshot ${index + 1}`}
-                        className="object-contain"
+                        className="w-full object-contain"
                       />
                     </div>
                   </DialogContent>

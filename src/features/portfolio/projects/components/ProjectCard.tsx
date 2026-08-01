@@ -49,7 +49,7 @@ const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="w-full overflow-y-auto border-none data-[side=right]:sm:max-w-2xl"
+        className="inset-0! h-full! w-full! overflow-y-auto border-none sm:inset-y-0! sm:right-0! sm:left-auto! data-[side=right]:sm:max-w-4xl"
       >
         <ProjectDetail project={project} />
       </SheetContent>
