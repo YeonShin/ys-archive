@@ -13,7 +13,10 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <div className="group bg-brand-neutral-dark/5 relative aspect-4/3 w-full cursor-zoom-in overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105">
+          <button
+            type="button"
+            className="group bg-brand-neutral-dark/5 focus-visible:ring-brand-primary relative aspect-4/3 w-full cursor-zoom-in overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none"
+          >
             <Image
               src={architecture.url}
               fill
@@ -22,11 +25,11 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
               className="absolute"
             />
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 text-left transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
               <p className="text-xs font-bold text-white">{architecture.name}</p>
               <p className="text-xs text-white/60">클릭하여 크게 보기</p>
             </div>
-          </div>
+          </button>
         </DialogTrigger>
         <DialogContent
           showCloseButton={false}

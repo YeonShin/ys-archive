@@ -20,7 +20,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
   return (
     <Sheet>
-      <motion.div
+      <motion.article
         className="flex flex-col overflow-hidden rounded-2xl shadow-xl"
         initial="hidden"
         whileInView="visible"
@@ -44,7 +44,7 @@ const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
             </button>
           </SheetTrigger>
         </div>
-      </motion.div>
+      </motion.article>
 
       <SheetContent
         side="right"

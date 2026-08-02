@@ -32,17 +32,16 @@ const ProjectsSection = ({ data }: { data: ProjectsSectionData | null }) => {
     >
       <div className="flex w-full max-w-6xl flex-col gap-10">
         <SectionHeader title="Projects" korTitle="프로젝트" variants={itemVariants} />
-        {projects.map((project, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              isEven={isEven}
-              variant={itemVariants}
-            />
-          );
-        })}
+        <ul className="flex flex-col gap-10">
+          {projects.map((project, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <li key={project.id}>
+                <ProjectCard project={project} isEven={isEven} variant={itemVariants} />
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </motion.section>
   );
