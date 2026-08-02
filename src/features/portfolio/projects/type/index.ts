@@ -41,7 +41,7 @@ export interface ProjectTroubleshooting {
   cause: string;
   process: string;
   result: string;
-  images: ProjectTroubleshootingImage[] | null;
+  images?: ProjectTroubleshootingImage[];
 }
 
 export interface Project {
