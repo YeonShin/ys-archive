@@ -60,8 +60,13 @@ const CarouselDots = () => {
   );
 };
 
+export interface CarouselImage {
+  url: string;
+  caption?: string;
+}
+
 interface ImageCarouselProps {
-  images?: string[];
+  images?: CarouselImage[];
 }
 
 const ImageCarousel = ({ images }: ImageCarouselProps) => {
@@ -74,39 +79,52 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
       {images.length > 0 && (
         <Carousel className="group relative w-full">
           <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <div className="border-brand-neutral-muted bg-brand-neutral-muted/30 relative aspect-video w-full overflow-hidden rounded-xl border">
-                      <Image
-                        fill
-                        unoptimized
-                        src={image}
-                        alt={`screenshot ${index + 1}`}
-                        className="cursor-zoom-in object-cover"
-                      />
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent
-                    showCloseButton={false}
-                    className="max-w-4xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
-                  >
-                    <div className="relative overflow-hidden rounded-xl">
-                      <Image
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        unoptimized
-                        src={image}
-                        alt={`screenshot ${index + 1}`}
-                        className="w-full object-contain"
-                      />
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </CarouselItem>
-            ))}
+            {images.map((image, index) => {
+              return (
+                <CarouselItem key={index}>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="group border-brand-neutral-muted bg-brand-neutral-muted/30 relative aspect-video w-full overflow-hidden rounded-xl border">
+                        <Image
+                          fill
+                          unoptimized
+                          src={image.url}
+                          alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                          className="cursor-zoom-in object-cover"
+                        />
+                        {image.caption && (
+                          <div className="text-brand-neutral-light absolute bottom-4 left-4 rounded-xl bg-black/70 px-3 py-1 text-sm font-medium">
+                            <p className="font-bold text-white">{image.caption}</p>
+                          </div>
+                        )}
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent
+                      showCloseButton={false}
+                      className="max-w-4xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
+                    >
+                      <div className="relative overflow-hidden rounded-xl">
+                        <Image
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          unoptimized
+                          src={image.url}
+                          alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                          className="w-full object-contain"
+                        />
+
+                        {image.caption && (
+                          <div className="text-brand-neutral-light absolute bottom-4 left-4 rounded-xl bg-black/70 px-3 py-1 text-sm font-medium">
+                            <p className="font-bold text-white">{image.caption}</p>
+                          </div>
+                        )}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
 
           {/* 좌우 네비게이션 버튼 */}
