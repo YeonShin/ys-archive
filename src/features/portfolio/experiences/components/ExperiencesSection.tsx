@@ -5,13 +5,12 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 
 import SectionHeader from '@/features/portfolio/components/SectionHeader';
-import { getContainerVariants, getItemVariants } from '@/lib/animations';
+import { getContainerVariants } from '@/lib/animations';
 
 import { ExperiencesSectionData } from '../types';
 import ExperienceCard from './ExperienceCard';
 
 const containerVariants = getContainerVariants();
-const itemVariants = getItemVariants();
 
 const ExperiencesSection = ({ data }: { data: ExperiencesSectionData | null }) => {
   const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
@@ -32,7 +31,7 @@ const ExperiencesSection = ({ data }: { data: ExperiencesSectionData | null }) =
         viewport={{ once: true, amount: 0.2 }}
         className="flex w-full max-w-4xl flex-col gap-10"
       >
-        <SectionHeader title="Journey" korTitle="경력 / 학력" variants={itemVariants} />
+        <SectionHeader title="Journey" korTitle="경력 / 학력" />
 
         <ul className="flex flex-col gap-6">
           {data?.experiences.map((experience, index) => {
