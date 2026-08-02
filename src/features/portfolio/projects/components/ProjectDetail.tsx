@@ -32,10 +32,10 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
           <Button
             variant="ghost"
             size="icon-sm"
-            className="text-brand-neutral-dark hover:bg-brand-primary/30 rounded-full"
+            className="text-brand-neutral-dark hover:bg-brand-primary/30 focus-visible:ring-brand-primary rounded-full focus-visible:ring-2"
+            aria-label="닫기"
           >
-            <XIcon />
-            <span className="sr-only">Close</span>
+            <XIcon aria-hidden="true" />
           </Button>
         </SheetClose>
       </SheetHeader>
@@ -44,7 +44,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
         {/* 이미지 캐러솔 영역 */}
         <ImageCarousel images={project.images?.map((url) => ({ url }))} />
         {/* 프로젝트 설명 영역 */}
-        <div className="bg-brand-neutral-muted flex w-full flex-col justify-center gap-4 rounded-2xl px-5 py-8">
+        <section className="bg-brand-neutral-muted flex w-full flex-col justify-center gap-4 rounded-2xl px-5 py-8">
           <ProjectTitleHeader title={project.title} status={project.status} />
 
           {project.subtitle && <ProjectSubtitle subtitle={project.subtitle} />}
@@ -56,58 +56,76 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
           />
 
           <ProjectExternalLinks links={project.links} />
-        </div>
+        </section>
 
         {/* 프로젝트 소개 영역 */}
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <DetailSectionHeader title="프로젝트 소개" />
-          <div className="leading-8">{project.description}</div>
-        </div>
+          <Markdown content={project.description} className="leading-relaxed" />
+        </section>
         {/* 기술 스택 영역 */}
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <DetailSectionHeader title="기술 스택" />
           <ProjectTechStacks techStacks={project.techStacks} isReasonVisible={true} />
-          <div className="text-brand-secondary/70 text-sm font-light">
+          <p
+            className="text-brand-secondary/70 hidden text-sm font-light italic sm:block"
+            aria-hidden="true"
+          >
             각 기술 위에 마우스를 올리면 선택 이유를 확인할 수 있습니다
-          </div>
-        </div>
+          </p>
+
+          <p
+            className="text-brand-secondary/70 text-sm font-light italic sm:hidden"
+            aria-hidden="true"
+          >
+            각 기술을 터치하면 선택 이유를 확인할 수 있습니다
+          </p>
+        </section>
 
         {/* 아키텍처 영역 */}
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <DetailSectionHeader title="아키텍처" />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-1 md:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {project.architecture?.map((architecture, index) => (
-              <ArchitectureItem architecture={architecture} key={index} />
+              <li key={index}>
+                <ArchitectureItem architecture={architecture} />
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
 
         {/* 주요 기능 영역 */}
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <DetailSectionHeader title="주요 기능 개발" />
-          <div className="space-y-6">
+          <ul className="space-y-6">
             {project.keyFeatures?.map((feature, index) => (
-              <FeatureItem feature={feature} index={index + 1} key={index} />
+              <li key={index}>
+                <FeatureItem feature={feature} index={index + 1} />
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
 
         {/* 트러블 슈팅 영역 */}
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <DetailSectionHeader title="트러블 슈팅" />
-          {project.troubleshooting?.map((item, index) => (
-            <TroubleshootingItem troubleshooting={item} key={index} />
-          ))}
-        </div>
+          <ul className="flex flex-col gap-4">
+            {project.troubleshooting?.map((item, index) => (
+              <li key={index}>
+                <TroubleshootingItem troubleshooting={item} />
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* 회고 영역 */}
         {project.retrospective && (
-          <div className="flex flex-col gap-4">
+          <section className="flex flex-col gap-4">
             <DetailSectionHeader title="프로젝트 회고" />
             <div className="bg-brand-neutral-muted w-full rounded-2xl p-4">
               <Markdown content={project.retrospective} />
             </div>
-          </div>
+          </section>
         )}
       </article>
     </div>

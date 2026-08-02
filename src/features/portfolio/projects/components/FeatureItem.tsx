@@ -18,7 +18,9 @@ const FeatureItem = ({ feature, index }: FeatureItemProps) => {
       <ul className="space-y-2 pl-2">
         {feature.desc.map((desc, index) => (
           <li className="flex gap-2 text-sm" key={index}>
-            <span className="text-brand-primary shrink-0 pt-0.5 text-xs">▸</span>
+            <span className="text-brand-primary shrink-0 pt-0.5 text-xs" aria-hidden="true">
+              ▸
+            </span>
             <Markdown content={desc} className="text-brand-neutral-dark" />
           </li>
         ))}
