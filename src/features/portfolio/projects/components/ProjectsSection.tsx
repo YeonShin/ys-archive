@@ -31,7 +31,7 @@ const ProjectsSection = ({ data }: { data: ProjectsSectionData | null }) => {
       viewport={{ once: true, amount: 0.2 }}
     >
       <div className="flex w-full max-w-6xl flex-col gap-10">
-        <SectionHeader title="Projects" korTitle="프로젝트" variants={itemVariants} />
+        <SectionHeader title="Projects" korTitle="프로젝트" />
         <ul className="flex flex-col gap-10">
           {projects.map((project, index) => {
             const isEven = index % 2 === 0;

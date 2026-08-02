@@ -1,16 +1,15 @@
 'use client';
 
-import { Variants, motion } from 'motion/react';
+import { motion } from 'motion/react';
 
 interface SectionHeaderProps {
   title: string;
   korTitle: string;
-  variants?: Variants;
 }
 
-const SectionHeader = ({ title, korTitle, variants }: SectionHeaderProps) => {
+const SectionHeader = ({ title, korTitle }: SectionHeaderProps) => {
   return (
-    <motion.header variants={variants}>
+    <motion.header>
       <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
         {title}
       </p>
