@@ -25,19 +25,29 @@ const CarouselDots = () => {
     if (!api) return;
 
     let mounted = true;
-    requestAnimationFrame(() => {
+
+    const onInit = () => {
       if (mounted) {
         setScrollSnaps(api.scrollSnapList());
         setSelectedIndex(api.selectedScrollSnap());
       }
-    });
+    };
 
-    api.on('select', () => {
-      setSelectedIndex(api.selectedScrollSnap());
-    });
+    const onSelect = () => {
+      if (mounted) {
+        setSelectedIndex(api.selectedScrollSnap());
+      }
+    };
+
+    onInit();
+
+    api.on('reInit', onInit);
+    api.on('select', onSelect);
 
     return () => {
       mounted = false;
+      api.off('reInit', onInit);
+      api.off('select', onSelect);
     };
   }, [api]);
 
