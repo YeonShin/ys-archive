@@ -106,7 +106,6 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                       >
                         <Image
                           fill
-                          unoptimized
                           src={image.url}
                           alt={image.caption ? image.caption : `screenshot ${index + 1}`}
                           className="object-cover"
@@ -130,7 +129,6 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                           width={0}
                           height={0}
                           sizes="100vw"
-                          unoptimized
                           src={image.url}
                           alt={image.caption ? image.caption : `screenshot ${index + 1}`}
                           className="w-full object-contain"

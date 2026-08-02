@@ -21,7 +21,6 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
               src={architecture.url}
               fill
               alt={`${architecture.name} 다이어그램 이미지`}
-              unoptimized
               className="absolute"
             />
 
@@ -40,7 +39,6 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
               width={0}
               height={0}
               sizes="100vw"
-              unoptimized
               src={architecture.url}
               alt={`architecture ${architecture.name}`}
               className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
