@@ -5,11 +5,12 @@ import { motion } from 'motion/react';
 interface SectionHeaderProps {
   title: string;
   korTitle: string;
+  className?: string;
 }
 
-const SectionHeader = ({ title, korTitle }: SectionHeaderProps) => {
+const SectionHeader = ({ title, korTitle, className }: SectionHeaderProps) => {
   return (
-    <motion.header>
+    <motion.header className={className}>
       <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
         {title}
       </p>

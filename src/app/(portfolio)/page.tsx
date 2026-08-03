@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 
 import AboutContainer from '@/features/portfolio/about/components/AboutContainer';
 import AboutSkeleton from '@/features/portfolio/about/components/AboutSkeleton';
+import ContactContainer from '@/features/portfolio/contact/component/ContactContainer';
+import ContactSkeleton from '@/features/portfolio/contact/component/ContactSkeleton';
 import ExperiencesContainer from '@/features/portfolio/experiences/components/ExperiencesContainer';
 import ExperiencesSkeleton from '@/features/portfolio/experiences/components/ExperiencesSkeleton';
 import HeroContainer from '@/features/portfolio/hero/components/HeroContainer';
@@ -34,12 +36,9 @@ const PortfolioPage = async () => {
         <ProjectsContainer />
       </Suspense>
 
-      <section
-        id="contact"
-        className="flex min-h-screen w-full flex-1 flex-col items-center justify-center"
-      >
-        HeroSection
-      </section>
+      <Suspense fallback={<ContactSkeleton />}>
+        <ContactContainer />
+      </Suspense>
     </main>
   );
 };

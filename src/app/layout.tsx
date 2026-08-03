@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from 'next/font/google';
 
 import Footer from '@/components/common/Footer';
 import ThemeToggle from '@/components/common/ThemeToggle';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/theme-provider';
 
@@ -69,6 +70,7 @@ const RootLayout = ({
           </div>
           <Footer />
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
