@@ -27,6 +27,35 @@ const ContactSkeleton = () => {
       </div>
 
       <div className="via-brand-primary/30 mb-14 h-px w-full max-w-4xl bg-linear-to-r from-transparent to-transparent" />
+
+      <section className="bg-brand-neutral-muted mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-2xl p-7">
+        <header className="flex items-center justify-between">
+          <div className="bg-brand-neutral-dark/20 h-5 w-16 animate-pulse rounded-md" />
+          <div className="bg-brand-neutral-dark/10 h-4 w-12 animate-pulse rounded-md" />
+        </header>
+
+        {/* Form skeleton */}
+        <div className="bg-brand-neutral-light space-y-3 rounded-2xl p-5">
+          <div className="flex flex-col gap-2.5 sm:flex-row">
+            <div className="bg-brand-neutral-muted h-10 flex-1 animate-pulse rounded-xl" />
+            <div className="bg-brand-neutral-muted h-10 flex-1 animate-pulse rounded-xl" />
+          </div>
+          <div className="bg-brand-neutral-muted h-24 w-full animate-pulse rounded-xl" />
+        </div>
+
+        {/* Message list skeleton */}
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-brand-neutral-light rounded-xl p-4">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="bg-brand-neutral-muted h-4 w-20 animate-pulse rounded-md" />
+                <div className="bg-brand-neutral-muted h-3 w-16 animate-pulse rounded-md" />
+              </div>
+              <div className="bg-brand-neutral-muted h-4 w-3/4 animate-pulse rounded-md" />
+            </div>
+          ))}
+        </div>
+      </section>
     </section>
   );
 };

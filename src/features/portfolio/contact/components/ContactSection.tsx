@@ -3,6 +3,8 @@
 import { motion } from 'motion/react';
 
 import SectionHeader from '@/features/portfolio/components/SectionHeader';
+import Guestbook from '@/features/portfolio/guestbook/components/Guestbook';
+import { GuestbookMessage } from '@/features/portfolio/guestbook/type';
 import { getContainerVariants, getItemVariants } from '@/lib/animations';
 
 import { Contact } from '../type';
@@ -10,12 +12,13 @@ import ContactItem from './ContactItem';
 
 interface ContactSectionProps {
   contact: Contact[];
+  guestbook: GuestbookMessage[];
 }
 
 const containerVariants = getContainerVariants();
 const itemVariants = getItemVariants();
 
-const ContactSection = ({ contact }: ContactSectionProps) => {
+const ContactSection = ({ contact, guestbook }: ContactSectionProps) => {
   return (
     <motion.section
       id="contact"
@@ -54,6 +57,8 @@ const ContactSection = ({ contact }: ContactSectionProps) => {
         aria-hidden="true"
         className="via-brand-primary/30 mb-14 h-px w-full max-w-4xl bg-linear-to-r from-transparent to-transparent"
       />
+
+      <Guestbook guestbook={guestbook} />
     </motion.section>
   );
 };
