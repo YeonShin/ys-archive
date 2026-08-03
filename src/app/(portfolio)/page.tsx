@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 
 import AboutContainer from '@/features/portfolio/about/components/AboutContainer';
 import AboutSkeleton from '@/features/portfolio/about/components/AboutSkeleton';
-import ContactContainer from '@/features/portfolio/contact/component/ContactContainer';
-import ContactSkeleton from '@/features/portfolio/contact/component/ContactSkeleton';
+import ContactContainer from '@/features/portfolio/contact/components/ContactContainer';
+import ContactSkeleton from '@/features/portfolio/contact/components/ContactSkeleton';
 import ExperiencesContainer from '@/features/portfolio/experiences/components/ExperiencesContainer';
 import ExperiencesSkeleton from '@/features/portfolio/experiences/components/ExperiencesSkeleton';
 import HeroContainer from '@/features/portfolio/hero/components/HeroContainer';

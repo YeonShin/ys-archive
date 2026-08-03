@@ -26,7 +26,7 @@ const ContactSection = ({ contact }: ContactSectionProps) => {
       className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center gap-8 px-6 py-24 md:py-32"
     >
       <div className="flex w-full max-w-4xl flex-col items-center gap-4">
-        <SectionHeader title="Contact" korTitle="Contact" className="text-center" />
+        <SectionHeader title="Contact" korTitle="연락망" className="text-center" />
 
         <motion.div variants={itemVariants} className="flex flex-col gap-4">
           <h2 className="text-brand-primary text-lg font-bold">
@@ -39,7 +39,7 @@ const ContactSection = ({ contact }: ContactSectionProps) => {
 
         <motion.ul
           variants={itemVariants}
-          className="max-w-ws mx-auto grid grid-cols-2 justify-center gap-4 sm:flex sm:max-w-none sm:flex-wrap"
+          className="mx-auto grid max-w-3xl grid-cols-2 justify-center gap-4 sm:flex sm:max-w-none sm:flex-wrap"
         >
           {contact.map((item) => (
             <li key={item.id}>
