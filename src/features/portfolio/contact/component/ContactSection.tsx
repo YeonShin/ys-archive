@@ -51,6 +51,7 @@ const ContactSection = ({ contact }: ContactSectionProps) => {
 
       <motion.div
         variants={itemVariants}
+        aria-hidden="true"
         className="via-brand-primary/30 mb-14 h-px w-full max-w-4xl bg-linear-to-r from-transparent to-transparent"
       />
     </motion.section>
