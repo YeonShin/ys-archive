@@ -3,6 +3,9 @@ import { afterAll, afterEach, beforeAll } from 'vitest';
 
 import { server } from './src/mocks/server';
 
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://localhost:54321';
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key';
+
 // 1. 모든 테스트 시작 전 MSW 서버 실행
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 
