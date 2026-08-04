@@ -87,7 +87,7 @@ const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBook
         <span className="text-brand-secondary font-mono text-xs">총 {optimisticTotalCount}개</span>
       </header>
 
-      <GuestbookForm onOptimisticUpdate={handleOptimisticUpdate} />
+      <GuestbookForm onOptimisticUpdate={handleOptimisticUpdate} currentPage={currentPage} />
 
       <GuestbookMessageList
         guestbook={optimisticGuestbook.slice(0, 5)}
