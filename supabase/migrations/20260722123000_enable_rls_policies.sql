@@ -11,6 +11,9 @@ GRANT INSERT ON public.guestbook TO anon;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 
+-- service_role: guestbook 테이블에 대한 SELECT, UPDATE, DELETE 권한 부여 (비밀번호 확인, 수정, 삭제용)
+GRANT SELECT, UPDATE, DELETE ON public.guestbook TO service_role;
+
 -- ========================================================
 -- 1. 전체 6개 테이블 Row Level Security (RLS) 활성화
 -- ========================================================
