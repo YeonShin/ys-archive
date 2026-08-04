@@ -7,6 +7,13 @@ export interface GuestbookMessage {
   updatedAt: string;
 }
 
+export interface GuestbookResponse {
+  data: GuestbookMessage[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 export interface CreateGuestbookDto {
   nickname: string;
   password: string;

@@ -3,13 +3,20 @@ import { fetchGuestbookData } from '@/features/portfolio/guestbook/services/gues
 import { fetchContactData } from '../services/contactApi';
 import ContactSection from './ContactSection';
 
-const ContactContainer = async () => {
+interface ContactContainerProps {
+  page: number;
+}
+
+const ContactContainer = async ({ page }: ContactContainerProps) => {
   const contactData = await fetchContactData();
-  const guestbookData = await fetchGuestbookData();
+  const guestbookResponse = await fetchGuestbookData(page, 5);
   return (
     <ContactSection
       contact={contactData ? contactData.contact : []}
-      guestbook={guestbookData ? guestbookData : []}
+      guestbook={guestbookResponse?.data || []}
+      totalCount={guestbookResponse?.totalCount || 0}
+      totalPages={guestbookResponse?.totalPages || 1}
+      currentPage={guestbookResponse?.currentPage || page}
     />
   );
 };

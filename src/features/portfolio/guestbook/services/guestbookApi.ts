@@ -11,22 +11,22 @@ import {
   CreateGuestbookDto,
   DeleteGuestbookDto,
   EditGuestbookDto,
-  GuestbookMessage,
+  GuestbookResponse,
 } from '../type';
 
 export const fetchGuestbookData = async (
   page = 1,
-  limit = 10,
-): Promise<GuestbookMessage[] | null> => {
+  limit = 5,
+): Promise<GuestbookResponse | null> => {
   const supabase = await createClient();
 
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
   try {
-    const { data, error } = await supabase
+    const { data, count, error } = await supabase
       .from('guestbook_public_view')
-      .select('id, nickname, content, is_public, created_at, updated_at')
+      .select('id, nickname, content, is_public, created_at, updated_at', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(from, to);
 
@@ -35,14 +35,19 @@ export const fetchGuestbookData = async (
       return null;
     }
 
-    return data.map((item) => ({
-      id: item.id ?? '',
-      nickname: item.nickname ?? '',
-      content: item.content ?? '',
-      isPublic: item.is_public ?? false,
-      createdAt: item.created_at ?? '',
-      updatedAt: item.updated_at ?? '',
-    }));
+    return {
+      data: data.map((item) => ({
+        id: item.id ?? '',
+        nickname: item.nickname ?? '',
+        content: item.content ?? '',
+        isPublic: item.is_public ?? false,
+        createdAt: item.created_at ?? '',
+        updatedAt: item.updated_at ?? '',
+      })),
+      totalCount: count ?? 0,
+      totalPages: Math.ceil((count ?? 0) / limit),
+      currentPage: page,
+    };
   } catch (error) {
     console.error('[guestbookApi.fetchGuestbookData] Unexpected error during fetch:', error);
     return null;
