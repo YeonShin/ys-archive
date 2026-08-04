@@ -48,7 +48,8 @@ const GuestbookActionDialog = ({
             onChange={(e) => setActionPassword(e.target.value)}
             type="password"
             placeholder="비밀번호 입력"
-            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus:border-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-colors outline-none"
+            aria-label="비밀번호 입력"
+            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus-visible:ring-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:outline-none"
           />
         </div>
 

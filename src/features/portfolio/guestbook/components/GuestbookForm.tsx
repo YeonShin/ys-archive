@@ -31,6 +31,7 @@ const GuestbookForm = ({ onOptimisticUpdate }: GuestbookFormProps) => {
     }
 
     const payload = {
+      id: crypto.randomUUID(),
       nickname: nickname.trim(),
       password: password.trim(),
       content: content.trim(),
@@ -41,7 +42,7 @@ const GuestbookForm = ({ onOptimisticUpdate }: GuestbookFormProps) => {
       onOptimisticUpdate({
         type: 'add',
         payload: {
-          id: `temp-${Date.now()}`,
+          id: payload.id,
           nickname: payload.nickname,
           content: payload.content,
           isPublic: payload.isPublic,
@@ -74,21 +75,23 @@ const GuestbookForm = ({ onOptimisticUpdate }: GuestbookFormProps) => {
             value={nickname}
             onChange={(data) => setNickname(data.target.value)}
             maxLength={20}
-            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus:border-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-colors outline-none"
+            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus-visible:ring-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:outline-none"
             type="text"
             placeholder="닉네임"
+            aria-label="닉네임"
           />
           <input
             value={password}
             onChange={(data) => setPassword(data.target.value)}
-            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus:border-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-colors outline-none"
+            className="bg-brand-neutral-muted text-brand-neutral-dark placeholder:text-brand-secondary/70 focus-visible:ring-brand-primary flex-1 rounded-xl border-2 border-transparent px-4 py-2.5 text-sm transition-all focus-visible:ring-2 focus-visible:outline-none"
             type="password"
             placeholder="비밀번호"
+            aria-label="비밀번호"
             maxLength={20}
           />
         </div>
 
-        <div className="bg-brand-neutral-muted focus-within:border-brand-primary relative w-full rounded-xl border-2 border-transparent transition-colors">
+        <div className="bg-brand-neutral-muted focus-within:ring-brand-primary relative w-full rounded-xl border-2 border-transparent transition-all focus-within:ring-2">
           <textarea
             value={content}
             className="text-brand-neutral-dark placeholder:text-brand-secondary/70 w-full resize-none bg-transparent px-4 py-3 pb-12 text-left text-sm outline-none"
@@ -96,14 +99,18 @@ const GuestbookForm = ({ onOptimisticUpdate }: GuestbookFormProps) => {
             onChange={(data) => setContent(data.target.value)}
             maxLength={200}
             placeholder="방명록을 남겨주세요 😊"
+            aria-label="방명록 내용"
           />
           {/* Left Controls (비공개 토글 등) */}
           <div className="absolute bottom-3 left-4 flex items-center gap-1.5">
             <button
               type="button"
+              role="switch"
+              aria-checked={isPublic}
+              aria-label={isPublic ? '공개 모드' : '비공개 모드'}
               onClick={() => setIsPublic(!isPublic)}
               className={cn(
-                'flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[11px] transition-colors duration-200',
+                'focus-visible:ring-brand-primary flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[11px] transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
                 !isPublic
                   ? 'bg-brand-neutral-dark border-brand-neutral-dark text-brand-neutral-light'
                   : 'border-brand-secondary/40 text-brand-secondary bg-transparent',
