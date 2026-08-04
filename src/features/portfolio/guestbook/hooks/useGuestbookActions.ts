@@ -24,6 +24,8 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editPassword, setEditPassword] = useState('');
 
+  const [unmaskedContent, setUnmaskedContent] = useState<string | null>(null);
+
   const [isPending, startTransition] = useTransition();
 
   const handleInlineEditSubmit = (content: string, isPublic: boolean) => {
@@ -77,6 +79,8 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
         if (result.success) {
           // 비밀번호 확인 성공 시 인라인 수정 모드로 전환
           setEditingId(message.id);
+
+          setUnmaskedContent(result.originalContent || message.content);
           setEditPassword(actionPassword.trim());
 
           setActionState({ type: null, message: null });
@@ -116,6 +120,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
     setActionPassword,
     editingId,
     setEditingId,
+    unmaskedContent,
     isPending,
     handleInlineEditSubmit,
     handleActionSubmit,

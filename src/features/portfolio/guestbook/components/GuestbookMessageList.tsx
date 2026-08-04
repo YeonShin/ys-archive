@@ -25,6 +25,7 @@ const GuestbookMessageList = ({
     setActionPassword,
     editingId,
     setEditingId,
+    unmaskedContent,
     isPending,
     handleInlineEditSubmit,
     handleActionSubmit,
@@ -38,6 +39,7 @@ const GuestbookMessageList = ({
             key={message.id}
             message={message}
             isEditing={editingId === message.id}
+            unmaskedContent={editingId === message.id ? unmaskedContent : null}
             isPending={isPending}
             onEditClick={() => setActionState({ type: 'edit', message })}
             onDeleteClick={() => setActionState({ type: 'delete', message })}

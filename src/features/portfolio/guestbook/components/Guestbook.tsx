@@ -25,10 +25,25 @@ const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBook
   >(guestbook, (state, action) => {
     switch (action.type) {
       case 'add':
-        return [action.payload, ...state];
+        return [
+          {
+            ...action.payload,
+            content: action.payload.isPublic ? action.payload.content : '비공개로 작성된 글입니다.',
+          },
+          ...state,
+        ];
       case 'edit':
         return state.map((msg) =>
-          msg.id === action.payload.id ? { ...msg, ...action.payload } : msg,
+          msg.id === action.payload.id
+            ? {
+                ...msg,
+                ...action.payload,
+                content:
+                  action.payload.isPublic === false
+                    ? '비공개로 작성된 글입니다.'
+                    : (action.payload.content ?? msg.content),
+              }
+            : msg,
         );
       case 'delete':
         return state.filter((msg) => msg.id !== action.payload);
