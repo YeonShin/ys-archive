@@ -65,7 +65,9 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) 
         setTimeout(() => setShowSuccess(false), 3000);
 
         if (currentPage !== 1) {
-          router.push('/?page=1#contact');
+          const params = new URLSearchParams();
+          params.set('page', '1');
+          router.push(`/?${params.toString()}`);
         }
       } else {
         toast.error(result.message);
