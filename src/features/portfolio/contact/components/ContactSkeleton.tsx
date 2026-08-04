@@ -3,7 +3,7 @@ import SectionHeader from '@/features/portfolio/components/SectionHeader';
 const ContactSkeleton = () => {
   return (
     <section
-      id="contact"
+      id="contact-skeleton"
       className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center gap-8 px-6 py-24 md:py-32"
     >
       <div className="flex w-full max-w-4xl flex-col items-center gap-4">
