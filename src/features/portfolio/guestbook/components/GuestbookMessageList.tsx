@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 
 import Link from 'next/link';
 
@@ -23,17 +23,20 @@ import {
   verifyPassword,
 } from '../services/guestbookApi';
 import { GuestbookMessage } from '../type';
+import { OptimisticAction } from './Guestbook';
 
 interface GuestbookMessageListProps {
   guestbook: GuestbookMessage[];
   totalPages: number;
   currentPage: number;
+  onOptimisticUpdate: (action: OptimisticAction) => void;
 }
 
 const GuestbookMessageList = ({
   guestbook,
   totalPages,
   currentPage,
+  onOptimisticUpdate,
 }: GuestbookMessageListProps) => {
   const [actionState, setActionState] = useState<{
     type: 'edit' | 'delete' | null;
@@ -46,67 +49,90 @@ const GuestbookMessageList = ({
   const [editContent, setEditContent] = useState('');
   const [isEditPublic, setEditIsPublic] = useState(true);
 
-  const handleInlineEditSubmit = async () => {
+  const [isPending, startTransition] = useTransition();
+
+  const handleInlineEditSubmit = () => {
     if (!editContent.trim()) {
       toast.warning('수정할 내용을 입력해주세요.');
       return;
     }
     if (!editingId) return;
 
-    const result = await editGuestbookMessage({
-      id: editingId,
-      content: editContent.trim(),
-      password: editPassword,
-      isPublic: isEditPublic,
-    });
+    startTransition(async () => {
+      onOptimisticUpdate({
+        type: 'edit',
+        payload: {
+          id: editingId,
+          content: editContent.trim(),
+          isPublic: isEditPublic,
+        },
+      });
 
-    if (result.success) {
-      toast.success('방명록이 수정되었습니다.');
-      setEditingId(null);
-    } else {
-      toast.error(result.message);
-    }
+      const result = await editGuestbookMessage({
+        id: editingId,
+        content: editContent.trim(),
+        password: editPassword,
+        isPublic: isEditPublic,
+      });
+
+      if (result.success) {
+        toast.success('방명록이 수정되었습니다.');
+        setEditingId(null);
+      } else {
+        toast.error(result.message);
+      }
+    });
   };
 
   const handleActionSubmit = async () => {
-    if (!actionState.message) return;
+    const message = actionState.message;
+    if (!message) return;
     if (!actionPassword.trim()) {
       toast.warning('비밀번호를 입력해주세요.');
       return;
     }
 
     if (actionState.type === 'edit') {
-      const result = await verifyPassword({
-        id: actionState.message.id,
-        password: actionPassword.trim(),
+      startTransition(async () => {
+        const result = await verifyPassword({
+          id: message.id,
+          password: actionPassword.trim(),
+        });
+
+        if (result.success) {
+          // 비밀번호 확인 성공 시 인라인 수정 모드로 전환
+          setEditingId(message.id);
+          setEditPassword(actionPassword.trim());
+          setEditContent(message.content);
+          setEditIsPublic(message.isPublic);
+
+          setActionState({ type: null, message: null });
+          setactionPassword('');
+        } else {
+          toast.error(result.message);
+        }
       });
-
-      if (result.success) {
-        // 비밀번호 확인 성공 시 인라인 수정 모드로 전환
-        setEditingId(actionState.message.id);
-        setEditPassword(actionPassword.trim());
-        setEditContent(actionState.message.content);
-        setEditIsPublic(actionState.message.isPublic);
-
-        setActionState({ type: null, message: null });
-        setactionPassword('');
-      } else {
-        toast.error(result.message);
-      }
     } else if (actionState.type === 'delete') {
-      const result = await deleteGuestbookMessage({
-        id: actionState.message.id,
-        password: actionPassword,
+      startTransition(async () => {
+        onOptimisticUpdate({
+          type: 'delete',
+          payload: message.id,
+        });
+
+        const result = await deleteGuestbookMessage({
+          id: message.id,
+          password: actionPassword,
+        });
+
+        if (result.success) {
+          toast.success('삭제에 성공하였습니다.');
+
+          setActionState({ type: null, message: null });
+          setactionPassword('');
+        } else {
+          toast.error(result.message);
+        }
       });
-
-      if (result.success) {
-        toast.success('삭제에 성공하였습니다.');
-
-        setActionState({ type: null, message: null });
-        setactionPassword('');
-      } else {
-        toast.error(result.message);
-      }
     }
   };
 
@@ -196,9 +222,10 @@ const GuestbookMessageList = ({
                       variant="default"
                       size="sm"
                       onClick={handleInlineEditSubmit}
-                      className="bg-brand-primary text-brand-neutral-light hover:bg-brand-primary/90 h-8 text-xs"
+                      disabled={isPending}
+                      className="bg-brand-primary text-brand-neutral-light hover:bg-brand-primary/90 h-8 text-xs disabled:opacity-50"
                     >
-                      저장
+                      {isPending ? '저장 중...' : '저장'}
                     </Button>
                   </div>
                 </div>
@@ -266,13 +293,21 @@ const GuestbookMessageList = ({
             <Button
               variant="default"
               onClick={handleActionSubmit}
-              className={
+              disabled={isPending}
+              className={cn(
                 actionState.type === 'delete'
                   ? 'bg-red-500 text-white hover:bg-red-600'
-                  : 'bg-brand-primary text-brand-neutral-light hover:bg-brand-primary/90'
-              }
+                  : 'bg-brand-primary text-brand-neutral-light hover:bg-brand-primary/90',
+                'disabled:opacity-50',
+              )}
             >
-              {actionState.type === 'edit' ? '수정' : '삭제'}
+              {isPending
+                ? actionState.type === 'edit'
+                  ? '확인 중...'
+                  : '삭제 중...'
+                : actionState.type === 'edit'
+                  ? '수정'
+                  : '삭제'}
             </Button>
           </DialogFooter>
         </DialogContent>

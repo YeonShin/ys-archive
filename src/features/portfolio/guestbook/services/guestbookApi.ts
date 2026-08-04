@@ -21,7 +21,7 @@ export const fetchGuestbookData = async (
   const supabase = await createClient();
 
   const from = (page - 1) * limit;
-  const to = from + limit - 1;
+  const to = from + limit;
 
   try {
     const { data, count, error } = await supabase

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 
 import { Lock, LockOpen } from 'lucide-react';
 import { toast } from 'sonner';
@@ -7,16 +7,22 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import { createGuestbookMessage } from '../services/guestbookApi';
+import { OptimisticAction } from './Guestbook';
 
-const GuestbookForm = () => {
+interface GuestbookFormProps {
+  onOptimisticUpdate: (action: OptimisticAction) => void;
+}
+
+const GuestbookForm = ({ onOptimisticUpdate }: GuestbookFormProps) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [content, setContent] = useState('');
   const [isPublic, setIsPublic] = useState(true);
 
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!nickname.trim() || !password.trim() || !content.trim()) {
@@ -31,17 +37,31 @@ const GuestbookForm = () => {
       isPublic: isPublic,
     };
 
-    const result = await createGuestbookMessage(payload);
+    startTransition(async () => {
+      onOptimisticUpdate({
+        type: 'add',
+        payload: {
+          id: `temp-${Date.now()}`,
+          nickname: payload.nickname,
+          content: payload.content,
+          isPublic: payload.isPublic,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
 
-    if (result.success) {
-      toast.success('방명록이 등록되었습니다.');
-      setContent('');
-      setIsPublic(true);
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
-    } else {
-      toast.error(result.message);
-    }
+      const result = await createGuestbookMessage(payload);
+
+      if (result.success) {
+        toast.success('방명록이 등록되었습니다.');
+        setContent('');
+        setIsPublic(true);
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
+      } else {
+        toast.error(result.message);
+      }
+    });
   };
   return (
     <form
@@ -106,9 +126,10 @@ const GuestbookForm = () => {
             <Button
               type="submit"
               variant="default"
-              className="bg-brand-primary text-brand-neutral-light h-auto rounded-lg px-4 py-1.5 text-xs font-semibold transition-transform duration-200 hover:scale-105"
+              disabled={isPending}
+              className="bg-brand-primary text-brand-neutral-light h-auto rounded-lg px-4 py-1.5 text-xs font-semibold transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
             >
-              등록
+              {isPending ? '등록 중...' : '등록'}
             </Button>
           </div>
         </div>
