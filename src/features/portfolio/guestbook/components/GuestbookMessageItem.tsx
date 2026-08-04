@@ -148,7 +148,15 @@ const GuestbookMessageItem = ({
                 message.isPublic === false && 'text-brand-secondary flex items-center gap-2 italic',
               )}
             >
-              {message.isPublic === false && <Lock size={14} />} {message.content}
+              {message.isPublic === false ? (
+                <>
+                  <Lock size={14} aria-hidden="true" />
+                  <span className="sr-only">비공개 메시지</span>
+                  <span>{message.content}</span>
+                </>
+              ) : (
+                <span>{message.content}</span>
+              )}
             </p>
           )}
         </article>
