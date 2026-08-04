@@ -11,6 +11,7 @@ import { GuestbookMessage } from '../type';
 interface GuestbookMessageItemProps {
   message: GuestbookMessage;
   isEditing: boolean;
+  unmaskedContent: string | null;
   isPending: boolean;
   onEditClick: () => void;
   onDeleteClick: () => void;
@@ -21,6 +22,7 @@ interface GuestbookMessageItemProps {
 const GuestbookMessageItem = ({
   message,
   isEditing,
+  unmaskedContent,
   isPending,
   onEditClick,
   onDeleteClick,
@@ -29,6 +31,15 @@ const GuestbookMessageItem = ({
 }: GuestbookMessageItemProps) => {
   const [content, setContent] = useState(message.content);
   const [isPublic, setIsPublic] = useState(message.isPublic);
+  const [prevIsEditing, setPrevIsEditing] = useState(false);
+
+  if (isEditing !== prevIsEditing) {
+    setPrevIsEditing(isEditing);
+    if (isEditing) {
+      setContent(unmaskedContent ?? message.content);
+      setIsPublic(message.isPublic);
+    }
+  }
 
   return (
     <li className="group bg-brand-neutral-light rounded-xl p-4">
@@ -40,11 +51,7 @@ const GuestbookMessageItem = ({
             {!isEditing && (
               <>
                 <button
-                  onClick={() => {
-                    setContent(message.content);
-                    setIsPublic(message.isPublic);
-                    onEditClick();
-                  }}
+                  onClick={onEditClick}
                   className="hover:bg-brand-neutral-muted text-brand-secondary flex cursor-default items-center justify-between gap-1 rounded-xl px-2 py-1 font-mono text-[10px] opacity-0 transition-all duration-100 group-hover:opacity-100 hover:scale-105"
                 >
                   <Pen size={10} /> 수정

@@ -162,7 +162,7 @@ export const verifyPassword = async ({ id, password }: DeleteGuestbookDto) => {
   try {
     const { data, error: fetchError } = await supabase
       .from('guestbook')
-      .select('password')
+      .select('password, content')
       .eq('id', id)
       .single();
 
@@ -174,7 +174,7 @@ export const verifyPassword = async ({ id, password }: DeleteGuestbookDto) => {
     const isValid = await bcrypt.compare(password, data.password);
     if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
 
-    return { success: true };
+    return { success: true, originalContent: data.content };
   } catch (error) {
     console.error('[guestbookApi.verifyGuestbookPassword] Unexpected error:', error);
     const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
