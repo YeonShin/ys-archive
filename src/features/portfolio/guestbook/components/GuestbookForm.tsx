@@ -104,7 +104,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) 
         <div className="bg-brand-neutral-muted focus-within:ring-brand-primary relative w-full rounded-xl border-2 border-transparent transition-all focus-within:ring-2">
           <textarea
             value={content}
-            className="text-brand-neutral-dark placeholder:text-brand-secondary/70 w-full resize-none bg-transparent px-4 py-3 pb-12 text-left text-sm outline-none"
+            className="text-brand-neutral-dark placeholder:text-brand-secondary/70 h-32 w-full resize-none bg-transparent px-4 py-3 pb-12 text-left text-sm outline-none"
             name="content"
             onChange={(data) => setContent(data.target.value)}
             maxLength={200}
