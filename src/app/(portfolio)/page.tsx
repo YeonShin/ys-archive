@@ -13,7 +13,14 @@ import ProjectsSkeleton from '@/features/portfolio/projects/components/ProjectsS
 import TechStacksContainer from '@/features/portfolio/tech-stacks/components/TechStacksContainer';
 import TechStacksSkeleton from '@/features/portfolio/tech-stacks/components/TechStacksSkeleton';
 
-const PortfolioPage = async () => {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const PortfolioPage = async ({ searchParams }: PageProps) => {
+  const resolvedParams = await searchParams;
+  const page = Number(resolvedParams?.page) || 1;
+
   return (
     <main className="bg-brand-neutral-light flex flex-1 flex-col items-center justify-center font-sans">
       <Suspense fallback={<HeroSkeleton />}>
@@ -37,7 +44,7 @@ const PortfolioPage = async () => {
       </Suspense>
 
       <Suspense fallback={<ContactSkeleton />}>
-        <ContactContainer />
+        <ContactContainer page={page} />
       </Suspense>
     </main>
   );

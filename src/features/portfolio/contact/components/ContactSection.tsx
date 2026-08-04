@@ -13,12 +13,21 @@ import ContactItem from './ContactItem';
 interface ContactSectionProps {
   contact: Contact[];
   guestbook: GuestbookMessage[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
 }
 
 const containerVariants = getContainerVariants();
 const itemVariants = getItemVariants();
 
-const ContactSection = ({ contact, guestbook }: ContactSectionProps) => {
+const ContactSection = ({
+  contact,
+  guestbook,
+  totalCount,
+  totalPages,
+  currentPage,
+}: ContactSectionProps) => {
   return (
     <motion.section
       id="contact"
@@ -58,7 +67,12 @@ const ContactSection = ({ contact, guestbook }: ContactSectionProps) => {
         className="via-brand-primary/30 mb-14 h-px w-full max-w-4xl bg-linear-to-r from-transparent to-transparent"
       />
 
-      <Guestbook guestbook={guestbook} />
+      <Guestbook
+        guestbook={guestbook}
+        totalCount={totalCount}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </motion.section>
   );
 };

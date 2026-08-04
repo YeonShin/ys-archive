@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+import Link from 'next/link';
 
 import { Lock, LockOpen, Pen, Trash } from 'lucide-react';
 import { toast } from 'sonner';
@@ -24,9 +26,15 @@ import { GuestbookMessage } from '../type';
 
 interface GuestbookMessageListProps {
   guestbook: GuestbookMessage[];
+  totalPages: number;
+  currentPage: number;
 }
 
-const GuestbookMessageList = ({ guestbook }: GuestbookMessageListProps) => {
+const GuestbookMessageList = ({
+  guestbook,
+  totalPages,
+  currentPage,
+}: GuestbookMessageListProps) => {
   const [actionState, setActionState] = useState<{
     type: 'edit' | 'delete' | null;
     message: GuestbookMessage | null;
@@ -201,6 +209,26 @@ const GuestbookMessageList = ({ guestbook }: GuestbookMessageListProps) => {
           </li>
         ))}
       </ul>
+
+      {totalPages > 1 && (
+        <div className="mt-8 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <Link
+              key={pageNum}
+              href={`?page=${pageNum}`}
+              scroll={false}
+              className={cn(
+                'flex h-8 w-8 items-center justify-center rounded-lg text-sm transition-colors',
+                currentPage === pageNum
+                  ? 'bg-brand-primary text-brand-neutral-light font-bold'
+                  : 'bg-brand-neutral-muted text-brand-secondary hover:bg-brand-neutral-dark/10',
+              )}
+            >
+              {pageNum}
+            </Link>
+          ))}
+        </div>
+      )}
 
       <Dialog
         open={actionState.type !== null}
