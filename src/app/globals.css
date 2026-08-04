@@ -95,6 +95,13 @@
   --color-brand-neutral-light: var(--brand-neutral-light);
   --color-brand-neutral-muted: var(--brand-neutral-muted);
 
+  /* 어드민 전용 컬러 테마 */
+  --color-admin-bg: #09090b;
+  --color-admin-card: #18181b;
+  --color-admin-border: #27272a;
+  --color-admin-text: #fafafa;
+  --color-admin-muted: #a1a1aa;
+
   /* 특수 흐림 효과 테마 직접 매핑 */
   --blur-3px: 3px;
   --blur-4px: 4px;
