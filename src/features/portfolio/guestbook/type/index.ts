@@ -15,6 +15,7 @@ export interface GuestbookResponse {
 }
 
 export interface CreateGuestbookDto {
+  id: string;
   nickname: string;
   password: string;
   content: string;

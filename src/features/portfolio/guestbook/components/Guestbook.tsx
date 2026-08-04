@@ -2,6 +2,10 @@
 
 import { useOptimistic } from 'react';
 
+import { motion } from 'motion/react';
+
+import { getItemVariants } from '@/lib/animations';
+
 import { GuestbookMessage } from '../type';
 import GuestbookForm from './GuestbookForm';
 import GuestbookMessageList from './GuestbookMessageList';
@@ -66,12 +70,18 @@ const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBook
     },
   );
 
+  const itemVariants = getItemVariants();
+
   const handleOptimisticUpdate = (action: OptimisticAction) => {
     addOptimisticGuestbook(action);
     addOptimisticTotalCount(action);
   };
   return (
-    <section className="bg-brand-neutral-muted mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-2xl p-7">
+    <motion.section
+      variants={itemVariants}
+      aria-label="방명록"
+      className="bg-brand-neutral-muted mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-2xl p-4 sm:p-7"
+    >
       <header className="flex items-center justify-between">
         <h3 className="text-brand-neutral-dark text-base font-bold">방명록</h3>
         <span className="text-brand-secondary font-mono text-xs">총 {optimisticTotalCount}개</span>
@@ -85,7 +95,7 @@ const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBook
         currentPage={currentPage}
         onOptimisticUpdate={handleOptimisticUpdate}
       />
-    </section>
+    </motion.section>
   );
 };
 

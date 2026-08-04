@@ -64,6 +64,7 @@ export const createGuestbookMessage = async (payload: CreateGuestbookDto) => {
     const supabase = await createClient();
 
     const { error } = await supabase.from('guestbook').insert({
+      id: payload.id,
       nickname: payload.nickname,
       password: hashedPassword,
       content: payload.content,

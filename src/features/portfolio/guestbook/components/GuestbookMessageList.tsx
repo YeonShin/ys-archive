@@ -1,3 +1,5 @@
+import { AnimatePresence } from 'motion/react';
+
 import { useGuestbookActions } from '../hooks/useGuestbookActions';
 import { GuestbookMessage } from '../type';
 import { OptimisticAction } from './Guestbook';
@@ -33,20 +35,22 @@ const GuestbookMessageList = ({
 
   return (
     <>
-      <ul className="flex w-full flex-col gap-3">
-        {guestbook.map((message) => (
-          <GuestbookMessageItem
-            key={message.id}
-            message={message}
-            isEditing={editingId === message.id}
-            unmaskedContent={editingId === message.id ? unmaskedContent : null}
-            isPending={isPending}
-            onEditClick={() => setActionState({ type: 'edit', message })}
-            onDeleteClick={() => setActionState({ type: 'delete', message })}
-            onEditCancel={() => setEditingId(null)}
-            onEditSubmit={handleInlineEditSubmit}
-          />
-        ))}
+      <ul className="flex w-full flex-col gap-3" aria-label="방명록 메시지 목록">
+        <AnimatePresence initial={false}>
+          {guestbook.map((message) => (
+            <GuestbookMessageItem
+              key={message.id}
+              message={message}
+              isEditing={editingId === message.id}
+              unmaskedContent={editingId === message.id ? unmaskedContent : null}
+              isPending={isPending}
+              onEditClick={() => setActionState({ type: 'edit', message })}
+              onDeleteClick={() => setActionState({ type: 'delete', message })}
+              onEditCancel={() => setEditingId(null)}
+              onEditSubmit={handleInlineEditSubmit}
+            />
+          ))}
+        </AnimatePresence>
       </ul>
 
       <GuestbookPagination totalPages={totalPages} currentPage={currentPage} />
