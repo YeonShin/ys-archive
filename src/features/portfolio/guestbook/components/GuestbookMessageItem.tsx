@@ -142,7 +142,14 @@ const GuestbookMessageItem = ({
               </div>
             </div>
           ) : (
-            <p className="text-brand-neutral-dark leading-relaxed">{message.content}</p>
+            <p
+              className={cn(
+                'text-brand-neutral-dark text-sm leading-relaxed',
+                message.isPublic === false && 'text-brand-secondary flex items-center gap-2 italic',
+              )}
+            >
+              {message.isPublic === false && <Lock size={14} />} {message.content}
+            </p>
           )}
         </article>
       </div>
