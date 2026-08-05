@@ -2,9 +2,10 @@
 
 import { createClient } from '@/lib/supabase/server';
 
-export async function loginAdminAction(formData: FormData) {
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
+import { LoginFormData } from '../type';
+
+export async function loginAdminAction(data: LoginFormData) {
+  const { email, password } = data;
 
   if (!email || !password) {
     return { success: false, error: '이메일과 비밀번호를 입력해주세요.' };
