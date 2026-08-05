@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { email } from 'zod';
 
 import { server } from '@/mocks/server';
 
@@ -35,9 +36,7 @@ describe('Auth Server Actions', () => {
         }),
       );
 
-      const formData = new FormData();
-      formData.append('email', 'admin@example.com');
-      formData.append('password', 'password123');
+      const formData = { email: 'admin@example.com', password: 'password123' };
 
       const result = await loginAdminAction(formData);
 
@@ -56,9 +55,7 @@ describe('Auth Server Actions', () => {
         }),
       );
 
-      const formData = new FormData();
-      formData.append('email', 'wrong@example.com');
-      formData.append('password', 'wrongpass');
+      const formData = { email: 'InvalidEmail@email.com', password: 'invalid123' };
 
       const result = await loginAdminAction(formData);
 

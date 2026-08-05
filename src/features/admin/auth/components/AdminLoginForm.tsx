@@ -8,20 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Lock, Mail } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 
 import { loginAdminAction } from '../actions/auth.action';
+import { LoginFormData, loginSchema } from '../type';
 
-const loginSchema = z.object({
-  email: z.string().email('유효한 이메일 주소를 입력해주세요'),
-  password: z.string().min(1, '비밀번호를 입력해주세요'),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
-
-export default function AdminLoginForm() {
+const AdminLoginForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -39,9 +32,7 @@ export default function AdminLoginForm() {
 
   const onSubmit = (data: LoginFormData) => {
     startTransition(async () => {
-      const formData = new FormData();
-      formData.append('email', data.email);
-      formData.append('password', data.password);
+      const formData = { email: data.email, password: data.password };
 
       const result = await loginAdminAction(formData);
 
@@ -114,4 +105,6 @@ export default function AdminLoginForm() {
       </form>
     </div>
   );
-}
+};
+
+export default AdminLoginForm;
