@@ -1,6 +1,10 @@
 import DashboardStats from '@/features/admin/dashboard/components/DashboardStats';
+import RecentGuestbook from '@/features/admin/dashboard/components/RecentGuestbook';
 import VisitorsChart from '@/features/admin/dashboard/components/VisitorsChart';
-import { getDashboardStats } from '@/features/admin/dashboard/services/dashboard.service';
+import {
+  getDashboardStats,
+  getRecentAdminGuestbooks,
+} from '@/features/admin/dashboard/services/dashboard.service';
 
 const AdminDashboardPage = async () => {
   // 1. 대시보드 상단 통계 데이터 패치
@@ -23,6 +27,10 @@ const AdminDashboardPage = async () => {
     { date: '08/07', count: 190 },
   ];
 
+  // 3. 최근 방명록 데이터 패치
+  const guestbookResult = await getRecentAdminGuestbooks(5);
+  const recentGuestbooks = guestbookResult?.data || [];
+
   return (
     <div className="flex flex-col gap-8">
       {/* 상단 통계 카드 */}
@@ -33,6 +41,7 @@ const AdminDashboardPage = async () => {
       {/* 차트 및 방명록 (2단 레이아웃) */}
       <section className="grid gap-8 lg:grid-cols-2">
         <VisitorsChart data={visitorsChartData} />
+        <RecentGuestbook guestbooks={recentGuestbooks} />
       </section>
     </div>
   );

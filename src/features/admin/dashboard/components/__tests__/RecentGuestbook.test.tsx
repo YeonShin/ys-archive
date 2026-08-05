@@ -30,6 +30,7 @@ describe('RecentGuestbook Component', () => {
 
     expect(screen.getByText('포트폴리오 멋지네요!')).toBeInTheDocument();
     expect(screen.getByText('홍길동')).toBeInTheDocument();
+    expect(screen.getAllByText('2026.08.05')).toHaveLength(2);
 
     expect(screen.getByText('잘 보고 갑니다.')).toBeInTheDocument();
     expect(screen.getByText('김철수')).toBeInTheDocument();
