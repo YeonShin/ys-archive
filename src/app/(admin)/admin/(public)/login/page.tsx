@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const AdminLoginPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="bg-admin-bg flex min-h-screen flex-col items-center justify-center">
       <AdminLoginForm />
       <div className="mt-8">
         <Link

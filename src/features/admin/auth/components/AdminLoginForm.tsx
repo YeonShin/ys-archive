@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -15,10 +15,13 @@ import { Label } from '@/components/ui/label';
 
 import { loginAdminAction } from '../actions/auth.action';
 import { LoginFormData, loginSchema } from '../type';
+import ForgotPasswordDialog from './ForgotPasswordDialog';
 
 const AdminLoginForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  const [isFindPasswordOpen, setIsFindPasswordOpen] = useState(false);
 
   const {
     register,
@@ -105,6 +108,20 @@ const AdminLoginForm = () => {
           로그인
         </Button>
       </form>
+      <div className="flex items-center justify-center">
+        <Button
+          variant="link"
+          onClick={() => setIsFindPasswordOpen(true)}
+          className="text-admin-muted hover:text-admin-text mt-6 cursor-pointer text-xs underline transition-colors duration-300"
+        >
+          비밀번호를 잊었습니까?
+        </Button>
+      </div>
+
+      <ForgotPasswordDialog
+        isOpen={isFindPasswordOpen}
+        onClose={() => setIsFindPasswordOpen(false)}
+      />
     </div>
   );
 };
