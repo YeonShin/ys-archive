@@ -10,6 +10,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import { loginAdminAction } from '../actions/auth.action';
 import { LoginFormData, loginSchema } from '../type';
@@ -59,12 +61,12 @@ const AdminLoginForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
         <div className="space-y-2">
-          <label htmlFor="email" className="text-admin-text/90 block px-1 text-sm font-medium">
+          <Label htmlFor="email" className="text-admin-text/90 block px-1 text-sm font-medium">
             이메일 주소
-          </label>
+          </Label>
           <div className="relative">
             <Mail className="text-admin-muted absolute top-1/2 left-4 size-5 -translate-y-1/2" />
-            <input
+            <Input
               id="email"
               type="email"
               placeholder="admin@example.com"
@@ -76,12 +78,12 @@ const AdminLoginForm = () => {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="text-admin-text/90 block px-1 text-sm font-medium">
+          <Label htmlFor="password" className="text-admin-text/90 block px-1 text-sm font-medium">
             비밀번호
-          </label>
+          </Label>
           <div className="relative">
             <Lock className="text-admin-muted absolute top-1/2 left-4 size-5 -translate-y-1/2" />
-            <input
+            <Input
               id="password"
               type="password"
               placeholder="••••••••"
