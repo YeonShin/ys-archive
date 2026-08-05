@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { server } from '@/mocks/server';
 
-import { getDashboardStats } from '../dashboard.service';
+import { getDashboardStats, getRecentAdminGuestbooks } from '../dashboard.service';
 
 vi.mock('next/headers', () => ({
   cookies: () => ({
@@ -66,6 +66,55 @@ describe('Dashboard Service', () => {
       );
 
       const result = await getDashboardStats();
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+    });
+  });
+
+  describe('getRecentAdminGuestbooks', () => {
+    it('지정된 수만큼 방명록 데이터를 성공적으로 반환해야 한다', async () => {
+      const mockData = [
+        {
+          id: 1,
+          nickname: 'User1',
+          content: 'Msg1',
+          is_public: true,
+          created_at: '2026-08-05',
+          updated_at: '2026-08-05',
+        },
+        {
+          id: 2,
+          nickname: 'User2',
+          content: 'Msg2',
+          is_public: false,
+          created_at: '2026-08-04',
+          updated_at: '2026-08-04',
+        },
+      ];
+
+      server.use(
+        http.get(/rest\/v1\/guestbook/, () => {
+          return HttpResponse.json(mockData);
+        }),
+      );
+
+      const result = await getRecentAdminGuestbooks(2);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toHaveLength(2);
+      expect(result.data?.[0]?.nickname).toBe('User1');
+      expect(result.data?.[1]?.isPublic).toBe(false);
+    });
+
+    it('데이터 조회 실패 시 에러 응답을 반환해야 한다', async () => {
+      server.use(
+        http.get(/rest\/v1\/guestbook/, () => {
+          return HttpResponse.json({ message: 'Database error' }, { status: 500 });
+        }),
+      );
+
+      const result = await getRecentAdminGuestbooks();
 
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();

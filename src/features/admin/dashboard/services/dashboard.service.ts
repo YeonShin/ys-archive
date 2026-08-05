@@ -61,3 +61,35 @@ export const getDashboardStats = async () => {
     };
   }
 };
+export const getRecentAdminGuestbooks = async (limit = 5) => {
+  try {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from('guestbook')
+      .select('id, nickname, content, is_public, created_at, updated_at')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      data: data.map((item) => ({
+        id: item.id,
+        nickname: item.nickname,
+        content: item.content,
+        isPublic: item.is_public,
+        createdAt: item.created_at,
+        updatedAt: item.updated_at,
+      })),
+    };
+  } catch (error) {
+    console.error('[Dashboard.getRecentAdminGuestbooks] Failed to fetch guestbooks:', error);
+    return {
+      success: false,
+      data: [],
+      error: error instanceof Error ? error.message : '방명록 데이터를 불러오지 못했습니다.',
+    };
+  }
+};
