@@ -82,6 +82,7 @@ FROM public.guestbook;
 
 -- 생성된 view에 조회 권한 부여
 GRANT SELECT ON public.guestbook_public_view TO anon;
+GRANT SELECT ON public.guestbook_public_view TO authenticated;
 
 -- guestbook: Anon 방명록 작성(Insert) 허용
 CREATE POLICY "Allow anon insert on guestbook"
