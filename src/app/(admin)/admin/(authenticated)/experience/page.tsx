@@ -2,6 +2,17 @@ import ExperienceManager from '@/features/admin/experiences/components/Experienc
 import { getExperiencesData } from '@/features/admin/experiences/services/experiences.service';
 import { ExperienceItem } from '@/features/portfolio/experiences/types';
 
+interface ExperienceResponseData {
+  id: string;
+  title: string;
+  organization: string;
+  description: string | null;
+  tech_stacks: string[] | null;
+  details: string[] | null;
+  started_at: string;
+  ended_at: string | null;
+}
+
 const AdminExperiencePage = async () => {
   const response = await getExperiencesData();
 
@@ -15,16 +26,7 @@ const AdminExperiencePage = async () => {
 
   // 서비스 로직에서 실패가 아니면 response.data는 항상 배열이 보장됩니다.
   const initialData: ExperienceItem[] = (response.data || []).map(
-    (item: {
-      id: string;
-      title: string;
-      organization: string;
-      description: string | null;
-      tech_stacks: string[] | null;
-      details: string[] | null;
-      started_at: string;
-      ended_at: string | null;
-    }) => ({
+    (item: ExperienceResponseData) => ({
       id: item.id,
       title: item.title,
       organization: item.organization,
