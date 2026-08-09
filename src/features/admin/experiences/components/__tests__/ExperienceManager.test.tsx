@@ -22,11 +22,11 @@ describe('Experience UI 통합 테스트 (List, Form, Dialog)', () => {
       id: '550e8400-e29b-41d4-a716-446655440000',
       title: '소프트웨어 학사 졸업',
       organization: '충북대학교',
-      started_at: '2020-03-01',
-      ended_at: '2024-02-28',
+      startedAt: '2020-03-01',
+      endedAt: '2024-02-28',
       description: '설명',
-      tech_stacks: [{ value: 'C' }, { value: 'Java' }],
-      details: [{ value: '알고리즘 동아리 회장' }],
+      techStacks: ['C', 'Java'],
+      details: ['알고리즘 동아리 회장'],
     },
   ];
 
@@ -118,6 +118,9 @@ describe('Experience UI 통합 테스트 (List, Form, Dialog)', () => {
 
       await user.type(screen.getByRole('textbox', { name: /제목/i }), '새로운 경력');
       await user.type(screen.getByRole('textbox', { name: /기관명/i }), '새로운 기관');
+      await user.type(screen.getByLabelText(/시작일/i), '2023-01-01');
+      await user.type(screen.getByRole('textbox', { name: /기술스택 0/i }), 'React');
+      await user.type(screen.getByRole('textbox', { name: /상세업무 0/i }), 'UI 개발');
 
       vi.mocked(createExperienceAction).mockResolvedValue({ success: true, message: '생성 완료' });
 
