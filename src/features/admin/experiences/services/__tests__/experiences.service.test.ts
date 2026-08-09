@@ -62,7 +62,7 @@ describe('Experiences Service', () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toEqual(validData);
+        expect(result.data).toEqual([validData]);
       }
       expect(mockExperiencesSelect).toHaveBeenCalledWith('*');
       expect(mockOrder).toHaveBeenCalled();

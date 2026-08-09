@@ -14,7 +14,7 @@ import {
   updateExperienceAction,
 } from '../experiences.action';
 
-vi.mock('../services/experiences.service', () => ({
+vi.mock('../../services/experiences.service', () => ({
   createExperience: vi.fn(),
   updateExperience: vi.fn(),
   deleteExperience: vi.fn(),
