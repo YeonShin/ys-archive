@@ -8,11 +8,11 @@ import {
 } from '../services/experiences.service';
 import { experiencesFormSchema } from '../types';
 
-export type ActionResponse = {
+export interface ActionResponse {
   success: boolean;
   message?: string;
   errors?: Record<string, string[]>;
-};
+}
 
 export async function createExperienceAction(
   prevState: unknown,
