@@ -2,7 +2,11 @@ import { revalidatePath } from 'next/cache';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { deleteFile, uploadFile } from '@/features/admin/about/services/storage.service';
+import {
+  deleteFile,
+  deleteFolder,
+  uploadFile,
+} from '@/features/admin/about/services/storage.service';
 
 import { createProject, deleteProject, updateProject } from '../../services/projects.service';
 import { ProjectFormData } from '../../types';
@@ -22,6 +26,7 @@ vi.mock('../../services/projects.service', () => ({
 vi.mock('@/features/admin/about/services/storage.service', () => ({
   uploadFile: vi.fn(),
   deleteFile: vi.fn(),
+  deleteFolder: vi.fn(),
 }));
 
 vi.mock('next/cache', () => ({
@@ -114,13 +119,14 @@ describe('Projects Actions', () => {
   describe('deleteProjectAction', () => {
     it('프로젝트 삭제 성공 시 success:true를 반환해야 한다', async () => {
       vi.mocked(deleteProject).mockResolvedValue({ success: true, message: '삭제 완료' });
+      vi.mocked(deleteFolder).mockResolvedValue({ success: true });
 
-      const result = await deleteProjectAction(null, '1', ['https://example.com/thumb.jpg']);
+      const result = await deleteProjectAction(null, '1');
 
       expect(result.success).toBe(true);
       expect(deleteProject).toHaveBeenCalledWith('1');
-      // Ensure associated images are deleted
-      expect(deleteFile).toHaveBeenCalledWith('https://example.com/thumb.jpg');
+      // Ensure associated images are deleted via folder deletion
+      expect(deleteFolder).toHaveBeenCalledWith('projects/1');
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects');
     });
   });
