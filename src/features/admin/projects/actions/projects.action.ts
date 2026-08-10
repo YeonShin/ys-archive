@@ -2,8 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { ActionResponse } from '@/types/response';
+
 import { deleteFile, deleteFolder, uploadFile } from '../../about/services/storage.service';
-import { ActionResponse } from '../../experiences/actions/experiences.action';
 import { createProject, deleteProject, updateProject } from '../services/projects.service';
 import { InsertProjectDto, ProjectFormData, UpdateProjectDto } from '../types';
 

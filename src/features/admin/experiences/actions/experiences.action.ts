@@ -1,18 +1,14 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 
+import { ActionResponse } from '@/types/response';
+
 import {
   createExperience,
   deleteExperience,
   updateExperience,
 } from '../services/experiences.service';
 import { experiencesFormSchema } from '../types';
-
-export interface ActionResponse {
-  success: boolean;
-  message?: string;
-  errors?: Record<string, string[]>;
-}
 
 export async function createExperienceAction(
   prevState: unknown,
