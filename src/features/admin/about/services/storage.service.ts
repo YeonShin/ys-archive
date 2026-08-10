@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 
-export const uploadFile = async (formData: FormData, folder: 'profile' | 'resumes') => {
+export const uploadFile = async (formData: FormData, folder: string) => {
   try {
     const file = formData.get('file') as File | null;
     if (!file) {
