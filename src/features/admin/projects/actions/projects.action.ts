@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { deleteFile, uploadFile } from '../../about/services/storage.service';
+import { deleteFile, deleteFolder, uploadFile } from '../../about/services/storage.service';
 import { ActionResponse } from '../../experiences/actions/experiences.action';
 import { createProject, deleteProject, updateProject } from '../services/projects.service';
 import { InsertProjectDto, ProjectFormData, UpdateProjectDto } from '../types';
@@ -35,10 +35,15 @@ export async function createProjectAction(
   prevState: unknown,
   formData: ProjectFormData,
   uploadedUrlsToRollback?: string[],
+  urlsToDeleteOnSuccess?: string[],
 ): Promise<ActionResponse> {
   try {
     const dto = mapFormDataToDto(formData);
     await createProject(dto as InsertProjectDto);
+
+    if (urlsToDeleteOnSuccess && urlsToDeleteOnSuccess.length > 0) {
+      await Promise.all(urlsToDeleteOnSuccess.map((url) => deleteFile(url)));
+    }
 
     revalidatePath('/admin/projects');
     return { success: true };
@@ -62,10 +67,15 @@ export async function updateProjectAction(
   id: string,
   formData: ProjectFormData,
   uploadedUrlsToRollback?: string[],
+  urlsToDeleteOnSuccess?: string[],
 ): Promise<ActionResponse> {
   try {
     const dto = mapFormDataToDto(formData);
     await updateProject(id, dto as UpdateProjectDto);
+
+    if (urlsToDeleteOnSuccess && urlsToDeleteOnSuccess.length > 0) {
+      await Promise.all(urlsToDeleteOnSuccess.map((url) => deleteFile(url)));
+    }
 
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/${id}`);
@@ -85,19 +95,13 @@ export async function updateProjectAction(
   }
 }
 
-export async function deleteProjectAction(
-  prevState: unknown,
-  id: string,
-  urlsToDelete?: string[],
-): Promise<ActionResponse> {
+export async function deleteProjectAction(prevState: unknown, id: string): Promise<ActionResponse> {
   try {
     // 1. DB에서 프로젝트 레코드 삭제
     await deleteProject(id);
 
-    // 2. 해당 프로젝트에 연결되어 있던 Storage 파일들 모두 삭제
-    if (urlsToDelete && urlsToDelete.length > 0) {
-      await Promise.all(urlsToDelete.map((url) => deleteFile(url)));
-    }
+    // 2. 해당 프로젝트에 연결되어 있던 Storage 폴더(하위 파일 포함) 전체 삭제
+    await deleteFolder(`projects/${id}`);
 
     revalidatePath('/admin/projects');
     return { success: true };
@@ -125,6 +129,21 @@ export async function uploadImageAction(
     return {
       success: false,
       message: error instanceof Error ? error.message : '이미지 업로드 중 오류가 발생했습니다.',
+    };
+  }
+}
+
+export async function deleteStorageFilesAction(urls: string[]): Promise<ActionResponse> {
+  try {
+    if (urls && urls.length > 0) {
+      await Promise.all(urls.map((url) => deleteFile(url)));
+    }
+    return { success: true };
+  } catch (error: unknown) {
+    console.error('[Projects.deleteStorageFilesAction] 에러 발생:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : '파일 삭제 중 오류가 발생했습니다.',
     };
   }
 }
