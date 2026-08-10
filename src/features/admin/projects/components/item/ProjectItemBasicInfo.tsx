@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
+import { cn } from '@/lib/utils';
+
 import { Project } from '../../types';
 
 const PROJECT_STATUS_CONFIG = {
@@ -43,7 +45,10 @@ export const ProjectItemBasicInfo = ({ project }: ProjectItemBasicInfoProps) => 
           <div className="flex gap-2">
             {project.status && PROJECT_STATUS_CONFIG[project.status] && (
               <div
-                className={`focus:ring-ring inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${PROJECT_STATUS_CONFIG[project.status].className}`}
+                className={cn(
+                  'focus:ring-ring inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none',
+                  PROJECT_STATUS_CONFIG[project.status].className,
+                )}
               >
                 {PROJECT_STATUS_CONFIG[project.status].label}
               </div>

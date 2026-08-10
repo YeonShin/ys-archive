@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { cn } from '@/lib/utils';
+
 import { ProjectListItem } from '../types';
 
 const PROJECT_STATUS_CONFIG = {
@@ -56,7 +58,10 @@ const ProjectsList = ({ projects }: ProjectsListProps) => {
               </h3>
               {project.status && PROJECT_STATUS_CONFIG[project.status] && (
                 <div
-                  className={`focus:ring-ring inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${PROJECT_STATUS_CONFIG[project.status].className}`}
+                  className={cn(
+                    'focus:ring-ring inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none',
+                    PROJECT_STATUS_CONFIG[project.status].className,
+                  )}
                 >
                   {PROJECT_STATUS_CONFIG[project.status].label}
                 </div>
