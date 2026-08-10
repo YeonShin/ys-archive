@@ -15,6 +15,7 @@ interface ImageUploadInputProps {
   onChange: (url: string) => void;
   folderPath?: string;
   className?: string;
+  alt?: string;
 }
 
 export const ImageUploadInput = ({
@@ -22,6 +23,7 @@ export const ImageUploadInput = ({
   onChange,
   folderPath = 'projects',
   className = '',
+  alt = '업로드된 이미지 미리보기',
 }: ImageUploadInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const context = useProjectFormContext();
@@ -59,7 +61,7 @@ export const ImageUploadInput = ({
             width={64}
             height={64}
             src={value}
-            alt="Uploaded"
+            alt={alt}
             className="h-16 w-16 rounded object-cover"
           />
           <span className="text-admin-muted flex-1 truncate text-sm text-wrap">
