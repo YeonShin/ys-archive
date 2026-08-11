@@ -1,5 +1,46 @@
 import { createClient } from '@/lib/supabase/server';
 
+export const fetchVercelVisitorStats = async (): Promise<{
+  totalVisitors: number;
+  todayVisitors: number;
+}> => {
+  const token = process.env.VERCEL_ACCESS_TOKEN;
+  const projectId = process.env.VERCEL_PROJECT_ID;
+
+  if (!token || !projectId) {
+    return { totalVisitors: 0, todayVisitors: 0 };
+  }
+
+  try {
+    const url = `https://api.vercel.com/v1/query/web-analytics/visits/aggregate?projectId=${projectId}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: { revalidate: 300 }, // 5분 캐시
+    });
+
+    if (!response.ok) {
+      console.warn(
+        `[fetchVercelVisitorStats] API Error: ${response.status} ${response.statusText}`,
+      );
+      return { totalVisitors: 0, todayVisitors: 0 };
+    }
+
+    const json = await response.json();
+    const visits = json?.data?.visits || 0;
+
+    return {
+      totalVisitors: visits,
+      todayVisitors: visits, // Vercel API에서 기간별 필터링이 가능하면 추후 분리
+    };
+  } catch (error) {
+    console.error(`[fetchVercelVisitorStats] Fetch failed:`, error);
+    return { totalVisitors: 0, todayVisitors: 0 };
+  }
+};
+
 export const getDashboardStats = async () => {
   try {
     const supabase = await createClient();
@@ -41,14 +82,16 @@ export const getDashboardStats = async () => {
 
     if (guestbookError) throw guestbookError;
 
+    // 3. Vercel 방문자 수 조회
+    const visitorStats = await fetchVercelVisitorStats();
+
     return {
       success: true,
       data: {
         recentUpdateDate,
         todayGuestbookCount: todayGuestbookCount || 0,
-        // TODO: 방문자 수 로직은 추후 Vercel Analytics 또는 별도의 로깅 테이블 연동 후 구현
-        totalVisitors: 0,
-        todayVisitors: 0,
+        totalVisitors: visitorStats.totalVisitors,
+        todayVisitors: visitorStats.todayVisitors,
       },
     };
   } catch (error) {
