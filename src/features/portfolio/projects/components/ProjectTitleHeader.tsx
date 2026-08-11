@@ -16,9 +16,9 @@ const ProjectTitleHeader = ({ title, status }: ProjectTitleHeaderProps) => {
       <span
         className={cn(
           'text-brand-neutral-light shrink-0 self-center rounded-full px-2.5 py-1 font-mono text-[11px]',
-          status === PROJECT_STATUS.LIVE
+          status.value === PROJECT_STATUS.LIVE.value
             ? 'bg-green-500'
-            : status === PROJECT_STATUS.IN_PROGRESS
+            : status.value === PROJECT_STATUS.IN_PROGRESS.value
               ? 'bg-amber-500'
               : 'bg-brand-secondary',
         )}
