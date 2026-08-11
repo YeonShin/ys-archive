@@ -1,0 +1,13 @@
+.next
+node_modules
+build
+dist
+public
+pnpm-lock.yaml
+pnpm-workspace.yaml
+.vscode
+.yarn
+.claude
+.github
+.gitignore
+docs
