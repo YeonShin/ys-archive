@@ -17,7 +17,7 @@ const DashboardStats = ({ stats }: { stats: DashboardStatsProps }) => {
     : '없음';
 
   const statItems = [
-    { title: '총 방문자', value: stats.totalVisitors, icon: Users },
+    { title: '최근 30일 방문자', value: stats.totalVisitors, icon: Users },
     { title: '오늘 방문자', value: stats.todayVisitors, icon: Users },
     { title: '오늘 방명록', value: stats.todayGuestbookCount, icon: BookOpen },
     { title: '최근 업데이트', value: formattedDate, icon: Calendar },

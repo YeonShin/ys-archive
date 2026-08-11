@@ -3,7 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { server } from '@/mocks/server';
 
-import { getDashboardStats, getRecentAdminGuestbooks } from '../dashboard.service';
+import {
+  fetchVercelVisitorStats,
+  getDashboardStats,
+  getRecentAdminGuestbooks,
+} from '../dashboard.service';
 
 vi.mock('next/headers', () => ({
   cookies: () => ({
@@ -69,6 +73,66 @@ describe('Dashboard Service', () => {
 
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
+    });
+  });
+
+  describe('fetchVercelVisitorStats', () => {
+    it('토큰이나 프로젝트 ID가 환경 변수에 없으면 0을 반환해야 한다', async () => {
+      // 환경변수가 없는 상태 시뮬레이션
+      const originalToken = process.env.VERCEL_ACCESS_TOKEN;
+      const originalProjectId = process.env.VERCEL_PROJECT_ID;
+      delete process.env.VERCEL_ACCESS_TOKEN;
+      delete process.env.VERCEL_PROJECT_ID;
+
+      const result = await fetchVercelVisitorStats();
+
+      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
+
+      // 환경변수 복구
+      process.env.VERCEL_ACCESS_TOKEN = originalToken;
+      process.env.VERCEL_PROJECT_ID = originalProjectId;
+    });
+
+    it('Vercel API 호출에 실패할 경우 크래시 없이 0을 반환해야 한다', async () => {
+      process.env.VERCEL_ACCESS_TOKEN = 'test-token';
+      process.env.VERCEL_PROJECT_ID = 'test-project';
+
+      server.use(
+        http.get('https://api.vercel.com/v1/query/web-analytics/visits/aggregate', () => {
+          return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }),
+      );
+
+      const result = await fetchVercelVisitorStats();
+      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
+
+      delete process.env.VERCEL_ACCESS_TOKEN;
+      delete process.env.VERCEL_PROJECT_ID;
+    });
+
+    it('Vercel API를 정상적으로 호출하여 통계를 반환해야 한다', async () => {
+      process.env.VERCEL_ACCESS_TOKEN = 'test-token';
+      process.env.VERCEL_PROJECT_ID = 'test-project';
+
+      // 성공 Mock
+      server.use(
+        http.get('https://api.vercel.com/v1/query/web-analytics/visits/aggregate', () => {
+          return HttpResponse.json({
+            data: {
+              visits: 1500,
+            },
+          });
+        }),
+      );
+
+      const result = await fetchVercelVisitorStats();
+      expect(result).toEqual({
+        totalVisitors: 1500, // mock response 맵핑
+        todayVisitors: 1500,
+      });
+
+      delete process.env.VERCEL_ACCESS_TOKEN;
+      delete process.env.VERCEL_PROJECT_ID;
     });
   });
 
