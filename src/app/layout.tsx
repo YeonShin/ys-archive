@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 
+import { Analytics } from '@vercel/analytics/react';
+
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/theme-provider';
@@ -68,6 +70,7 @@ const RootLayout = ({
       <body className="flex min-h-full flex-col">
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
