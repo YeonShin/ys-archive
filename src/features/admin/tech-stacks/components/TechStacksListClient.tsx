@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 
+import { deleteTechStackAction } from '../actions/techStacks.action';
 import { TechStack } from '../types';
 import TechStackForm from './TechStackForm';
 import TechStackItem from './TechStackItem';
@@ -26,11 +27,25 @@ const CATEGORIES = [
 ];
 
 const TechStacksListClient = ({ initialData }: TechStacksListClientProps) => {
-  const { isOpen, editingItem, openForm, closeForm } = useTechStackForm();
+  const formProps = useTechStackForm();
+  const { openForm } = formProps;
 
   const handleDelete = async (id: string) => {
-    // TODO: 삭제 확인 모달 연동 및 실제 삭제 로직 연동 (Green 단계)
-    toast.success('성공적으로 삭제되었습니다.');
+    if (!window.confirm('해당 기술 스택을 정말 삭제하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      const result = await deleteTechStackAction(null, id);
+      if (result.success) {
+        toast.success('성공적으로 삭제되었습니다.');
+      } else {
+        toast.error(result.message || '삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('오류가 발생했습니다.');
+    }
   };
 
   const groupedTechStacks = CATEGORIES.reduce(
@@ -73,7 +88,7 @@ const TechStacksListClient = ({ initialData }: TechStacksListClientProps) => {
         })}
       </div>
 
-      <TechStackForm isOpen={isOpen} techStack={editingItem} onClose={closeForm} />
+      <TechStackForm {...formProps} />
     </div>
   );
 };
