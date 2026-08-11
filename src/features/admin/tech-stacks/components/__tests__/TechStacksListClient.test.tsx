@@ -51,7 +51,7 @@ describe('TechStacksListClient Integration', () => {
 
   it('Add 버튼 클릭 시 추가 폼 모달이 열려야 한다', () => {
     render(<TechStacksListClient initialData={mockData} />);
-    const addButton = screen.getByRole('button', { name: /add/i });
+    const addButton = screen.getByRole('button', { name: /추가/i });
 
     fireEvent.click(addButton);
 
@@ -61,7 +61,7 @@ describe('TechStacksListClient Integration', () => {
 
   it('Edit 버튼 클릭 시 수정 폼 모달이 열려야 한다', () => {
     render(<TechStacksListClient initialData={mockData} />);
-    const editButton = screen.getByRole('button', { name: /edit/i });
+    const editButton = screen.getByRole('button', { name: /수정/i });
 
     fireEvent.click(editButton);
 
@@ -75,7 +75,7 @@ describe('TechStacksListClient Integration', () => {
     render(<TechStacksListClient initialData={mockData} />);
 
     // Add 폼 열기
-    fireEvent.click(screen.getByRole('button', { name: /add/i }));
+    fireEvent.click(screen.getByRole('button', { name: /추가/i }));
 
     // 폼 제출
     const submitButton = screen.getByRole('button', { name: /submit/i });
@@ -91,7 +91,7 @@ describe('TechStacksListClient Integration', () => {
     render(<TechStacksListClient initialData={mockData} />);
 
     // Edit 폼 열기
-    fireEvent.click(screen.getByRole('button', { name: /edit/i }));
+    fireEvent.click(screen.getByRole('button', { name: /수정/i }));
 
     // 폼 제출
     const submitButton = screen.getByRole('button', { name: /submit/i });
@@ -107,7 +107,7 @@ describe('TechStacksListClient Integration', () => {
     render(<TechStacksListClient initialData={mockData} />);
 
     // Delete 버튼 클릭
-    fireEvent.click(screen.getByRole('button', { name: /delete/i }));
+    fireEvent.click(screen.getByRole('button', { name: /삭제/i }));
 
     // 삭제 모달 연동 시 이 테스트는 삭제 모달 플로우를 테스트하도록 변경될 예정입니다.
     expect(toast).toHaveBeenCalledWith('성공적으로 삭제되었습니다.');
