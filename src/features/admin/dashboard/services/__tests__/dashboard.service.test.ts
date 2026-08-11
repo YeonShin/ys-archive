@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { server } from '@/mocks/server';
 
@@ -77,25 +77,23 @@ describe('Dashboard Service', () => {
   });
 
   describe('fetchVercelVisitorStats', () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
     it('토큰이나 프로젝트 ID가 환경 변수에 없으면 0을 반환해야 한다', async () => {
       // 환경변수가 없는 상태 시뮬레이션
-      const originalToken = process.env.VERCEL_ACCESS_TOKEN;
-      const originalProjectId = process.env.VERCEL_PROJECT_ID;
-      delete process.env.VERCEL_ACCESS_TOKEN;
-      delete process.env.VERCEL_PROJECT_ID;
+      vi.stubEnv('VERCEL_ACCESS_TOKEN', '');
+      vi.stubEnv('VERCEL_PROJECT_ID', '');
 
       const result = await fetchVercelVisitorStats();
 
       expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
-
-      // 환경변수 복구
-      process.env.VERCEL_ACCESS_TOKEN = originalToken;
-      process.env.VERCEL_PROJECT_ID = originalProjectId;
     });
 
     it('Vercel API 호출에 실패할 경우 크래시 없이 0을 반환해야 한다', async () => {
-      process.env.VERCEL_ACCESS_TOKEN = 'test-token';
-      process.env.VERCEL_PROJECT_ID = 'test-project';
+      vi.stubEnv('VERCEL_ACCESS_TOKEN', 'test-token');
+      vi.stubEnv('VERCEL_PROJECT_ID', 'test-project');
 
       server.use(
         http.get('https://api.vercel.com/v1/query/web-analytics/visits/aggregate', () => {
@@ -105,14 +103,11 @@ describe('Dashboard Service', () => {
 
       const result = await fetchVercelVisitorStats();
       expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
-
-      delete process.env.VERCEL_ACCESS_TOKEN;
-      delete process.env.VERCEL_PROJECT_ID;
     });
 
     it('Vercel API를 정상적으로 호출하여 통계를 반환해야 한다', async () => {
-      process.env.VERCEL_ACCESS_TOKEN = 'test-token';
-      process.env.VERCEL_PROJECT_ID = 'test-project';
+      vi.stubEnv('VERCEL_ACCESS_TOKEN', 'test-token');
+      vi.stubEnv('VERCEL_PROJECT_ID', 'test-project');
 
       // 성공 Mock
       server.use(
@@ -130,9 +125,6 @@ describe('Dashboard Service', () => {
         totalVisitors: 1500, // mock response 맵핑
         todayVisitors: 1500,
       });
-
-      delete process.env.VERCEL_ACCESS_TOKEN;
-      delete process.env.VERCEL_PROJECT_ID;
     });
   });
 
