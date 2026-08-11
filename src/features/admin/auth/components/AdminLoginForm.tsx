@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -55,8 +56,8 @@ const AdminLoginForm = () => {
   return (
     <div className="bg-admin-card border-admin-border w-full max-w-md rounded-2xl border p-8 shadow-xl">
       <div className="mb-8 text-start">
-        <div className="bg-admin-text mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg shadow-[0_0_15px_rgba(250,250,250,0.1)]">
-          <span className="text-admin-bg font-mono text-sm font-bold">YS</span>
+        <div className="relative mb-5 inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg shadow-[0_0_15px_rgba(250,250,250,0.1)]">
+          <Image src="/logo.png" alt="YS Portfolio Logo" fill className="object-cover" />
         </div>
         <h1 className="text-admin-text text-2xl font-bold">관리자 로그인</h1>
         <p className="text-admin-muted mt-2 text-sm">포트폴리오 CMS에 오신 것을 환영합니다</p>
