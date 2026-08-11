@@ -16,7 +16,7 @@ const VisitorsChart = ({ data = [] }: VisitorsChartProps) => {
             최근 7일 방문자 추이
           </h3>
           <div className="mt-1 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-            <Info className="h-3.5 w-3.5" />
+            <Info className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Vercel API 제약으로 인해 임시 데이터가 표기되고 있습니다.</span>
           </div>
         </div>
