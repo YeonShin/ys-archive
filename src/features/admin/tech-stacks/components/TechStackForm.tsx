@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { TechStack, TechStackFormData } from '../types';
+import { TechStack, TechStackFormData, techLevelEnum, techTypeEnum } from '../types';
 
 interface TechStackFormProps {
   isOpen: boolean;
@@ -19,18 +19,9 @@ interface TechStackFormProps {
   isSubmitting: boolean;
 }
 
-const TECH_TYPES = [
-  'FRONTEND',
-  'BACKEND',
-  'DATABASE',
-  'INFRA',
-  'MOBILE',
-  'DEVOPS',
-  'AI_ML',
-  'TESTING',
-] as const;
+const TECH_TYPES = techTypeEnum.options;
 
-const TECH_LEVELS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'] as const;
+const TECH_LEVELS = techLevelEnum.options;
 
 const TechStackForm = ({
   isOpen,
