@@ -25,7 +25,7 @@ describe('DashboardStats Component', () => {
     expect(screen.getByText('오늘 방명록')).toBeInTheDocument();
     expect(screen.getByText('5')).toBeInTheDocument();
 
-    expect(screen.getByText('총 방문자')).toBeInTheDocument();
+    expect(screen.getByText('최근 30일 방문자')).toBeInTheDocument();
     expect(screen.getByText('1500')).toBeInTheDocument();
 
     expect(screen.getByText('오늘 방문자')).toBeInTheDocument();
