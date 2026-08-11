@@ -1,12 +1,14 @@
 'use client';
 
+import { useMemo } from 'react';
+
 import { PlusIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 
 import { deleteTechStackAction } from '../actions/techStacks.action';
-import { TechStack } from '../types';
+import { TechStack, techTypeEnum } from '../types';
 import TechStackForm from './TechStackForm';
 import TechStackItem from './TechStackItem';
 import { useTechStackForm } from './useTechStackForm';
@@ -15,16 +17,7 @@ interface TechStacksListClientProps {
   initialData: TechStack[];
 }
 
-const CATEGORIES = [
-  'FRONTEND',
-  'BACKEND',
-  'DATABASE',
-  'INFRA',
-  'MOBILE',
-  'DEVOPS',
-  'AI_ML',
-  'TESTING',
-];
+const CATEGORIES = techTypeEnum.options;
 
 const TechStacksListClient = ({ initialData }: TechStacksListClientProps) => {
   const formProps = useTechStackForm();
@@ -43,17 +36,21 @@ const TechStacksListClient = ({ initialData }: TechStacksListClientProps) => {
         toast.error(result.message || '삭제에 실패했습니다.');
       }
     } catch (error) {
-      console.error('Delete error:', error);
+      console.error('[TechStacksListClient.handleDelete] 삭제 중 오류 발생:', error);
       toast.error('오류가 발생했습니다.');
     }
   };
 
-  const groupedTechStacks = CATEGORIES.reduce(
-    (acc, category) => {
-      acc[category] = initialData.filter((tech) => tech.type === category);
-      return acc;
-    },
-    {} as Record<string, TechStack[]>,
+  const groupedTechStacks = useMemo(
+    () =>
+      CATEGORIES.reduce(
+        (acc, category) => {
+          acc[category] = initialData.filter((tech) => tech.type === category);
+          return acc;
+        },
+        {} as Record<string, TechStack[]>,
+      ),
+    [initialData],
   );
 
   return (
