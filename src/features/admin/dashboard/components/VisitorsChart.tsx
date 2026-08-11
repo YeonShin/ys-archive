@@ -1,5 +1,6 @@
 'use client';
 
+import { Info } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface VisitorsChartProps {
@@ -9,10 +10,16 @@ interface VisitorsChartProps {
 const VisitorsChart = ({ data = [] }: VisitorsChartProps) => {
   return (
     <div className="bg-admin-card border-admin-border flex h-[400px] flex-col rounded-xl border p-6 shadow-sm">
-      <div className="mb-6 flex items-center justify-between">
-        <h3 className="text-admin-text text-lg font-semibold tracking-tight">
-          최근 7일 방문자 추이
-        </h3>
+      <div className="mb-6 flex flex-col justify-between space-y-1.5 sm:flex-row sm:items-center sm:space-y-0">
+        <div>
+          <h3 className="text-admin-text text-lg font-semibold tracking-tight">
+            최근 7일 방문자 추이
+          </h3>
+          <div className="mt-1 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+            <Info className="h-3.5 w-3.5" />
+            <span>Vercel API 제약으로 인해 임시 데이터가 표기되고 있습니다.</span>
+          </div>
+        </div>
       </div>
 
       {data.length === 0 ? (
