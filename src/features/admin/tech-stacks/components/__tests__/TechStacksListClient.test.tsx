@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { toast } from 'sonner';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   createTechStackAction,
@@ -27,7 +27,7 @@ vi.mock('sonner', () => {
 
 const mockData = [
   {
-    id: '1',
+    id: '123e4567-e89b-12d3-a456-426614174000',
     name: 'React',
     icon: 'react',
     type: 'FRONTEND',
@@ -39,6 +39,18 @@ const mockData = [
 ];
 
 describe('TechStacksListClient Integration', () => {
+  beforeAll(() => {
+    // window.confirm 모킹
+    vi.stubGlobal(
+      'confirm',
+      vi.fn(() => true),
+    );
+  });
+
+  afterAll(() => {
+    vi.unstubAllGlobals();
+  });
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -77,12 +89,20 @@ describe('TechStacksListClient Integration', () => {
     // Add 폼 열기
     fireEvent.click(screen.getByRole('button', { name: /추가/i }));
 
+    // 필수 필드 채우기 (Zod 검증 통과를 위함)
+    fireEvent.change(screen.getByLabelText(/이름 \(Name\)/i), { target: { value: 'New Tech' } });
+    fireEvent.change(screen.getByLabelText(/아이콘 식별자 \(Icon\)/i), {
+      target: { value: 'newicon' },
+    });
+    fireEvent.change(screen.getByLabelText(/분류 \(Type\)/i), { target: { value: 'FRONTEND' } });
+
     // 폼 제출
     const submitButton = screen.getByRole('button', { name: /submit/i });
     fireEvent.click(submitButton);
 
-    // TODO: 아직 기능 미구현이므로 실패(Red)하는 것이 정상
-    expect(createTechStackAction).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(createTechStackAction).toHaveBeenCalled();
+    });
   });
 
   it('기존 기술 스택 폼을 제출하면 updateTechStackAction이 호출되어야 한다', async () => {
@@ -93,15 +113,21 @@ describe('TechStacksListClient Integration', () => {
     // Edit 폼 열기
     fireEvent.click(screen.getByRole('button', { name: /수정/i }));
 
-    // 폼 제출
+    // 폼에 데이터가 채워지기를 기다림
+    await waitFor(() => {
+      expect(screen.getByLabelText(/이름 \(Name\)/i)).toHaveValue('React');
+    });
+
+    // 폼 제출 (기존 데이터가 채워져 있으므로 바로 제출 가능)
     const submitButton = screen.getByRole('button', { name: /submit/i });
     fireEvent.click(submitButton);
 
-    // TODO: 아직 기능 미구현이므로 실패(Red)하는 것이 정상
-    expect(updateTechStackAction).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(updateTechStackAction).toHaveBeenCalled();
+    });
   });
 
-  it('Delete 버튼 클릭 시 (임시) toast가 호출되어야 한다', async () => {
+  it('Delete 버튼 클릭 시 toast가 호출되어야 한다', async () => {
     vi.mocked(deleteTechStackAction).mockResolvedValue({ success: true });
 
     render(<TechStacksListClient initialData={mockData} />);
@@ -109,7 +135,9 @@ describe('TechStacksListClient Integration', () => {
     // Delete 버튼 클릭
     fireEvent.click(screen.getByRole('button', { name: /삭제/i }));
 
-    // 삭제 모달 연동 시 이 테스트는 삭제 모달 플로우를 테스트하도록 변경될 예정입니다.
-    expect(toast).toHaveBeenCalledWith('성공적으로 삭제되었습니다.');
+    await waitFor(() => {
+      expect(deleteTechStackAction).toHaveBeenCalled();
+      expect(toast.success).toHaveBeenCalledWith('성공적으로 삭제되었습니다.');
+    });
   });
 });
