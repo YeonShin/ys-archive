@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { deleteFile, uploadFile } from '../storage.service';
+import { deleteFile, uploadFile } from '../storage.client';
 
 // Supabase mock
 const mockUpload = vi.fn();
 const mockRemove = vi.fn();
 const mockGetPublicUrl = vi.fn();
 
-vi.mock('@/lib/supabase/server', () => ({
+vi.mock('@/lib/supabase/client', () => ({
   createClient: vi.fn(() => ({
     storage: {
       from: vi.fn((bucket: string) => {
@@ -26,7 +26,7 @@ vi.mock('@/lib/supabase/server', () => ({
   })),
 }));
 
-describe('Storage Action', () => {
+describe('Storage Client Service', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -35,11 +35,9 @@ describe('Storage Action', () => {
     it('파일 업로드에 성공하면 URL을 반환해야 한다', async () => {
       mockUpload.mockResolvedValueOnce({ error: null });
 
-      const formData = new FormData();
       const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-      formData.append('file', file);
 
-      const result = await uploadFile(formData, 'profile');
+      const result = await uploadFile(file, 'profile');
 
       expect(result.success).toBe(true);
       expect(result.url).toBe('https://example.com/file.png');
@@ -51,9 +49,8 @@ describe('Storage Action', () => {
     });
 
     it('파일이 없을 경우 에러를 반환해야 한다', async () => {
-      const formData = new FormData();
-
-      const result = await uploadFile(formData, 'profile');
+      // @ts-expect-error 테스트를 위해 억지로 null 주입
+      const result = await uploadFile(null, 'profile');
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('파일이 제공되지 않았습니다.');
@@ -62,11 +59,9 @@ describe('Storage Action', () => {
     it('업로드 중 오류 발생 시 에러를 반환해야 한다', async () => {
       mockUpload.mockResolvedValueOnce({ error: { message: 'Upload Failed' } });
 
-      const formData = new FormData();
       const file = new File(['dummy content'], 'test.png', { type: 'image/png' });
-      formData.append('file', file);
 
-      const result = await uploadFile(formData, 'profile');
+      const result = await uploadFile(file, 'profile');
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Upload Failed');
