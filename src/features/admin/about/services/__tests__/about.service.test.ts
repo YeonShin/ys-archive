@@ -4,12 +4,11 @@ import { AboutFormData } from '../../types';
 import { getAboutData, updateAboutData } from '../about.service';
 
 // Supabase mock
-const mockUpdate = vi.fn();
+const mockPortfolioUpsert = vi.fn();
 const mockDelete = vi.fn();
 const mockUpsert = vi.fn();
 const mockInsert = vi.fn();
 const mockNot = vi.fn();
-const mockEq = vi.fn();
 const mockSingle = vi.fn();
 const mockLimit = vi.fn(() => ({ single: mockSingle }));
 const mockOrder = vi.fn();
@@ -21,9 +20,7 @@ vi.mock('@/lib/supabase/server', () => ({
     from: vi.fn((table: string) => {
       if (table === 'portfolio_content') {
         return {
-          update: mockUpdate.mockReturnValue({
-            eq: mockEq.mockResolvedValue({ error: null }),
-          }),
+          upsert: mockPortfolioUpsert.mockResolvedValue({ error: null }),
           select: mockPortfolioSelect,
         };
       }
@@ -130,9 +127,8 @@ describe('About Service', () => {
     const result = await updateAboutData(validData);
 
     expect(result.success).toBe(true);
-    // portfolio_content update 검증 (id 1 기준 업데이트)
-    expect(mockUpdate).toHaveBeenCalledWith(validData.portfolioContent);
-    expect(mockEq).toHaveBeenCalledWith('id', 1);
+    // portfolio_content upsert 검증 (id 1 기준 upsert)
+    expect(mockPortfolioUpsert).toHaveBeenCalledWith({ id: 1, ...validData.portfolioContent });
 
     // contact upsert 검증
     expect(mockUpsert).toHaveBeenCalledWith(
@@ -146,7 +142,7 @@ describe('About Service', () => {
   });
 
   it('portfolio_content 업데이트 실패 시 에러를 반환해야 한다', async () => {
-    mockEq.mockResolvedValueOnce({ error: { message: 'DB Error' } });
+    mockPortfolioUpsert.mockResolvedValueOnce({ error: { message: 'DB Error' } });
 
     const result = await updateAboutData(validData);
 
@@ -155,7 +151,7 @@ describe('About Service', () => {
   });
 
   it('contact 삭제 실패 시 에러를 반환해야 한다', async () => {
-    mockEq.mockResolvedValueOnce({ error: null }); // portfolio success
+    mockPortfolioUpsert.mockResolvedValueOnce({ error: null }); // portfolio success
     mockNot.mockResolvedValueOnce({ error: { message: 'Delete Error' } });
 
     const result = await updateAboutData(validData);
@@ -165,7 +161,7 @@ describe('About Service', () => {
   });
 
   it('contact upsert 실패 시 에러를 반환해야 한다', async () => {
-    mockEq.mockResolvedValueOnce({ error: null }); // portfolio success
+    mockPortfolioUpsert.mockResolvedValueOnce({ error: null }); // portfolio success
     mockNot.mockResolvedValueOnce({ error: null }); // delete success
     mockUpsert.mockResolvedValueOnce({ error: { message: 'Upsert Error' } });
 

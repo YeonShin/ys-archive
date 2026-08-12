@@ -46,8 +46,7 @@ export const updateAboutData = async (data: AboutFormData) => {
     // 1. portfolio_content 업데이트
     const { error: portfolioError } = await supabase
       .from('portfolio_content')
-      .update(data.portfolioContent)
-      .eq('id', 1);
+      .upsert({ id: 1, ...data.portfolioContent });
 
     if (portfolioError) {
       throw portfolioError;
