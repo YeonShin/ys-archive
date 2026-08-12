@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { toast } from 'sonner';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Mock } from 'vitest';
 
@@ -6,9 +7,21 @@ import { submitAboutFormAction } from '../../actions/about.action';
 import { AboutFormData } from '../../types';
 import AboutForm from '../AboutForm';
 
-// submitAboutFormAction 모킹
+// 모킹 설정
 vi.mock('../../actions/about.action', () => ({
   submitAboutFormAction: vi.fn(),
+}));
+
+vi.mock('../../../services/storage.client', () => ({
+  uploadFile: vi.fn(),
+  deleteFile: vi.fn(),
+}));
+
+vi.mock('sonner', () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+  },
 }));
 
 const mockSubmitAboutFormAction = submitAboutFormAction as Mock;
@@ -82,5 +95,24 @@ describe('AboutForm', () => {
     await waitFor(() => {
       expect(mockSubmitAboutFormAction).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('10MB를 초과하는 파일 첨부 시 에러 토스트를 표시해야 한다', () => {
+    render(<AboutForm initialData={initialData} />);
+
+    // 이력서 파일 인풋 찾기
+    const fileInput = document.querySelector(
+      'input[type="file"][accept="application/pdf"]',
+    ) as HTMLInputElement;
+    expect(fileInput).not.toBeNull();
+
+    // 11MB 크기의 가짜 파일 생성
+    const largeFile = new File(['x'.repeat(11 * 1024 * 1024)], 'large-resume.pdf', {
+      type: 'application/pdf',
+    });
+
+    fireEvent.change(fileInput, { target: { files: [largeFile] } });
+
+    expect(toast.error).toHaveBeenCalledWith('이력서 파일은 최대 10MB까지만 업로드할 수 있습니다.');
   });
 });
