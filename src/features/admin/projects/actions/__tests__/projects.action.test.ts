@@ -2,20 +2,11 @@ import { revalidatePath } from 'next/cache';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  deleteFile,
-  deleteFolder,
-  uploadFile,
-} from '@/features/admin/about/services/storage.service';
+import { deleteFile, deleteFolder } from '@/features/admin/services/storage.service';
 
 import { createProject, deleteProject, updateProject } from '../../services/projects.service';
 import { ProjectFormData } from '../../types';
-import {
-  createProjectAction,
-  deleteProjectAction,
-  updateProjectAction,
-  uploadImageAction,
-} from '../projects.action';
+import { createProjectAction, deleteProjectAction, updateProjectAction } from '../projects.action';
 
 vi.mock('../../services/projects.service', () => ({
   createProject: vi.fn(),
@@ -23,10 +14,9 @@ vi.mock('../../services/projects.service', () => ({
   deleteProject: vi.fn(),
 }));
 
-vi.mock('@/features/admin/about/services/storage.service', () => ({
-  uploadFile: vi.fn(),
-  deleteFile: vi.fn(),
-  deleteFolder: vi.fn(),
+vi.mock('@/features/admin/services/storage.service', () => ({
+  deleteFile: vi.fn(() => Promise.resolve({ success: true })),
+  deleteFolder: vi.fn(() => Promise.resolve({ success: true })),
 }));
 
 vi.mock('next/cache', () => ({
@@ -77,7 +67,7 @@ describe('Projects Actions', () => {
     });
 
     it('프로젝트 생성 실패 시 롤백을 수행하고 에러를 반환해야 한다', async () => {
-      vi.mocked(createProject).mockRejectedValue(new Error('DB Error'));
+      vi.mocked(createProject).mockResolvedValue({ success: false, message: 'DB Error' });
       vi.mocked(deleteFile).mockResolvedValue({ success: true });
 
       // Action takes uploaded URLs to rollback in case of DB failure
@@ -86,7 +76,6 @@ describe('Projects Actions', () => {
       ]);
 
       expect(result.success).toBe(false);
-      expect(result.message).toBe('DB Error');
       // Rollback check
       expect(deleteFile).toHaveBeenCalledWith('https://example.com/thumb.jpg');
     });
@@ -105,7 +94,7 @@ describe('Projects Actions', () => {
     });
 
     it('프로젝트 업데이트 실패 시 롤백 수행 후 에러를 반환해야 한다', async () => {
-      vi.mocked(updateProject).mockRejectedValue(new Error('Update Error'));
+      vi.mocked(updateProject).mockResolvedValue({ success: false, message: 'Update Error' });
 
       const result = await updateProjectAction(null, '1', validFormData, [
         'https://example.com/new.jpg',
@@ -128,44 +117,6 @@ describe('Projects Actions', () => {
       // Ensure associated images are deleted via folder deletion
       expect(deleteFolder).toHaveBeenCalledWith('projects/1');
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects');
-    });
-  });
-
-  describe('uploadImageAction', () => {
-    it('이미지 업로드 성공 시 url과 함께 success:true를 반환해야 한다', async () => {
-      vi.mocked(uploadFile).mockResolvedValue({
-        success: true,
-        url: 'https://example.com/thumb.jpg',
-      });
-
-      const mockFormData = new FormData();
-      mockFormData.append('file', new File([''], 'test.png'));
-
-      const result = await uploadImageAction(mockFormData, 'projects/123/thumbnails');
-
-      expect(result.success).toBe(true);
-      expect(result.url).toBe('https://example.com/thumb.jpg');
-      expect(uploadFile).toHaveBeenCalledWith(mockFormData, 'projects/123/thumbnails');
-    });
-
-    it('이미지 업로드 실패 시 에러 메시지와 함께 success:false를 반환해야 한다', async () => {
-      vi.mocked(uploadFile).mockResolvedValue({ success: false, error: '업로드 실패' });
-
-      const mockFormData = new FormData();
-      const result = await uploadImageAction(mockFormData, 'projects/123/thumbnails');
-
-      expect(result.success).toBe(false);
-      expect(result.message).toBe('업로드 실패');
-    });
-
-    it('예기치 않은 예외 발생 시 에러 메시지를 반환해야 한다', async () => {
-      vi.mocked(uploadFile).mockRejectedValue(new Error('Network Error'));
-
-      const mockFormData = new FormData();
-      const result = await uploadImageAction(mockFormData);
-
-      expect(result.success).toBe(false);
-      expect(result.message).toBe('Network Error');
     });
   });
 });

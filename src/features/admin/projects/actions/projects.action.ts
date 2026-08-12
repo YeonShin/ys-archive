@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { ActionResponse } from '@/types/response';
 
-import { deleteFile, deleteFolder, uploadFile } from '../../about/services/storage.service';
+import { deleteFile, deleteFolder } from '../../services/storage.service';
 import { createProject, deleteProject, updateProject } from '../services/projects.service';
 import { InsertProjectDto, ProjectFormData, UpdateProjectDto } from '../types';
 
@@ -40,10 +40,21 @@ export async function createProjectAction(
 ): Promise<ActionResponse> {
   try {
     const dto = mapFormDataToDto(formData);
-    await createProject(dto as InsertProjectDto);
+    const createRes = await createProject(dto as InsertProjectDto);
+
+    if (!createRes.success) {
+      if (uploadedUrlsToRollback && uploadedUrlsToRollback.length > 0) {
+        for (const url of uploadedUrlsToRollback) {
+          await deleteFile(url).catch(console.error);
+        }
+      }
+      return { success: false, message: createRes.message || '프로젝트 생성 실패' };
+    }
 
     if (urlsToDeleteOnSuccess && urlsToDeleteOnSuccess.length > 0) {
-      await Promise.all(urlsToDeleteOnSuccess.map((url) => deleteFile(url)));
+      for (const url of urlsToDeleteOnSuccess) {
+        await deleteFile(url).catch(console.error);
+      }
     }
 
     revalidatePath('/admin/projects');
@@ -51,9 +62,11 @@ export async function createProjectAction(
   } catch (error: unknown) {
     console.error('[Projects.createProjectAction] 에러 발생:', error);
 
-    // DB 삽입 실패 시, 클라이언트에서 미리 업로드했던 이미지들이 고아(Orphan)가 되지 않도록 Storage 롤백 수행
+    // DB 삽입 과정(또는 그 외 try 내부)에서 예외 발생 시 롤백
     if (uploadedUrlsToRollback && uploadedUrlsToRollback.length > 0) {
-      await Promise.all(uploadedUrlsToRollback.map((url) => deleteFile(url)));
+      for (const url of uploadedUrlsToRollback) {
+        await deleteFile(url).catch(console.error);
+      }
     }
 
     return {
@@ -72,10 +85,21 @@ export async function updateProjectAction(
 ): Promise<ActionResponse> {
   try {
     const dto = mapFormDataToDto(formData);
-    await updateProject(id, dto as UpdateProjectDto);
+    const updateRes = await updateProject(id, dto as UpdateProjectDto);
+
+    if (!updateRes.success) {
+      if (uploadedUrlsToRollback && uploadedUrlsToRollback.length > 0) {
+        for (const url of uploadedUrlsToRollback) {
+          await deleteFile(url).catch(console.error);
+        }
+      }
+      return { success: false, message: updateRes.message || '프로젝트 수정 실패' };
+    }
 
     if (urlsToDeleteOnSuccess && urlsToDeleteOnSuccess.length > 0) {
-      await Promise.all(urlsToDeleteOnSuccess.map((url) => deleteFile(url)));
+      for (const url of urlsToDeleteOnSuccess) {
+        await deleteFile(url).catch(console.error);
+      }
     }
 
     revalidatePath('/admin/projects');
@@ -84,9 +108,11 @@ export async function updateProjectAction(
   } catch (error: unknown) {
     console.error('[Projects.updateProjectAction] 에러 발생:', error);
 
-    // DB 수정 실패 시, 새로 추가했던 이미지들만 Storage에서 롤백
+    // DB 수정 과정(또는 그 외 try 내부)에서 예외 발생 시 롤백
     if (uploadedUrlsToRollback && uploadedUrlsToRollback.length > 0) {
-      await Promise.all(uploadedUrlsToRollback.map((url) => deleteFile(url)));
+      for (const url of uploadedUrlsToRollback) {
+        await deleteFile(url).catch(console.error);
+      }
     }
 
     return {
@@ -111,40 +137,6 @@ export async function deleteProjectAction(prevState: unknown, id: string): Promi
     return {
       success: false,
       message: error instanceof Error ? error.message : '알 수 없는 에러가 발생했습니다.',
-    };
-  }
-}
-
-export async function uploadImageAction(
-  formData: FormData,
-  folderPath: string = 'projects',
-): Promise<{ success: boolean; url?: string; message?: string }> {
-  try {
-    const res = await uploadFile(formData, folderPath);
-    if (!res.success) {
-      return { success: false, message: res.error };
-    }
-    return { success: true, url: res.url };
-  } catch (error: unknown) {
-    console.error('[Projects.uploadImageAction] 에러 발생:', error);
-    return {
-      success: false,
-      message: error instanceof Error ? error.message : '이미지 업로드 중 오류가 발생했습니다.',
-    };
-  }
-}
-
-export async function deleteStorageFilesAction(urls: string[]): Promise<ActionResponse> {
-  try {
-    if (urls && urls.length > 0) {
-      await Promise.all(urls.map((url) => deleteFile(url)));
-    }
-    return { success: true };
-  } catch (error: unknown) {
-    console.error('[Projects.deleteStorageFilesAction] 에러 발생:', error);
-    return {
-      success: false,
-      message: error instanceof Error ? error.message : '파일 삭제 중 오류가 발생했습니다.',
     };
   }
 }

@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { toast } from 'sonner';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Project } from '../../types';
@@ -32,6 +33,13 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: vi.fn(),
   }),
+}));
+
+vi.mock('sonner', () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+  },
 }));
 
 describe('ProjectForm 컴포넌트', () => {
@@ -175,5 +183,24 @@ describe('ProjectForm 컴포넌트', () => {
     // 썸네일 1개 + 새로 추가된 스크린샷용 1개 = 2개여야 함
     const newUploadButtons = screen.getAllByRole('button', { name: /이미지 업로드/i });
     expect(newUploadButtons).toHaveLength(2);
+  });
+
+  it('10MB를 초과하는 이미지 파일 첨부 시 에러 토스트를 표시해야 한다', async () => {
+    const user = userEvent.setup();
+    render(<ProjectForm />);
+
+    const fileInputs = document.querySelectorAll(
+      'input[type="file"]',
+    ) as NodeListOf<HTMLInputElement>;
+    const thumbnailInput = fileInputs[0];
+
+    // 11MB 크기의 가짜 파일 생성
+    const largeFile = new File(['x'.repeat(11 * 1024 * 1024)], 'large-image.png', {
+      type: 'image/png',
+    });
+
+    await user.upload(thumbnailInput, largeFile);
+
+    expect(toast.error).toHaveBeenCalledWith('이미지 파일은 최대 10MB까지만 업로드할 수 있습니다.');
   });
 });
