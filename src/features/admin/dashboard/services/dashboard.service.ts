@@ -1,43 +1,114 @@
+import { formatToKstDate } from '@/lib/date';
 import { createClient } from '@/lib/supabase/server';
 
-export const fetchVercelVisitorStats = async (): Promise<{
+export interface VisitorStats {
   totalVisitors: number;
   todayVisitors: number;
-}> => {
+  chartData: { date: string; count: number }[];
+}
+
+export const fetchVercelVisitorStats = async (): Promise<VisitorStats> => {
   const token = process.env.VERCEL_ACCESS_TOKEN;
   const projectId = process.env.VERCEL_PROJECT_ID;
 
   if (!token || !projectId) {
-    return { totalVisitors: 0, todayVisitors: 0 };
+    return { totalVisitors: 0, todayVisitors: 0, chartData: [] };
   }
 
   try {
-    const url = `https://api.vercel.com/v1/query/web-analytics/visits/aggregate?projectId=${projectId}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { revalidate: 300 }, // 5분 캐시
-    });
+    const now = new Date();
+    // 1. 총 방문자 수 (최근 30일)
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const tomorrowEnd = tomorrow.toISOString(); // UTC 자정 내림 방지용
 
-    if (!response.ok) {
-      console.warn(
-        `[fetchVercelVisitorStats] API Error: ${response.status} ${response.statusText}`,
-      );
-      return { totalVisitors: 0, todayVisitors: 0 };
+    // 2. 오늘 방문자 수 (KST 00:00 ~ 현재)
+    const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+    const kstNow = new Date(now.getTime() + KST_OFFSET_MS);
+    kstNow.setUTCHours(0, 0, 0, 0);
+    const todayStart = new Date(kstNow.getTime() - KST_OFFSET_MS).toISOString();
+    const todayEnd = now.toISOString();
+
+    // 3. 7일 방문자 차트 (KST 기준 최근 7일)
+    const sevenDaysAgoKst = new Date(kstNow.getTime() - 6 * 24 * 60 * 60 * 1000);
+    sevenDaysAgoKst.setUTCHours(0, 0, 0, 0);
+    const sevenDaysAgoStart = new Date(sevenDaysAgoKst.getTime() - KST_OFFSET_MS).toISOString();
+
+    const totalUrl = `https://api.vercel.com/v1/query/web-analytics/visits/count?projectId=${projectId}&since=${thirtyDaysAgo}&until=${tomorrowEnd}`;
+    const todayUrl = `https://api.vercel.com/v1/query/web-analytics/visits/aggregate?projectId=${projectId}&by=hour&since=${todayStart}&until=${todayEnd}`;
+    const chartUrl = `https://api.vercel.com/v1/query/web-analytics/visits/aggregate?projectId=${projectId}&by=hour&since=${sevenDaysAgoStart}&until=${todayEnd}`;
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const [totalRes, todayRes, chartRes] = await Promise.all([
+      fetch(totalUrl, { headers, next: { revalidate: 300 } }),
+      fetch(todayUrl, { headers, next: { revalidate: 300 } }),
+      fetch(chartUrl, { headers, next: { revalidate: 300 } }),
+    ]);
+
+    let totalVisits = 0;
+    let todayVisits = 0;
+    let chartData: { date: string; count: number }[] = [];
+
+    if (totalRes.ok) {
+      const totalJson = await totalRes.json();
+      totalVisits = totalJson?.data?.visitors || 0;
+    } else {
+      console.warn(`[fetchVercelVisitorStats] Total API Error: ${totalRes.status}`);
     }
 
-    const json = await response.json();
-    const visits = json?.data?.visits || 0;
+    if (todayRes.ok) {
+      const todayJson = await todayRes.json();
+      if (Array.isArray(todayJson?.data)) {
+        todayVisits = todayJson.data.reduce(
+          (sum: number, item: { visitors?: number }) => sum + (item.visitors || 0),
+          0,
+        );
+      }
+    } else {
+      console.warn(`[fetchVercelVisitorStats] Today API Error: ${todayRes.status}`);
+    }
+
+    if (chartRes.ok) {
+      const chartJson = await chartRes.json();
+      if (Array.isArray(chartJson?.data)) {
+        const aggregatedMap: Record<string, number> = {};
+
+        // 7일치 날짜를 미리 0으로 초기화
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(kstNow.getTime() - i * 24 * 60 * 60 * 1000);
+          const key = formatToKstDate(d);
+          aggregatedMap[key] = 0;
+        }
+
+        // 시간별 데이터를 KST 날짜 기준으로 합산
+        chartJson.data.forEach((item: { timestamp: string; visitors?: number }) => {
+          const utcDate = new Date(item.timestamp);
+          const kstDate = new Date(utcDate.getTime() + KST_OFFSET_MS);
+          const key = formatToKstDate(kstDate);
+
+          if (aggregatedMap[key] !== undefined) {
+            aggregatedMap[key] += item.visitors || 0;
+          }
+        });
+
+        chartData = Object.keys(aggregatedMap).map((date) => ({
+          date,
+          count: aggregatedMap[date],
+        }));
+      }
+    } else {
+      console.warn(`[fetchVercelVisitorStats] Chart API Error: ${chartRes.status}`);
+    }
 
     return {
-      totalVisitors: visits,
-      todayVisitors: visits, // Vercel API에서 기간별 필터링이 가능하면 추후 분리
+      totalVisitors: totalVisits,
+      todayVisitors: todayVisits,
+      chartData,
     };
   } catch (error) {
     console.error(`[fetchVercelVisitorStats] Fetch failed:`, error);
-    return { totalVisitors: 0, todayVisitors: 0 };
+    return { totalVisitors: 0, todayVisitors: 0, chartData: [] };
   }
 };
 
@@ -92,6 +163,7 @@ export const getDashboardStats = async () => {
         todayGuestbookCount: todayGuestbookCount || 0,
         totalVisitors: visitorStats.totalVisitors,
         todayVisitors: visitorStats.todayVisitors,
+        chartData: visitorStats.chartData,
       },
     };
   } catch (error) {

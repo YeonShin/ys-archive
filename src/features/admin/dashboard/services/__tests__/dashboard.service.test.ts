@@ -88,7 +88,7 @@ describe('Dashboard Service', () => {
 
       const result = await fetchVercelVisitorStats();
 
-      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
+      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0, chartData: [] });
     });
 
     it('Vercel API 호출에 실패할 경우 크래시 없이 0을 반환해야 한다', async () => {
@@ -102,7 +102,7 @@ describe('Dashboard Service', () => {
       );
 
       const result = await fetchVercelVisitorStats();
-      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0 });
+      expect(result).toEqual({ totalVisitors: 0, todayVisitors: 0, chartData: [] });
     });
 
     it('Vercel API를 정상적으로 호출하여 통계를 반환해야 한다', async () => {
@@ -111,19 +111,28 @@ describe('Dashboard Service', () => {
 
       // 성공 Mock
       server.use(
-        http.get('https://api.vercel.com/v1/query/web-analytics/visits/aggregate', () => {
+        http.get('https://api.vercel.com/v1/query/web-analytics/visits/count', () => {
           return HttpResponse.json({
             data: {
-              visits: 1500,
+              visitors: 1500,
             },
+          });
+        }),
+        http.get('https://api.vercel.com/v1/query/web-analytics/visits/aggregate', () => {
+          return HttpResponse.json({
+            data: [
+              { timestamp: '2026-08-11T16:00:00.000Z', visitors: 50 },
+              { timestamp: '2026-08-11T17:00:00.000Z', visitors: 50 },
+            ],
           });
         }),
       );
 
       const result = await fetchVercelVisitorStats();
       expect(result).toEqual({
-        totalVisitors: 1500, // mock response 맵핑
-        todayVisitors: 1500,
+        totalVisitors: 1500, // mock count API
+        todayVisitors: 100, // mock aggregate API sum
+        chartData: expect.arrayContaining([{ date: '08/12', count: 100 }]),
       });
     });
   });

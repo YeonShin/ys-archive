@@ -6,12 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import {
-  createProjectAction,
-  deleteStorageFilesAction,
-  updateProjectAction,
-  uploadImageAction,
-} from '../actions/projects.action';
+import { deleteFile, uploadFile } from '../../services/storage.client';
+import { createProjectAction, updateProjectAction } from '../actions/projects.action';
 import { Project, ProjectFormData, projectFormSchema } from '../types';
 
 interface UseProjectFormProps {
@@ -97,18 +93,17 @@ export const useProjectForm = ({ initialData, onCancel }: UseProjectFormProps) =
         const newUploadedRealUrls: string[] = [];
 
         for (const [blobUrl, { file, folderPath }] of pendingFiles.current.entries()) {
-          const formData = new FormData();
-          formData.append('file', file);
-          const res = await uploadImageAction(formData, folderPath);
+          const res = await uploadFile(file, folderPath);
           if (res.success && res.url) {
             uploadedUrls.set(blobUrl, res.url);
             newUploadedRealUrls.push(res.url);
           } else {
-            toast.error(`이미지 업로드 실패: ${res.message}`);
-            // 중간에 업로드가 하나라도 실패하면 이전에 성공해서 올라간 파일
-            // newUploadReadlUrls를 다시 삭제
+            toast.error(`이미지 업로드 실패: ${res.error}`);
+            // 중간에 업로드가 하나라도 실패하면 이전에 성공해서 올라간 파일들을 삭제
             if (newUploadedRealUrls.length > 0) {
-              await deleteStorageFilesAction(newUploadedRealUrls);
+              for (const url of newUploadedRealUrls) {
+                await deleteFile(url).catch(console.error);
+              }
             }
             return;
           }

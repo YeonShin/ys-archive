@@ -51,7 +51,7 @@ export const AboutPortfolioSection = ({
               <div className="text-muted-foreground flex flex-col items-center justify-center pt-1 pb-2">
                 <Upload className="mb-3 h-8 w-8" />
                 <p className="mb-1 text-sm font-medium">클릭하여 프로필 이미지 업로드</p>
-                <p className="text-xs">권장: 3:4 비율 이미지</p>
+                <p className="text-xs">권장: 3:4 비율 이미지 (최대 10MB)</p>
               </div>
               <Input
                 id="profile-image-upload"
@@ -164,7 +164,7 @@ export const AboutPortfolioSection = ({
           <div className="text-muted-foreground flex flex-col items-center justify-center pt-1 pb-2">
             <FileIcon className="mb-3 h-8 w-8" />
             <p className="mb-1 text-sm font-medium">클릭하여 이력서 파일 업로드</p>
-            <p className="text-xs">PDF (최대 5MB)</p>
+            <p className="text-xs">PDF (최대 10MB)</p>
             {resumeFile && (
               <div className="text-admin-text bg-admin-muted/10 mt-4 flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium">
                 <FileIcon className="h-4 w-4" />

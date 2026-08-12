@@ -46,8 +46,7 @@ export const updateAboutData = async (data: AboutFormData) => {
     // 1. portfolio_content 업데이트
     const { error: portfolioError } = await supabase
       .from('portfolio_content')
-      .update(data.portfolioContent)
-      .eq('id', 1);
+      .upsert({ id: 1, ...data.portfolioContent });
 
     if (portfolioError) {
       throw portfolioError;
@@ -67,8 +66,9 @@ export const updateAboutData = async (data: AboutFormData) => {
         .not('id', 'in', `(${existingContactIds.join(',')})`);
       deleteError = error;
     } else {
-      // 모든 연락처를 지운 경우
-      const { error } = await supabase.from('contact').delete().neq('id', 'dummy');
+      // 모든 기존 연락처를 지운 경우 (새로 추가만 있거나, 아예 0개인 경우)
+      // id 컬럼이 uuid이므로 'dummy' 문자열을 비교하면 에러 발생. null이 아닌 모든 레코드를 삭제
+      const { error } = await supabase.from('contact').delete().not('id', 'is', null);
       deleteError = error;
     }
 
