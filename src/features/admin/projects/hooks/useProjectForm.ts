@@ -101,7 +101,9 @@ export const useProjectForm = ({ initialData, onCancel }: UseProjectFormProps) =
             toast.error(`이미지 업로드 실패: ${res.error}`);
             // 중간에 업로드가 하나라도 실패하면 이전에 성공해서 올라간 파일들을 삭제
             if (newUploadedRealUrls.length > 0) {
-              await Promise.all(newUploadedRealUrls.map((url) => deleteFile(url)));
+              for (const url of newUploadedRealUrls) {
+                await deleteFile(url).catch(console.error);
+              }
             }
             return;
           }
