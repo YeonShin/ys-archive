@@ -40,3 +40,12 @@ export const calculateDurationInWeeks = (startDate: string, endDate?: string | n
 
   return Math.round(diffDays / 7);
 };
+
+/**
+ * 주어진 날짜(Date) 객체를 MM/DD 문자열 포맷으로 반환하는 유틸리티 함수.
+ * @param date - Date 객체
+ * @returns MM/DD 형식의 문자열
+ */
+export const formatToKstDate = (date: Date): string => {
+  return `${String(date.getUTCMonth() + 1).padStart(2, '0')}/${String(date.getUTCDate()).padStart(2, '0')}`;
+};

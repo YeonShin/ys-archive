@@ -1,10 +1,13 @@
+import { formatToKstDate } from '@/lib/date';
 import { createClient } from '@/lib/supabase/server';
 
-export const fetchVercelVisitorStats = async (): Promise<{
+export interface VisitorStats {
   totalVisitors: number;
   todayVisitors: number;
   chartData: { date: string; count: number }[];
-}> => {
+}
+
+export const fetchVercelVisitorStats = async (): Promise<VisitorStats> => {
   const token = process.env.VERCEL_ACCESS_TOKEN;
   const projectId = process.env.VERCEL_PROJECT_ID;
 
@@ -20,16 +23,16 @@ export const fetchVercelVisitorStats = async (): Promise<{
     const tomorrowEnd = tomorrow.toISOString(); // UTC 자정 내림 방지용
 
     // 2. 오늘 방문자 수 (KST 00:00 ~ 현재)
-    const kstOffset = 9 * 60 * 60 * 1000;
-    const kstNow = new Date(now.getTime() + kstOffset);
+    const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+    const kstNow = new Date(now.getTime() + KST_OFFSET_MS);
     kstNow.setUTCHours(0, 0, 0, 0);
-    const todayStart = new Date(kstNow.getTime() - kstOffset).toISOString();
+    const todayStart = new Date(kstNow.getTime() - KST_OFFSET_MS).toISOString();
     const todayEnd = now.toISOString();
 
     // 3. 7일 방문자 차트 (KST 기준 최근 7일)
     const sevenDaysAgoKst = new Date(kstNow.getTime() - 6 * 24 * 60 * 60 * 1000);
     sevenDaysAgoKst.setUTCHours(0, 0, 0, 0);
-    const sevenDaysAgoStart = new Date(sevenDaysAgoKst.getTime() - kstOffset).toISOString();
+    const sevenDaysAgoStart = new Date(sevenDaysAgoKst.getTime() - KST_OFFSET_MS).toISOString();
 
     const totalUrl = `https://api.vercel.com/v1/query/web-analytics/visits/count?projectId=${projectId}&since=${thirtyDaysAgo}&until=${tomorrowEnd}`;
     const todayUrl = `https://api.vercel.com/v1/query/web-analytics/visits/aggregate?projectId=${projectId}&by=hour&since=${todayStart}&until=${todayEnd}`;
@@ -74,15 +77,15 @@ export const fetchVercelVisitorStats = async (): Promise<{
         // 7일치 날짜를 미리 0으로 초기화
         for (let i = 6; i >= 0; i--) {
           const d = new Date(kstNow.getTime() - i * 24 * 60 * 60 * 1000);
-          const key = `${String(d.getUTCMonth() + 1).padStart(2, '0')}/${String(d.getUTCDate()).padStart(2, '0')}`;
+          const key = formatToKstDate(d);
           aggregatedMap[key] = 0;
         }
 
         // 시간별 데이터를 KST 날짜 기준으로 합산
         chartJson.data.forEach((item: { timestamp: string; visitors?: number }) => {
           const utcDate = new Date(item.timestamp);
-          const kstDate = new Date(utcDate.getTime() + kstOffset);
-          const key = `${String(kstDate.getUTCMonth() + 1).padStart(2, '0')}/${String(kstDate.getUTCDate()).padStart(2, '0')}`;
+          const kstDate = new Date(utcDate.getTime() + KST_OFFSET_MS);
+          const key = formatToKstDate(kstDate);
 
           if (aggregatedMap[key] !== undefined) {
             aggregatedMap[key] += item.visitors || 0;

@@ -132,7 +132,7 @@ describe('Dashboard Service', () => {
       expect(result).toEqual({
         totalVisitors: 1500, // mock count API
         todayVisitors: 100, // mock aggregate API sum
-        chartData: expect.any(Array),
+        chartData: expect.arrayContaining([{ date: '08/12', count: 100 }]),
       });
     });
   });
