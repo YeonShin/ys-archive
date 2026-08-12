@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 
 import { UploadCloud, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 
@@ -31,6 +32,14 @@ export const ImageUploadInput = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('이미지 파일은 최대 10MB까지만 업로드할 수 있습니다.');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
 
     if (value && value.startsWith('blob:')) {
       context?.unregisterFile(value);
@@ -85,7 +94,7 @@ export const ImageUploadInput = ({
           className="bg-admin-card border-admin-border text-admin-muted hover:bg-admin-text/30 flex h-12 w-full items-center justify-center gap-2 border-dashed"
         >
           <UploadCloud className="h-5 w-5" />
-          이미지 업로드
+          이미지 업로드 (최대 10MB)
         </Button>
       )}
       <input
