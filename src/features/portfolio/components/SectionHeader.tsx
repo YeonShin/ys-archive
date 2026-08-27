@@ -11,7 +11,7 @@ interface SectionHeaderProps {
 const SectionHeader = ({ title, korTitle, className }: SectionHeaderProps) => {
   return (
     <motion.header className={className}>
-      <p className="text-brand-primary mb-3 font-mono text-sm tracking-[0.3em] uppercase">
+      <p className="text-brand-primary text-md mb-3 font-mono font-bold tracking-[0.3em] uppercase">
         {title}
       </p>
       <h2 className="text-brand-neutral-dark tracking-light text-3xl font-extrabold md:text-4xl">
