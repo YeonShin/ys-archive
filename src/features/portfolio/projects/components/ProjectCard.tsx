@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Variants } from 'motion';
 import { motion } from 'motion/react';
 
@@ -18,8 +20,14 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) setIsFullscreen(false);
+  };
+
   return (
-    <Sheet>
+    <Sheet onOpenChange={handleOpenChange}>
       <motion.article
         className="flex flex-col overflow-hidden rounded-2xl shadow-xl"
         initial="hidden"
@@ -49,9 +57,16 @@ const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="inset-0! h-full! w-full! overflow-y-auto border-none sm:inset-y-0! sm:right-0! sm:left-auto! data-[side=right]:sm:max-w-4xl"
+        className={cn(
+          'inset-0! h-full! w-full! overflow-y-auto border-none transition-[max-width] duration-300 ease-in-out sm:inset-y-0! sm:right-0! sm:left-auto!',
+          isFullscreen ? 'data-[side=right]:sm:max-w-full' : 'data-[side=right]:sm:max-w-4xl',
+        )}
       >
-        <ProjectDetail project={project} />
+        <ProjectDetail
+          project={project}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={() => setIsFullscreen((prev) => !prev)}
+        />
       </SheetContent>
     </Sheet>
   );
