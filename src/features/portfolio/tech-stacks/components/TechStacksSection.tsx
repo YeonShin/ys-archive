@@ -37,7 +37,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         viewport={{ once: true, amount: 0.2 }}
         className="flex w-full max-w-4xl flex-col items-center gap-4"
       >
-        <SectionHeader title="tech stacks" korTitle="기술 스택" />
+        <SectionHeader title="tech stacks" korTitle="기술 스택" className="text-center" />
 
         <motion.div
           variants={itemVariants}
