@@ -1,4 +1,4 @@
-import { XIcon } from 'lucide-react';
+import { Maximize2Icon, Minimize2Icon, XIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import Markdown from '@/components/ui/markdown';
@@ -18,9 +18,11 @@ import TroubleshootingItem from './TroubleshootingItem';
 
 interface ProjectDetailProps {
   project: Project;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
-const ProjectDetail = ({ project }: ProjectDetailProps) => {
+const ProjectDetail = ({ project, isFullscreen, onToggleFullscreen }: ProjectDetailProps) => {
   return (
     <div className="mb-6 flex flex-col gap-4">
       <SheetHeader className="flex flex-row items-center justify-between px-8 py-6">
@@ -28,16 +30,31 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
         <SheetTitle className="text-brand-secondary box-content font-mono text-sm">
           Project Details
         </SheetTitle>
-        <SheetClose asChild>
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon-sm"
-            className="text-brand-neutral-dark hover:bg-brand-primary/30 focus-visible:ring-brand-primary rounded-full focus-visible:ring-2"
-            aria-label="닫기"
+            className="text-brand-neutral-dark hover:bg-brand-primary/30 focus-visible:ring-brand-primary hidden rounded-full focus-visible:ring-2 sm:flex"
+            aria-label={isFullscreen ? '창 축소' : '전체 화면으로 보기'}
+            onClick={onToggleFullscreen}
           >
-            <XIcon aria-hidden="true" />
+            {isFullscreen ? (
+              <Minimize2Icon aria-hidden="true" />
+            ) : (
+              <Maximize2Icon aria-hidden="true" />
+            )}
           </Button>
-        </SheetClose>
+          <SheetClose asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="text-brand-neutral-dark hover:bg-brand-primary/30 focus-visible:ring-brand-primary rounded-full focus-visible:ring-2"
+              aria-label="닫기"
+            >
+              <XIcon aria-hidden="true" />
+            </Button>
+          </SheetClose>
+        </div>
       </SheetHeader>
 
       <article className="flex flex-col gap-8 px-8">
