@@ -8,7 +8,7 @@ interface VisitorsChartProps {
 
 const VisitorsChart = ({ data = [] }: VisitorsChartProps) => {
   return (
-    <div className="bg-admin-card border-admin-border flex h-[400px] flex-col rounded-xl border p-6 shadow-sm">
+    <div className="bg-admin-card border-admin-border flex h-100 flex-col rounded-xl border p-6 shadow-sm">
       <div className="mb-6 flex flex-col justify-between space-y-1.5 sm:flex-row sm:items-center sm:space-y-0">
         <div>
           <h3 className="text-admin-text text-lg font-semibold tracking-tight">
@@ -25,7 +25,7 @@ const VisitorsChart = ({ data = [] }: VisitorsChartProps) => {
           방문자 데이터가 없습니다.
         </div>
       ) : (
-        <div data-testid="visitors-chart" className="min-h-[300px] w-full flex-1">
+        <div data-testid="visitors-chart" className="min-h-75 w-full flex-1">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid
