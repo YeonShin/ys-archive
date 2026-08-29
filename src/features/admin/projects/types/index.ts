@@ -2,10 +2,12 @@ import { z } from 'zod';
 
 export const projectStatusEnum = z.enum(['IN_PROGRESS', 'LIVE', 'COMPLETED']);
 
-export const linkSchema = z.object({
-  service: z.string().url('유효한 서비스 URL을 입력해주세요.').optional().or(z.literal('')),
-  github: z.string().url('유효한 깃허브 URL을 입력해주세요.').optional().or(z.literal('')),
+export const linkItemSchema = z.object({
+  label: z.string().min(1, '링크 라벨을 입력해주세요.'),
+  url: z.string().url('유효한 URL을 입력해주세요.'),
 });
+
+export const linkSchema = z.array(linkItemSchema);
 
 export const techStackSchema = z.object({
   name: z.string().min(1, '기술스택 이름을 입력해주세요.'),
@@ -47,7 +49,7 @@ export const projectFormSchema = z.object({
   started_at: z.string().min(1, '시작 날짜를 입력해주세요.'),
   ended_at: z.string().nullable().optional(),
   role: z.string().min(1, '담당 역할을 입력해주세요.'),
-  links: linkSchema.nullable().optional(),
+  links: z.array(linkItemSchema),
   thumbnail_url: z.string().url('유효한 썸네일 URL을 입력해주세요.'),
   tech_stacks: z.array(techStackSchema),
   images: z.array(z.object({ value: z.string().url('유효한 URL을 입력해주세요.') })),

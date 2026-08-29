@@ -37,7 +37,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         viewport={{ once: true, amount: 0.2 }}
         className="flex w-full max-w-4xl flex-col items-center gap-4"
       >
-        <SectionHeader title="tech stacks" korTitle="기술 스택" />
+        <SectionHeader title="tech stacks" korTitle="기술 스택" className="text-center" />
 
         <motion.div
           variants={itemVariants}
@@ -45,7 +45,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         />
 
         {/* 카테고리 필터링 영역 */}
-        <motion.div variants={itemVariants} className="mb-14 flex justify-center">
+        <motion.div variants={itemVariants} className="mb-14 flex flex-col items-center gap-3">
           <div
             className="bg-brand-neutral-muted flex max-w-full flex-wrap justify-center gap-1 rounded-2xl p-1.5"
             role="group"
@@ -60,13 +60,20 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
                   onClick={() => setActive(isActive ? null : category)}
                   aria-pressed={isActive}
                   className={cn(
-                    'md:text-md flex min-h-11 items-center justify-center rounded-xl px-4 py-2 font-mono text-xs whitespace-nowrap transition-colors duration-200 sm:text-sm md:px-5',
+                    'md:text-md relative flex min-h-11 cursor-pointer items-center justify-center rounded-xl px-4 py-2 font-mono text-xs whitespace-nowrap transition-colors duration-200 sm:text-sm md:px-5',
                     isActive
-                      ? 'bg-brand-primary text-brand-neutral-light font-bold'
-                      : 'text-brand-secondary hover:bg-brand-neutral-light/50',
+                      ? 'text-brand-neutral-light font-bold'
+                      : 'text-brand-secondary hover:text-brand-neutral-dark hover:bg-brand-primary/50',
                   )}
                 >
-                  {category.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeCategoryPill"
+                      className="bg-brand-primary absolute inset-0 rounded-xl shadow-sm"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{category.label}</span>
                 </button>
               );
             })}

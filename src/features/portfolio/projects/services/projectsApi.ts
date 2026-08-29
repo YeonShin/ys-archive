@@ -1,12 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
-import { isArrayOfObjects, isArrayOfStrings, isObject } from '@/lib/typeGuards';
+import { isArrayOfObjects, isArrayOfStrings } from '@/lib/typeGuards';
 
 import {
   PROJECT_STATUS,
   Project,
   ProjectArchitecture,
   ProjectKeyFeature,
-  ProjectLinks,
+  ProjectLink,
   ProjectTechStack,
   ProjectTroubleshooting,
   ProjectsSectionData,
@@ -38,7 +38,7 @@ export const fetchProjectsData = async (): Promise<ProjectsSectionData | null> =
       startedAt: item.started_at,
       endedAt: item.ended_at ?? undefined,
       role: item.role,
-      links: isObject<ProjectLinks>(item.links) ? item.links : undefined,
+      links: isArrayOfObjects<ProjectLink>(item.links) ? item.links : undefined,
       thumbnailUrl: item.thumbnail_url,
       techStacks: isArrayOfObjects<ProjectTechStack>(item.tech_stacks)
         ? item.tech_stacks

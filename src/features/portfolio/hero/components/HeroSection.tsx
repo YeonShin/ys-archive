@@ -34,7 +34,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
     >
       <motion.p
         variants={itemVariants}
-        className="text-brand-primary font-mono tracking-widest uppercase"
+        className="text-brand-primary font-mono text-lg font-bold tracking-widest uppercase"
       >
         Frontend Developer
       </motion.p>
@@ -44,9 +44,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       >
         <span>{data?.heroTitle || '프론트엔드 개발자'}</span>
         <br />
-        <span className="to-brand-primary from-brand-secondary bg-linear-to-r bg-clip-text text-transparent">
-          김연신
-        </span>
+        <span className="text-brand-primary">김연신</span>
         <span>입니다</span>
       </motion.h1>
       <motion.p

@@ -14,7 +14,7 @@ const mockInitialData: Project = {
   started_at: '2024-01-01',
   ended_at: '2024-12-31',
   role: '프론트엔드',
-  links: { github: 'https://github.com', service: '' },
+  links: [{ label: 'Github', url: 'https://github.com' }],
   thumbnail_url: 'https://example.com/thumb.png',
   tech_stacks: [{ name: 'React', reason: 'Good' }],
   images: ['https://example.com/screenshot1.png'],
@@ -118,6 +118,17 @@ describe('ProjectForm 컴포넌트', () => {
     await user.click(addFeatureBtn);
 
     expect(screen.getByPlaceholderText(/예: 소셜 로그인 연동/i)).toBeInTheDocument();
+  });
+
+  it('프로젝트 링크 추가 버튼 클릭 시 새로운 링크 입력 필드가 렌더링되어야 한다', async () => {
+    const user = userEvent.setup();
+    render(<ProjectForm />);
+
+    const addLinkBtn = screen.getByRole('button', { name: /\+ 링크 추가/i });
+    await user.click(addLinkBtn);
+
+    expect(screen.getByPlaceholderText(/ex\. Github, 웹 서비스, Notion/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/https:\/\/\.\.\./i)).toBeInTheDocument();
   });
 
   it('이미지 파일 첨부 시 URL.createObjectURL이 호출되어야 한다', async () => {

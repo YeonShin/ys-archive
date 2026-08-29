@@ -21,7 +21,7 @@ const TroubleshootingItem = ({ troubleshooting }: TroubleshootingItemProps) => {
         }
       />
 
-      <div className="mt-4 flex flex-col gap-4 p-2">
+      <div className="flex flex-col gap-4 p-2">
         <h3 className="text-brand-primary text-sm font-bold sm:text-lg">{troubleshooting.title}</h3>
 
         <ul className="flex flex-col gap-4">

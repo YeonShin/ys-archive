@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
-import { ExternalLink } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
+import { ArrowUpRight } from 'lucide-react';
 
+import { ProjectLinkIcon } from '@/components/common/ProjectLinkIcon';
 import { cn } from '@/lib/utils';
 
 import { Project } from '../../types';
@@ -66,28 +66,31 @@ export const ProjectItemBasicInfo = ({ project }: ProjectItemBasicInfoProps) => 
               {project.started_at} ~ {project.ended_at || '현재'}
             </span>
           </div>
-          {project.links && (
-            <div className="flex gap-4">
-              {project.links.github && (
+          {Array.isArray(project.links) && project.links.length > 0 && (
+            <div className="flex flex-wrap gap-3 pt-1">
+              {project.links.map((link, index) => (
                 <a
-                  href={project.links.github}
+                  key={`${link.label}-${link.url}-${index}`}
+                  href={link.url}
                   target="_blank"
-                  rel="noreferrer"
-                  className="text-admin-primary flex items-center gap-1 text-sm hover:underline"
+                  rel="noopener noreferrer"
+                  aria-label={`${link.label} 바로가기`}
+                  className="text-admin-muted group/link focus-visible:ring-admin-primary hover:text-admin-text flex items-center gap-1.5 rounded-sm text-sm outline-none focus-visible:ring-2"
                 >
-                  <FaGithub className="h-4 w-4" /> Github
+                  <ProjectLinkIcon
+                    label={link.label}
+                    url={link.url}
+                    className="text-admin-primary"
+                  />
+                  <span className="underline-offset-2 group-hover/link:underline">
+                    {link.label}
+                  </span>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="text-admin-primary h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover/link:opacity-100"
+                  />
                 </a>
-              )}
-              {project.links.service && (
-                <a
-                  href={project.links.service}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-admin-primary flex items-center gap-1 text-sm hover:underline"
-                >
-                  <ExternalLink className="h-4 w-4" /> Service URL
-                </a>
-              )}
+              ))}
             </div>
           )}
         </div>
