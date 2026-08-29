@@ -34,6 +34,7 @@ describe('Projects Actions', () => {
     status: 'IN_PROGRESS',
     started_at: '2026-01-01',
     role: 'Frontend',
+    links: [{ label: 'Github', url: 'https://github.com' }],
     thumbnail_url: 'https://example.com/thumb.jpg',
     tech_stacks: [{ name: 'React', reason: '선정 이유' }],
     images: [{ value: 'https://example.com/img1.jpg' }],

@@ -56,7 +56,7 @@ export const useProjectForm = ({ initialData, onCancel }: UseProjectFormProps) =
           ...initialData,
           subtitle: initialData.subtitle ?? '',
           ended_at: initialData.ended_at ?? null,
-          links: initialData.links ?? null,
+          links: initialData.links ?? [],
           retrospective: initialData.retrospective ?? '',
           images: initialData.images.map((url) => ({ value: url })),
           key_features: initialData.key_features.map((f) => ({
@@ -72,7 +72,7 @@ export const useProjectForm = ({ initialData, onCancel }: UseProjectFormProps) =
           started_at: '',
           ended_at: null,
           role: '',
-          links: { github: '', service: '' },
+          links: [],
           thumbnail_url: '',
           tech_stacks: [],
           images: [],
