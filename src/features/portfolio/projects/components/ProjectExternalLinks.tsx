@@ -1,6 +1,6 @@
-import { ArrowUpRight, Globe } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
+import { ArrowUpRight } from 'lucide-react';
 
+import { ProjectLinkIcon } from '@/components/common/ProjectLinkIcon';
 import { cn } from '@/lib/utils';
 
 import { ProjectLink } from '../type';
@@ -9,17 +9,6 @@ interface ProjectExternalLinksProps {
   links?: ProjectLink[];
   className?: string;
 }
-
-const renderLinkIcon = (label: string, url: string) => {
-  const isGithub =
-    label.toLowerCase().includes('github') || url.toLowerCase().includes('github.com');
-
-  if (isGithub) {
-    return <FaGithub aria-hidden="true" className="h-4 w-4 shrink-0 text-black dark:text-white" />;
-  }
-
-  return <Globe aria-hidden="true" className="text-brand-primary h-4 w-4 shrink-0" />;
-};
 
 const ProjectExternalLinks = ({ links, className }: ProjectExternalLinksProps) => {
   if (!links || links.length === 0) {
@@ -37,7 +26,7 @@ const ProjectExternalLinks = ({ links, className }: ProjectExternalLinksProps) =
           href={link.url}
           className="text-brand-secondary group/link focus-visible:ring-brand-primary focus-visible:ring-offset-brand-neutral-light flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
-          {renderLinkIcon(link.label, link.url)}
+          <ProjectLinkIcon label={link.label} url={link.url} className="text-brand-primary" />
           <span className="group-hover/link:text-brand-primary underline-offset-2 transition-colors duration-150 group-hover/link:underline">
             {link.label}
           </span>
