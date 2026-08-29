@@ -17,9 +17,9 @@ const ProjectExternalLinks = ({ links, className }: ProjectExternalLinksProps) =
 
   return (
     <div className={cn('flex flex-wrap gap-2.5', className)}>
-      {links.map((link) => (
+      {links.map((link, index) => (
         <a
-          key={`${link.label}-${link.url}`}
+          key={`${link.label}-${link.url}-${index}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${link.label} 바로가기`}
