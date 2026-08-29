@@ -3,55 +3,50 @@ import { FaGithub } from 'react-icons/fa';
 
 import { cn } from '@/lib/utils';
 
-import { ProjectLinks } from '../type';
+import { ProjectLink } from '../type';
 
 interface ProjectExternalLinksProps {
-  links?: ProjectLinks;
+  links?: ProjectLink[];
   className?: string;
 }
 
+const renderLinkIcon = (label: string, url: string) => {
+  const isGithub =
+    label.toLowerCase().includes('github') || url.toLowerCase().includes('github.com');
+
+  if (isGithub) {
+    return <FaGithub aria-hidden="true" className="h-4 w-4 shrink-0 text-black dark:text-white" />;
+  }
+
+  return <Globe aria-hidden="true" className="text-brand-primary h-4 w-4 shrink-0" />;
+};
+
 const ProjectExternalLinks = ({ links, className }: ProjectExternalLinksProps) => {
+  if (!links || links.length === 0) {
+    return null;
+  }
+
   return (
-    <div className={cn('flex gap-2', className)}>
-      {links?.service && (
+    <div className={cn('flex flex-wrap gap-2.5', className)}>
+      {links.map((link) => (
         <a
+          key={`${link.label}-${link.url}`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="서비스 바로가기"
-          href={links.service}
+          aria-label={`${link.label} 바로가기`}
+          href={link.url}
           className="text-brand-secondary group/link focus-visible:ring-brand-primary focus-visible:ring-offset-brand-neutral-light flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
-          <Globe aria-hidden="true" className="text-brand-primary h-4 w-4 shrink-0" />
+          {renderLinkIcon(link.label, link.url)}
           <span className="group-hover/link:text-brand-primary underline-offset-2 transition-colors duration-150 group-hover/link:underline">
-            서비스 바로가기
+            {link.label}
           </span>
           <ArrowUpRight
             aria-hidden="true"
             className="text-brand-primary h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover/link:opacity-100"
           />
         </a>
-      )}
-
-      {links?.github && (
-        <div>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="깃허브 바로가기"
-            href={links.github}
-            className="text-brand-secondary group/link focus-visible:ring-brand-primary focus-visible:ring-offset-brand-neutral-light flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-          >
-            <FaGithub aria-hidden="true" className="h-4 w-4 shrink-0 text-black dark:text-white" />
-            <span className="group-hover/link:text-brand-primary underline-offset-2 transition-colors duration-150 group-hover/link:underline">
-              Github
-            </span>
-            <ArrowUpRight
-              aria-hidden="true"
-              className="text-brand-primary h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover/link:opacity-100"
-            />
-          </a>
-        </div>
-      )}
+      ))}
     </div>
   );
 };
