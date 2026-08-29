@@ -9,9 +9,9 @@ export type StatusType = (typeof PROJECT_STATUS)[keyof typeof PROJECT_STATUS];
 export function isProjectStatus(status: unknown): status is keyof typeof PROJECT_STATUS {
   return typeof status === 'string' && status in PROJECT_STATUS;
 }
-export interface ProjectLinks {
-  service?: string;
-  github?: string;
+export interface ProjectLink {
+  label: string;
+  url: string;
 }
 
 export interface ProjectTechStack {
@@ -52,7 +52,7 @@ export interface Project {
   startedAt: string;
   endedAt?: string;
   role: string;
-  links?: ProjectLinks;
+  links?: ProjectLink[];
   thumbnailUrl: string;
   techStacks?: ProjectTechStack[];
   images?: string[];
