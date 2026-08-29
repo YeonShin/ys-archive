@@ -68,9 +68,9 @@ export const ProjectItemBasicInfo = ({ project }: ProjectItemBasicInfoProps) => 
           </div>
           {Array.isArray(project.links) && project.links.length > 0 && (
             <div className="flex flex-wrap gap-3 pt-1">
-              {project.links.map((link) => (
+              {project.links.map((link, index) => (
                 <a
-                  key={`${link.label}-${link.url}`}
+                  key={`${link.label}-${link.url}-${index}`}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
