@@ -1,22 +1,11 @@
 import Image from 'next/image';
 
-import { ArrowUpRight, Globe } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
+import { ArrowUpRight } from 'lucide-react';
 
+import { ProjectLinkIcon } from '@/components/common/ProjectLinkIcon';
 import { cn } from '@/lib/utils';
 
 import { Project } from '../../types';
-
-const renderLinkIcon = (label: string, url: string) => {
-  const isGithub =
-    label.toLowerCase().includes('github') || url.toLowerCase().includes('github.com');
-
-  if (isGithub) {
-    return <FaGithub aria-hidden="true" className="h-4 w-4 shrink-0 text-black dark:text-white" />;
-  }
-
-  return <Globe aria-hidden="true" className="text-admin-primary h-4 w-4 shrink-0" />;
-};
 
 const PROJECT_STATUS_CONFIG = {
   IN_PROGRESS: {
@@ -88,7 +77,11 @@ export const ProjectItemBasicInfo = ({ project }: ProjectItemBasicInfoProps) => 
                   aria-label={`${link.label} 바로가기`}
                   className="text-admin-muted group/link focus-visible:ring-admin-primary hover:text-admin-text flex items-center gap-1.5 rounded-sm text-sm outline-none focus-visible:ring-2"
                 >
-                  {renderLinkIcon(link.label, link.url)}
+                  <ProjectLinkIcon
+                    label={link.label}
+                    url={link.url}
+                    className="text-admin-primary"
+                  />
                   <span className="underline-offset-2 group-hover/link:underline">
                     {link.label}
                   </span>
