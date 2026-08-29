@@ -59,7 +59,7 @@ const ProjectForm = ({ initialData, onCancel }: ProjectFormProps) => {
           />
 
           {/* 2. 링크 (Links) */}
-          <ProjectLinks register={register} />
+          <ProjectLinks control={control as unknown as Control<ProjectFormData>} />
 
           {/* 3. 상세 텍스트 (Description & Retrospective) */}
           <ProjectDescriptions register={register} errors={errors} />
