@@ -81,7 +81,7 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
         </motion.div>
 
         {/* 기술스택 그리드 영역 */}
-        <motion.div variants={itemVariants} className="w-full max-w-2xl">
+        <motion.div variants={itemVariants} className="w-full max-w-3xl">
           <TooltipProvider delayDuration={100}>
             <ul
               className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6"

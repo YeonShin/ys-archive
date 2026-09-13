@@ -25,7 +25,7 @@ const TechStackItem = ({ item, onEdit, onDelete }: TechStackItemProps) => {
           style={{ backgroundColor: item.color || 'var(--brand-secondary)' }}
         >
           {IconComponent ? (
-            <IconComponent className="text-admin-text text-2xl" aria-hidden="true" />
+            <IconComponent className="text-2xl text-white" aria-hidden="true" />
           ) : (
             <span className="font-mono text-lg font-bold text-white" aria-hidden="true">
               {item.icon ? item.icon.substring(0, 2) : item.name.substring(0, 2)}

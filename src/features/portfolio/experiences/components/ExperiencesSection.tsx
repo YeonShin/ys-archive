@@ -21,7 +21,7 @@ const ExperiencesSection = ({ data }: { data: ExperiencesSectionData | null }) =
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="flex w-full max-w-4xl flex-col gap-10"
+        className="flex w-full max-w-6xl flex-col gap-10"
       >
         <SectionHeader title="Journey" korTitle="경력 / 학력" />
 
