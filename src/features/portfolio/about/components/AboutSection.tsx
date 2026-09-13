@@ -29,7 +29,7 @@ const AboutSection = ({
       className="relative flex min-h-screen w-full items-center justify-center px-6 py-24"
     >
       <motion.div
-        className="flex w-full max-w-4xl flex-col gap-10"
+        className="flex w-full max-w-5xl flex-col gap-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -72,7 +72,7 @@ const AboutSection = ({
 
           <motion.article
             variants={itemVariants}
-            className="flex w-full max-w-lg flex-col items-start gap-8"
+            className="flex w-full flex-col items-start gap-8"
           >
             {children}
 

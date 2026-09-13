@@ -18,6 +18,7 @@ import {
   SiFigma,
   SiFirebase,
   SiFlutter,
+  SiFramer,
   SiGit,
   SiGithub,
   SiGithubactions,
@@ -27,6 +28,7 @@ import {
   SiJavascript,
   SiJest,
   SiJira,
+  SiJsonwebtokens,
   SiKotlin,
   SiKubernetes,
   SiLaravel,
@@ -34,6 +36,7 @@ import {
   SiMariadb,
   SiMongodb,
   SiMysql,
+  SiN8N,
   SiNestjs,
   SiNextdotjs,
   SiNginx,
@@ -46,6 +49,7 @@ import {
   SiPython,
   SiRabbitmq,
   SiReact,
+  SiReactrouter,
   SiRedis,
   SiRuby,
   SiRust,
@@ -57,10 +61,13 @@ import {
   SiSvelte,
   SiSwift,
   SiTailwindcss,
+  SiTestinglibrary,
+  SiTypeorm,
   SiTypescript,
   SiUbuntu,
   SiVercel,
   SiVite,
+  SiVitest,
   SiVuedotjs,
   SiWebpack,
 } from 'react-icons/si';
@@ -110,6 +117,7 @@ export const iconMap: Record<string, React.ElementType> = {
   laravel: SiLaravel,
   swift: SiSwift,
   kotlin: SiKotlin,
+  jwt: SiJsonwebtokens,
 
   // 프론트엔드 & 모바일
   dart: SiDart,
@@ -120,6 +128,8 @@ export const iconMap: Record<string, React.ElementType> = {
   svelte: SiSvelte,
   graphql: SiGraphql,
   apollo: SiApollographql,
+  reactrouter: SiReactrouter,
+  framer: SiFramer,
 
   // DB & 인프라
   prisma: SiPrisma,
@@ -134,6 +144,8 @@ export const iconMap: Record<string, React.ElementType> = {
   elasticsearch: SiElasticsearch,
   rabbitmq: SiRabbitmq,
   kafka: SiApachekafka,
+  n8n: SiN8N,
+  typeorm: SiTypeorm,
 
   // 테스팅 & 도구
   jest: SiJest,
@@ -146,6 +158,8 @@ export const iconMap: Record<string, React.ElementType> = {
   jira: SiJira,
   slack: FaSlack,
   notion: SiNotion,
+  vitest: SiVitest,
+  testinglibrary: SiTestinglibrary,
 
   // 폴백/추가 아이콘들
   aws: FaAws,

@@ -34,12 +34,12 @@ const TechItem = ({ tech, isFilteredOut }: TechItemProps) => {
           >
             {IconComponent ? (
               <IconComponent
-                className="text-brand-neutral-light text-2xl sm:text-3xl md:text-4xl"
+                className="text-2xl text-white sm:text-3xl md:text-4xl"
                 aria-hidden="true"
               />
             ) : (
               <span
-                className="text-brand-neutral-light font-mono text-lg font-bold sm:text-xl md:text-3xl"
+                className="font-mono text-lg font-bold text-white sm:text-xl md:text-3xl"
                 aria-hidden="true"
               >
                 {tech.icon ? tech.icon.substring(0, 2) : tech.name.substring(0, 2)}

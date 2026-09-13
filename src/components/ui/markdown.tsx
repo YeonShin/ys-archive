@@ -23,9 +23,7 @@ const Markdown = ({ content, className }: MarkdownProps) => {
           ),
           code: ({ node, className, ...props }) => (
             <code
-              className={`bg-brand-neutral-muted text-brand-primary rounded-md px-1.5 py-0.5 font-mono text-sm ${
-                className || ''
-              }`}
+              className={`text-brand-primary rounded-md text-sm ${className || ''}`}
               {...props}
             />
           ),
@@ -61,7 +59,7 @@ const Markdown = ({ content, className }: MarkdownProps) => {
           h3: ({ node, ...props }) => (
             <h3 className="text-brand-neutral-dark mt-4 mb-2 text-xl font-bold" {...props} />
           ),
-          p: ({ node, ...props }) => <p className="mb-4 leading-relaxed last:mb-0" {...props} />,
+          p: ({ node, ...props }) => <p className="leading-relaxed" {...props} />,
         }}
       >
         {content}
