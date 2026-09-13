@@ -4,9 +4,9 @@ export const TECH_TYPE = {
   INFRA: { value: 'INFRA', label: '인프라' },
   DATABASE: { value: 'DATABASE', label: '데이터베이스' },
   MOBILE: { value: 'MOBILE', label: '모바일' },
-  DEVOPS: { value: 'DEVOPS', label: '데브옵스' },
+  DEVOPS: { value: 'DEVOPS', label: 'DevOps' },
   AI_ML: { value: 'AI_ML', label: 'AI/머신러닝' },
-  TESTING: { value: 'TESTING', label: '테스트' },
+  TESTING: { value: 'TESTING', label: '테스팅' },
   ETC: { value: 'ETC', label: '기타' },
 } as const;
 

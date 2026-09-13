@@ -26,7 +26,7 @@ const ProjectExternalLinks = ({ links, className }: ProjectExternalLinksProps) =
           href={link.url}
           className="text-brand-secondary group/link focus-visible:ring-brand-primary focus-visible:ring-offset-brand-neutral-light flex w-fit items-center gap-1.5 rounded-sm font-mono text-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
-          <ProjectLinkIcon label={link.label} url={link.url} className="text-brand-primary" />
+          <ProjectLinkIcon label={link.label} url={link.url} className="text-brand-neutral-dark" />
           <span className="group-hover/link:text-brand-primary underline-offset-2 transition-colors duration-150 group-hover/link:underline">
             {link.label}
           </span>
