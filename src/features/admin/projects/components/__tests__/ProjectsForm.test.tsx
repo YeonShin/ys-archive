@@ -184,15 +184,16 @@ describe('ProjectForm 컴포넌트', () => {
 
     const addScreenshotBtn = screen.getByRole('button', { name: /\+ 스크린샷 추가/i });
 
-    // 썸네일은 영상 업로드 슬롯이라 클릭 전엔 이미지 업로드 버튼이 하나도 없어야 함
+    // 썸네일은 영상 업로드 슬롯, 스크린샷은 이미지/영상 겸용(미디어 업로드) 슬롯이라
+    // 클릭 전엔 미디어 업로드 버튼이 하나도 없어야 함
     expect(screen.getByRole('button', { name: /영상 업로드/i })).toBeInTheDocument();
-    expect(screen.queryAllByRole('button', { name: /이미지 업로드/i })).toHaveLength(0);
+    expect(screen.queryAllByRole('button', { name: /미디어 업로드/i })).toHaveLength(0);
 
     // 스크린샷 추가
     await user.click(addScreenshotBtn);
 
     // 새로 추가된 스크린샷용 1개가 렌더링되어야 함
-    const newUploadButtons = screen.getAllByRole('button', { name: /이미지 업로드/i });
+    const newUploadButtons = screen.getAllByRole('button', { name: /미디어 업로드/i });
     expect(newUploadButtons).toHaveLength(1);
   });
 

@@ -54,6 +54,7 @@ const NestedTroubleshootingImages = ({
                   value={field.value}
                   onChange={field.onChange}
                   folderPath={folderPath}
+                  mediaType="auto"
                 />
               )}
             />

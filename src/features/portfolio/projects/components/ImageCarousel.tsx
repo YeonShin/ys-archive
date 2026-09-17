@@ -13,6 +13,7 @@ import {
   useCarousel,
 } from '@/components/ui/carousel';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { isVideoUrl } from '@/lib/media';
 import { cn } from '@/lib/utils';
 
 // 하단 도트(Dots) 인디케이터 컴포넌트
@@ -91,6 +92,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
         <Carousel className="group relative w-full">
           <CarouselContent>
             {images.map((image, index) => {
+              const isVideo = isVideoUrl(image.url);
               return (
                 <CarouselItem key={index}>
                   <Dialog>
@@ -100,16 +102,28 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                         className="group border-brand-neutral-muted bg-brand-neutral-muted/30 focus-visible:ring-brand-primary relative aspect-video w-full cursor-zoom-in overflow-hidden rounded-xl border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                         aria-label={
                           image.caption
-                            ? `${image.caption} 이미지 확대`
-                            : `${index + 1}번째 스크린샷 이미지 확대`
+                            ? `${image.caption} ${isVideo ? '영상' : '이미지'} 확대`
+                            : `${index + 1}번째 스크린샷 ${isVideo ? '영상' : '이미지'} 확대`
                         }
                       >
-                        <Image
-                          fill
-                          src={image.url}
-                          alt={image.caption ? image.caption : `screenshot ${index + 1}`}
-                          className="object-cover"
-                        />
+                        {isVideo ? (
+                          <video
+                            src={image.url}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <Image
+                            fill
+                            src={image.url}
+                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            className="object-cover"
+                          />
+                        )}
                         {image.caption && (
                           <div
                             className="text-brand-neutral-light absolute bottom-4 left-4 hidden rounded-xl bg-black/70 px-3 py-1 text-sm font-medium sm:block"
@@ -122,17 +136,29 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                     </DialogTrigger>
                     <DialogContent
                       showCloseButton={false}
-                      className="max-w-4xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
+                      className="max-w-6xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
                     >
                       <div className="relative overflow-hidden rounded-xl">
-                        <Image
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          src={image.url}
-                          alt={image.caption ? image.caption : `screenshot ${index + 1}`}
-                          className="w-full object-contain"
-                        />
+                        {isVideo ? (
+                          <video
+                            src={image.url}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            className="w-full object-contain"
+                          />
+                        ) : (
+                          <Image
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            src={image.url}
+                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            className="w-full object-contain"
+                          />
+                        )}
 
                         {image.caption && (
                           <div className="text-brand-neutral-light absolute bottom-4 left-4 rounded-xl bg-black/70 px-3 py-1 text-sm font-medium">

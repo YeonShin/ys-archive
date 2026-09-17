@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -8,6 +8,7 @@ import { UploadCloud, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
+import { isVideoUrl } from '@/lib/media';
 
 import { useProjectFormContext } from './ProjectFormContext';
 
@@ -17,8 +18,14 @@ interface ImageUploadInputProps {
   folderPath?: string;
   className?: string;
   alt?: string;
-  mediaType?: 'image' | 'video';
+  mediaType?: 'image' | 'video' | 'auto';
 }
+
+const ACCEPT_BY_MEDIA_TYPE = {
+  image: 'image/*',
+  video: 'video/mp4,video/webm',
+  auto: 'image/*,video/mp4,video/webm',
+} as const;
 
 export const ImageUploadInput = ({
   value,
@@ -30,7 +37,18 @@ export const ImageUploadInput = ({
 }: ImageUploadInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const context = useProjectFormContext();
-  const mediaLabel = mediaType === 'video' ? '영상' : '이미지';
+  // blob: URL은 확장자가 없어 방금 선택한 파일의 MIME 타입을 별도로 기억해둬야 함
+  const [pendingKind, setPendingKind] = useState<'image' | 'video' | null>(null);
+
+  const resolvedKind: 'image' | 'video' =
+    mediaType !== 'auto'
+      ? mediaType
+      : value.startsWith('blob:')
+        ? (pendingKind ?? 'image')
+        : isVideoUrl(value)
+          ? 'video'
+          : 'image';
+  const mediaLabel = mediaType === 'auto' ? '미디어' : resolvedKind === 'video' ? '영상' : '이미지';
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,6 +60,10 @@ export const ImageUploadInput = ({
         fileInputRef.current.value = '';
       }
       return;
+    }
+
+    if (mediaType === 'auto') {
+      setPendingKind(file.type.startsWith('video/') ? 'video' : 'image');
     }
 
     if (value && value.startsWith('blob:')) {
@@ -69,7 +91,7 @@ export const ImageUploadInput = ({
     <div className={`flex flex-col gap-2 ${className}`}>
       {value ? (
         <div className="border-admin-border bg-admin-muted/10 relative flex w-full items-center gap-3 rounded-lg border p-2">
-          {mediaType === 'video' ? (
+          {resolvedKind === 'video' ? (
             <video
               src={value}
               muted
@@ -108,14 +130,15 @@ export const ImageUploadInput = ({
           className="bg-admin-card border-admin-border text-admin-muted hover:bg-admin-text/30 flex h-12 w-full items-center justify-center gap-2 border-dashed"
         >
           <UploadCloud className="h-5 w-5" />
-          {mediaLabel} 업로드 (최대 10MB)
+          {mediaLabel} 업로드{' '}
+          {mediaType === 'auto' ? '(이미지 또는 영상, 최대 10MB)' : '(최대 10MB)'}
         </Button>
       )}
       <input
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept={mediaType === 'video' ? 'video/mp4,video/webm' : 'image/*'}
+        accept={ACCEPT_BY_MEDIA_TYPE[mediaType]}
         className="hidden"
       />
     </div>

@@ -43,6 +43,7 @@ export const ImageFieldArray = ({ control, folderPath }: ImageFieldArrayProps) =
                   value={field.value}
                   onChange={field.onChange}
                   folderPath={folderPath}
+                  mediaType="auto"
                 />
               )}
             />
