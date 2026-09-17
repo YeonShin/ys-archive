@@ -159,7 +159,7 @@ export const ProjectBasicInfo = ({
 
       <div>
         <Label htmlFor="thumbnail_url" className="text-admin-text mb-1 block text-sm font-bold">
-          썸네일 URL
+          썸네일 영상 (mp4/webm)
         </Label>
         <Controller
           name="thumbnail_url"
@@ -169,6 +169,7 @@ export const ProjectBasicInfo = ({
               value={field.value}
               onChange={field.onChange}
               folderPath={`projects/${projectId}/thumbnails`}
+              mediaType="video"
             />
           )}
         />

@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { ArrowUpRight } from 'lucide-react';
 
 import { ProjectLinkIcon } from '@/components/common/ProjectLinkIcon';
@@ -31,7 +29,16 @@ export const ProjectItemBasicInfo = ({ project }: ProjectItemBasicInfoProps) => 
     <>
       {project.thumbnail_url && (
         <div className="bg-admin-muted/20 relative h-128 w-full">
-          <Image fill src={project.thumbnail_url} alt={project.title} className="object-cover" />
+          <video
+            src={project.thumbnail_url}
+            aria-hidden="true"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         </div>
       )}
       <div className="flex flex-col space-y-4 p-6">
