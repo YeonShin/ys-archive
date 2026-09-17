@@ -40,6 +40,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       </motion.p>
       <motion.h1
         variants={itemVariants}
+        initial={false}
         className="text-brand-neutral-dark text-center text-4xl font-extrabold md:text-5xl lg:text-7xl"
       >
         <span>{data?.heroTitle || '프론트엔드 개발자'}</span>
