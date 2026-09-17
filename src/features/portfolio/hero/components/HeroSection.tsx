@@ -1,24 +1,35 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
+import { Variants } from 'motion';
 import { motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import { PORTFOLIO_SECTIONS } from '@/features/portfolio/constants/sections';
 import { useActiveSection } from '@/hooks/useActiveSection';
-import { getContainerVariants, getItemVariants } from '@/lib/animations';
 
 import { HeroSectionData } from '../types';
 
-const containerVariants = getContainerVariants({
-  staggerChildren: 0.15,
-  delayChildren: 0.1,
-});
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
 
-const itemVariants = getItemVariants({
-  y: 20,
-  ease: [0.22, 1, 0.36, 1],
-});
+const itemVariants: Variants = {
+  hidden: { y: 20 },
+  visible: {
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
 const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
   const { scrollTo } = useActiveSection(PORTFOLIO_SECTIONS);
@@ -40,7 +51,6 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       </motion.p>
       <motion.h1
         variants={itemVariants}
-        initial={false}
         className="text-brand-neutral-dark text-center text-4xl font-extrabold md:text-5xl lg:text-7xl"
       >
         <span>{data?.heroTitle || '프론트엔드 개발자'}</span>
