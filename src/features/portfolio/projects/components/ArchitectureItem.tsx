@@ -20,6 +20,7 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
             <Image
               src={architecture.url}
               fill
+              sizes="(max-width: 767px) 90vw, 45vw"
               alt={`${architecture.name} 다이어그램 이미지`}
               className="absolute"
             />
@@ -38,7 +39,7 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
             <Image
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="(max-width: 639px) 100vw, 90vw"
               src={architecture.url}
               alt={`architecture ${architecture.name}`}
               className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
