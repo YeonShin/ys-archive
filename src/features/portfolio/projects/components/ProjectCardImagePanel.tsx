@@ -1,10 +1,17 @@
+'use client';
+
+import { useInView } from '@/hooks/useInView';
+
 import { Project } from '../type';
 
 const ProjectCardImagePanel = ({ project }: { project: Project }) => {
+  const { ref, isInView } = useInView<HTMLVideoElement>({ rootMargin: '400px' });
+
   return (
     <div className="bg-brand-secondary/10 relative flex aspect-4/3 w-full flex-col justify-end overflow-hidden sm:aspect-4/3 md:aspect-4/3">
       <video
-        src={project.thumbnailUrl}
+        ref={ref}
+        src={isInView ? project.thumbnailUrl : undefined}
         aria-hidden="true"
         autoPlay
         loop
