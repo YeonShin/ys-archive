@@ -131,7 +131,7 @@ describe('ProjectForm 컴포넌트', () => {
     expect(screen.getByPlaceholderText(/https:\/\/\.\.\./i)).toBeInTheDocument();
   });
 
-  it('이미지 파일 첨부 시 URL.createObjectURL이 호출되어야 한다', async () => {
+  it('영상 파일 첨부 시 URL.createObjectURL이 호출되어야 한다', async () => {
     const user = userEvent.setup();
     // 모킹: URL.createObjectURL
     global.URL.createObjectURL = vi.fn(() => 'blob:http://localhost:3000/mock-url');
@@ -145,7 +145,7 @@ describe('ProjectForm 컴포넌트', () => {
     ) as NodeListOf<HTMLInputElement>;
     const thumbnailInput = fileInputs[0];
 
-    const file = new File(['mock-image-content'], 'thumbnail.png', { type: 'image/png' });
+    const file = new File(['mock-video-content'], 'thumbnail.mp4', { type: 'video/mp4' });
     await user.upload(thumbnailInput, file);
 
     expect(global.URL.createObjectURL).toHaveBeenCalledWith(file);
@@ -184,19 +184,20 @@ describe('ProjectForm 컴포넌트', () => {
 
     const addScreenshotBtn = screen.getByRole('button', { name: /\+ 스크린샷 추가/i });
 
-    // 클릭 전 이미지 업로드 버튼 개수 확인 (기본적으로 썸네일용 1개가 있음)
-    const initialUploadButtons = screen.getAllByRole('button', { name: /이미지 업로드/i });
-    expect(initialUploadButtons).toHaveLength(1);
+    // 썸네일은 영상 업로드 슬롯, 스크린샷은 이미지/영상 겸용(미디어 업로드) 슬롯이라
+    // 클릭 전엔 미디어 업로드 버튼이 하나도 없어야 함
+    expect(screen.getByRole('button', { name: /영상 업로드/i })).toBeInTheDocument();
+    expect(screen.queryAllByRole('button', { name: /미디어 업로드/i })).toHaveLength(0);
 
     // 스크린샷 추가
     await user.click(addScreenshotBtn);
 
-    // 썸네일 1개 + 새로 추가된 스크린샷용 1개 = 2개여야 함
-    const newUploadButtons = screen.getAllByRole('button', { name: /이미지 업로드/i });
-    expect(newUploadButtons).toHaveLength(2);
+    // 새로 추가된 스크린샷용 1개가 렌더링되어야 함
+    const newUploadButtons = screen.getAllByRole('button', { name: /미디어 업로드/i });
+    expect(newUploadButtons).toHaveLength(1);
   });
 
-  it('10MB를 초과하는 이미지 파일 첨부 시 에러 토스트를 표시해야 한다', async () => {
+  it('10MB를 초과하는 영상 파일 첨부 시 에러 토스트를 표시해야 한다', async () => {
     const user = userEvent.setup();
     render(<ProjectForm />);
 
@@ -206,12 +207,12 @@ describe('ProjectForm 컴포넌트', () => {
     const thumbnailInput = fileInputs[0];
 
     // 11MB 크기의 가짜 파일 생성
-    const largeFile = new File(['x'.repeat(11 * 1024 * 1024)], 'large-image.png', {
-      type: 'image/png',
+    const largeFile = new File(['x'.repeat(11 * 1024 * 1024)], 'large-video.mp4', {
+      type: 'video/mp4',
     });
 
     await user.upload(thumbnailInput, largeFile);
 
-    expect(toast.error).toHaveBeenCalledWith('이미지 파일은 최대 10MB까지만 업로드할 수 있습니다.');
+    expect(toast.error).toHaveBeenCalledWith('영상 파일은 최대 10MB까지만 업로드할 수 있습니다.');
   });
 });

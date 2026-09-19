@@ -20,6 +20,7 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
             <Image
               src={architecture.url}
               fill
+              sizes="(max-width: 767px) 90vw, 45vw"
               alt={`${architecture.name} 다이어그램 이미지`}
               className="absolute"
             />
@@ -32,18 +33,18 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
         </DialogTrigger>
         <DialogContent
           showCloseButton={false}
-          className="max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
+          className="group max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
         >
           <div className="relative overflow-hidden rounded-xl">
             <Image
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="(max-width: 639px) 100vw, 90vw"
               src={architecture.url}
               alt={`architecture ${architecture.name}`}
               className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
             />
-            <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <p className="text-lg font-bold text-white">{architecture.name}</p>
               <p className="text-sm text-white/60">{architecture.caption}</p>
             </div>

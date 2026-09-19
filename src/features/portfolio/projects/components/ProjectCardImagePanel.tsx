@@ -1,16 +1,24 @@
-import Image from 'next/image';
+'use client';
+
+import { useInView } from '@/hooks/useInView';
 
 import { Project } from '../type';
 
 const ProjectCardImagePanel = ({ project }: { project: Project }) => {
+  const { ref, isInView } = useInView<HTMLVideoElement>({ rootMargin: '400px' });
+
   return (
     <div className="bg-brand-secondary/10 relative flex aspect-4/3 w-full flex-col justify-end overflow-hidden sm:aspect-4/3 md:aspect-4/3">
-      <Image
-        src={project.thumbnailUrl}
-        alt={`${project.title} 썸네일`}
+      <video
+        ref={ref}
+        src={isInView ? project.thumbnailUrl : undefined}
         aria-hidden="true"
-        fill
-        className="absolute inset-0 object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
       />
 
       {/* 전체 어두운 그라데이션 오버레이 (텍스트 가독성 확보) */}
