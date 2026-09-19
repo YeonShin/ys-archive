@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import dynamic from 'next/dynamic';
+
 import { Variants } from 'motion';
 import { motion } from 'motion/react';
 
@@ -11,7 +13,16 @@ import { cn } from '@/lib/utils';
 import { Project } from '../type';
 import ProjectCardImagePanel from './ProjectCardImagePanel';
 import ProjectCardInfoPanel from './ProjectCardInfoPanel';
-import ProjectDetail from './ProjectDetail';
+import ProjectDetailSkeleton from './ProjectDetailSkeleton';
+
+const ProjectDetail = dynamic(() => import('./ProjectDetail'), {
+  ssr: false,
+  loading: () => <ProjectDetailSkeleton />,
+});
+
+const preloadProjectDetail = () => {
+  void import('./ProjectDetail');
+};
 
 interface ProjectCardProps {
   project: Project;
@@ -47,6 +58,9 @@ const ProjectCard = ({ project, isEven, variant }: ProjectCardProps) => {
               type="button"
               aria-label={`${project.title} 프로젝트 자세히 보기`}
               className="group flex w-full cursor-pointer text-left outline-none md:w-3/5"
+              onMouseEnter={preloadProjectDetail}
+              onFocus={preloadProjectDetail}
+              onTouchStart={preloadProjectDetail}
             >
               <ProjectCardImagePanel project={project} />
             </button>

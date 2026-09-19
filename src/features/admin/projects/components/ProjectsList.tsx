@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -43,11 +42,15 @@ const ProjectsList = ({ projects }: ProjectsListProps) => {
         >
           {project.thumbnail_url && (
             <div className="bg-admin-muted/20 relative aspect-3/4 h-48 w-full overflow-hidden">
-              <Image
-                fill
+              <video
                 src={project.thumbnail_url}
-                alt={project.title}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                aria-hidden="true"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           )}
