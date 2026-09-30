@@ -66,7 +66,9 @@ const AboutSection = ({
             {/* 우측 하단 이름 카드 */}
             <figcaption className="border-brand-primary/30 bg-brand-neutral-muted absolute right-0 -bottom-4 rounded-2xl border px-4 py-3 shadow-lg md:-right-4">
               <p className="text-brand-neutral-dark text-sm leading-none font-extrabold">김연신</p>
-              <p className="text-brand-primary mt-0.5 font-mono text-xs">Frontend Dev.</p>
+              <p className="text-brand-primary mt-0.5 font-mono text-xs">
+                {data?.developerRole || 'Frontend Developer'}
+              </p>
             </figcaption>
           </motion.figure>
 
