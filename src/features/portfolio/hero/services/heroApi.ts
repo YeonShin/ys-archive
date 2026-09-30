@@ -8,7 +8,7 @@ export const fetchHeroData = async (): Promise<HeroSectionData | null> => {
   try {
     const { data, error } = await supabase
       .from('portfolio_content')
-      .select('hero_title, hero_description')
+      .select('developer_role, hero_title, hero_description')
       .eq('id', 1)
       .single();
 
@@ -18,6 +18,7 @@ export const fetchHeroData = async (): Promise<HeroSectionData | null> => {
     }
 
     return {
+      developerRole: data.developer_role ?? '',
       heroTitle: data.hero_title ?? '',
       heroDescription: data.hero_description ?? '',
     };

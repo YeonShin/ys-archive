@@ -47,7 +47,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
         variants={itemVariants}
         className="text-brand-primary font-mono text-lg font-bold tracking-widest uppercase"
       >
-        Frontend Developer
+        {data?.developerRole || 'Frontend Developer'}
       </motion.p>
       <motion.h1
         variants={itemVariants}
