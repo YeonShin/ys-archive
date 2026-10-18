@@ -23,8 +23,12 @@ const MobileNav = () => {
     <div className="fixed top-6 left-6 z-50 lg:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <button className="bg-brand-neutral-muted text-brand-neutral-dark flex h-10 w-10 items-center justify-center rounded-full shadow-sm">
-            <Menu className="h-5 w-5" />
+          <button
+            type="button"
+            aria-label="메뉴 열기"
+            className="bg-brand-neutral-muted text-brand-neutral-dark focus-visible:ring-brand-primary flex h-10 w-10 items-center justify-center rounded-full shadow-sm focus-visible:ring-2 focus-visible:outline-none"
+          >
+            <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
         </SheetTrigger>
         <SheetContent
