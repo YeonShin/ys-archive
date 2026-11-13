@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 import { isArrayOfObjects, isArrayOfStrings } from '@/lib/typeGuards';
 
 import {
@@ -14,7 +14,7 @@ import {
 } from '../type';
 
 export const fetchProjectsData = async (): Promise<ProjectsSectionData | null> => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   try {
     const { data, error } = await supabase
