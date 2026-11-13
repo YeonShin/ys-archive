@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 
 import type { AboutSectionData } from '../types';
 
 export const fetchAboutData = async (): Promise<AboutSectionData | null> => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   try {
     const { data, error } = await supabase

@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 
 import { TECH_LEVEL, TECH_TYPE, TechItem, TechStacksSectionData, isTechType } from '../types';
 
 export const fetchTechStacksData = async (): Promise<TechStacksSectionData | null> => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   try {
     const { data, error } = await supabase

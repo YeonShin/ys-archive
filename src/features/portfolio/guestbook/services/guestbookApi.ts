@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcryptjs';
 
 import { createAdminClient } from '@/lib/supabase/admin';
+import { createPublicClient } from '@/lib/supabase/public';
 import { createClient } from '@/lib/supabase/server';
 
 import {
@@ -18,7 +19,7 @@ export const fetchGuestbookData = async (
   page = 1,
   limit = 5,
 ): Promise<GuestbookResponse | null> => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const from = (page - 1) * limit;
   const to = from + limit;

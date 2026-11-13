@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 
 import type { ExperienceItem, ExperiencesSectionData } from '../types';
 
 export const fetchExperiencesData = async (): Promise<ExperiencesSectionData | null> => {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   try {
     const { data, error } = await supabase
