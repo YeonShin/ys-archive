@@ -2,12 +2,12 @@ import { useState, useTransition } from 'react';
 
 import { toast } from 'sonner';
 
-import { OptimisticAction } from '../components/Guestbook';
 import {
-  deleteGuestbookMessage,
-  editGuestbookMessage,
-  verifyPassword,
-} from '../services/guestbookApi';
+  deleteGuestbookAction,
+  editGuestbookAction,
+  verifyGuestbookPasswordAction,
+} from '../actions/guestbook.action';
+import { OptimisticAction } from '../components/Guestbook';
 import { GuestbookMessage } from '../type';
 
 interface UseGuestbookActionsProps {
@@ -45,7 +45,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
         },
       });
 
-      const result = await editGuestbookMessage({
+      const result = await editGuestbookAction({
         id: editingId,
         content: content.trim(),
         password: editPassword,
@@ -71,7 +71,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
 
     if (actionState.type === 'edit') {
       startTransition(async () => {
-        const result = await verifyPassword({
+        const result = await verifyGuestbookPasswordAction({
           id: message.id,
           password: actionPassword.trim(),
         });
@@ -80,7 +80,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
           // 비밀번호 확인 성공 시 인라인 수정 모드로 전환
           setEditingId(message.id);
 
-          setUnmaskedContent(result.originalContent || message.content);
+          setUnmaskedContent(result.data?.originalContent || message.content);
           setEditPassword(actionPassword.trim());
 
           setActionState({ type: null, message: null });
@@ -96,7 +96,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
           payload: message.id,
         });
 
-        const result = await deleteGuestbookMessage({
+        const result = await deleteGuestbookAction({
           id: message.id,
           password: actionPassword,
         });

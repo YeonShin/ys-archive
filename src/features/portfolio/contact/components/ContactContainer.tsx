@@ -1,4 +1,4 @@
-import { fetchGuestbookData } from '@/features/portfolio/guestbook/services/guestbookApi';
+import { fetchGuestbookData } from '@/features/portfolio/guestbook/services/guestbook.service';
 
 import { fetchContactData } from '../services/contactApi';
 import ContactSection from './ContactSection';

@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-import { createGuestbookMessage } from '../services/guestbookApi';
+import { createGuestbookAction } from '../actions/guestbook.action';
 import { OptimisticAction } from './Guestbook';
 
 interface GuestbookFormProps {
@@ -55,7 +55,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) 
         },
       });
 
-      const result = await createGuestbookMessage(payload);
+      const result = await createGuestbookAction(payload);
 
       if (result.success) {
         toast.success('방명록이 등록되었습니다.');
