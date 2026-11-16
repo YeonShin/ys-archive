@@ -33,3 +33,7 @@ export interface EditGuestbookDto {
   password: string;
   isPublic: boolean;
 }
+
+export interface VerifiedGuestbookData {
+  originalContent?: string;
+}

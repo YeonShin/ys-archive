@@ -1,24 +1,19 @@
-'use server';
-
-import { revalidatePath } from 'next/cache';
-
 import bcrypt from 'bcryptjs';
 
 import { createAdminClient } from '@/lib/supabase/admin';
 import { createPublicClient } from '@/lib/supabase/public';
 import { createClient } from '@/lib/supabase/server';
+import { ActionResponse } from '@/types/response';
 
 import {
   CreateGuestbookDto,
   DeleteGuestbookDto,
   EditGuestbookDto,
   GuestbookResponse,
+  VerifiedGuestbookData,
 } from '../type';
 
-export const fetchGuestbookData = async (
-  page = 1,
-  limit = 5,
-): Promise<GuestbookResponse | null> => {
+export async function fetchGuestbookData(page = 1, limit = 5): Promise<GuestbookResponse | null> {
   const supabase = createPublicClient();
 
   const from = (page - 1) * limit;
@@ -53,9 +48,9 @@ export const fetchGuestbookData = async (
     console.error('[guestbookApi.fetchGuestbookData] Unexpected error during fetch:', error);
     return null;
   }
-};
+}
 
-export const createGuestbookMessage = async (payload: CreateGuestbookDto) => {
+export async function createGuestbookMessage(payload: CreateGuestbookDto): Promise<ActionResponse> {
   try {
     if (payload.content.length > 200) {
       throw new Error('내용은 200자를 초과할 수 없습니다.');
@@ -77,16 +72,15 @@ export const createGuestbookMessage = async (payload: CreateGuestbookDto) => {
       throw new Error('방명록 작성에 실패했습니다.');
     }
 
-    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[guestbookApi.createGuestbookMessage] Unexpected error:', error);
     const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
     return { success: false, message };
   }
-};
+}
 
-export const editGuestbookMessage = async (payload: EditGuestbookDto) => {
+export async function editGuestbookMessage(payload: EditGuestbookDto): Promise<ActionResponse> {
   const supabase = createAdminClient();
 
   try {
@@ -118,16 +112,18 @@ export const editGuestbookMessage = async (payload: EditGuestbookDto) => {
 
     if (updateError) throw new Error('방명록 수정에 실패했습니다.');
 
-    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[guestbookApi.editGuestbookMessage] Unexpected error:', error);
     const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
     return { success: false, message };
   }
-};
+}
 
-export const deleteGuestbookMessage = async ({ id, password }: DeleteGuestbookDto) => {
+export async function deleteGuestbookMessage({
+  id,
+  password,
+}: DeleteGuestbookDto): Promise<ActionResponse> {
   const supabase = createAdminClient();
 
   try {
@@ -149,16 +145,18 @@ export const deleteGuestbookMessage = async ({ id, password }: DeleteGuestbookDt
 
     if (deleteError) throw new Error('삭제 중 오류가 발생했습니다.');
 
-    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[guestbookApi.deleteGuestbookMessage] Unexpected error:', error);
     const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
     return { success: false, message };
   }
-};
+}
 
-export const verifyPassword = async ({ id, password }: DeleteGuestbookDto) => {
+export async function verifyGuestbookPassword({
+  id,
+  password,
+}: DeleteGuestbookDto): Promise<ActionResponse<VerifiedGuestbookData>> {
   const supabase = createAdminClient();
 
   try {
@@ -176,10 +174,10 @@ export const verifyPassword = async ({ id, password }: DeleteGuestbookDto) => {
     const isValid = await bcrypt.compare(password, data.password);
     if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
 
-    return { success: true, originalContent: data.content };
+    return { success: true, data: { originalContent: data.content ?? undefined } };
   } catch (error) {
     console.error('[guestbookApi.verifyGuestbookPassword] Unexpected error:', error);
     const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
     return { success: false, message };
   }
-};
+}
