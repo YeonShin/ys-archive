@@ -14,6 +14,8 @@ import {
   VerifiedGuestbookData,
 } from '../type';
 
+// PostgREST: 요청한 offset이 전체 행 수를 넘는 경우
+const RANGE_NOT_SATISFIABLE = 'PGRST103';
 const MAX_CONTENT_LENGTH = 200;
 const BCRYPT_SALT_ROUNDS = 10;
 
@@ -53,6 +55,7 @@ export async function fetchGuestbookData(
   const supabase = createPublicClient();
 
   const from = (page - 1) * limit;
+  // limit+1개를 받는다: 삭제 시 다음 페이지 첫 글이 빈자리를 채워 layout shift를 막는다. (화면에는 slice로 limit개만 표시)
   const to = from + limit;
 
   try {
@@ -61,6 +64,20 @@ export async function fetchGuestbookData(
       .select('id, nickname, content, is_public, created_at, updated_at', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(from, to);
+
+    // 존재하지 않는 페이지(예: 직접 입력한 ?page=99)는 에러가 아니라 빈 페이지로 응답한다.
+    if (error?.code === RANGE_NOT_SATISFIABLE) {
+      const { count: totalCount } = await supabase
+        .from('guestbook_public_view')
+        .select('id', { count: 'exact', head: true });
+
+      return {
+        data: [],
+        totalCount: totalCount ?? 0,
+        totalPages: Math.max(1, Math.ceil((totalCount ?? 0) / limit)),
+        currentPage: page,
+      };
+    }
 
     if (error || !data) {
       console.error(
