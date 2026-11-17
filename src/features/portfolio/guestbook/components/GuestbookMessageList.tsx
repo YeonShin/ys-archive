@@ -1,5 +1,8 @@
 import { AnimatePresence } from 'motion/react';
 
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 import { useGuestbookActions } from '../hooks/useGuestbookActions';
 import { GuestbookMessage } from '../type';
 import { OptimisticAction } from './Guestbook';
@@ -11,6 +14,10 @@ interface GuestbookMessageListProps {
   guestbook: GuestbookMessage[];
   totalPages: number;
   currentPage: number;
+  isLoading: boolean;
+  hasError: boolean;
+  onPageChange: (page: number) => void;
+  onRefresh: () => Promise<void>;
   onOptimisticUpdate: (action: OptimisticAction) => void;
 }
 
@@ -18,6 +25,10 @@ const GuestbookMessageList = ({
   guestbook,
   totalPages,
   currentPage,
+  isLoading,
+  hasError,
+  onPageChange,
+  onRefresh,
   onOptimisticUpdate,
 }: GuestbookMessageListProps) => {
   const {
@@ -31,11 +42,27 @@ const GuestbookMessageList = ({
     isPending,
     handleInlineEditSubmit,
     handleActionSubmit,
-  } = useGuestbookActions({ onOptimisticUpdate });
+  } = useGuestbookActions({ onOptimisticUpdate, onMutationSuccess: onRefresh });
 
   return (
     <>
-      <ul className="flex w-full flex-col gap-3" aria-label="방명록 메시지 목록">
+      {hasError && (
+        <div
+          role="alert"
+          className="text-brand-secondary flex items-center justify-center gap-3 text-sm"
+        >
+          <span>방명록을 불러오지 못했습니다.</span>
+          <Button type="button" variant="outline" size="sm" onClick={() => void onRefresh()}>
+            다시 시도
+          </Button>
+        </div>
+      )}
+
+      <ul
+        aria-label="방명록 메시지 목록"
+        aria-busy={isLoading}
+        className={cn('flex w-full flex-col gap-3 transition-opacity', isLoading && 'opacity-50')}
+      >
         <AnimatePresence initial={false}>
           {guestbook.map((message) => (
             <GuestbookMessageItem
@@ -53,7 +80,11 @@ const GuestbookMessageList = ({
         </AnimatePresence>
       </ul>
 
-      <GuestbookPagination totalPages={totalPages} currentPage={currentPage} />
+      <GuestbookPagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
 
       <GuestbookActionDialog
         isOpen={actionState.type !== null}

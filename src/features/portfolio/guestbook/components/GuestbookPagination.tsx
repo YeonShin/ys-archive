@@ -1,17 +1,33 @@
-import Link from 'next/link';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  type LucideIcon,
+} from 'lucide-react';
 
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
-
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface GuestbookPaginationProps {
   totalPages: number;
   currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
-const GuestbookPagination = ({ totalPages, currentPage }: GuestbookPaginationProps) => {
-  if (totalPages <= 1) return null;
+interface PageStepButton {
+  label: string;
+  icon: LucideIcon;
+  targetPage: number;
+  isDisabled: boolean;
+}
 
+const BUTTON_BASE_CLASS =
+  'focus-visible:ring-brand-primary size-8 rounded-lg border-0 transition-colors focus-visible:ring-2 focus-visible:outline-none';
+const STEP_BUTTON_CLASS =
+  'text-brand-secondary hover:bg-brand-neutral-dark/5 hover:text-brand-secondary disabled:opacity-30';
+
+const getPageNumbers = (totalPages: number, currentPage: number): number[] => {
   let startPage = Math.max(1, currentPage - 2);
   let endPage = Math.min(totalPages, currentPage + 2);
 
@@ -23,77 +39,92 @@ const GuestbookPagination = ({ totalPages, currentPage }: GuestbookPaginationPro
     }
   }
 
-  const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+};
+
+const GuestbookPagination = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+}: GuestbookPaginationProps) => {
+  if (totalPages <= 1) return null;
+
+  const pageNumbers = getPageNumbers(totalPages, currentPage);
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage >= totalPages;
+
+  const prevButtons: PageStepButton[] = [
+    {
+      label: '5페이지 이전',
+      icon: ChevronsLeft,
+      targetPage: Math.max(1, currentPage - 5),
+      isDisabled: isFirstPage,
+    },
+    {
+      label: '이전 페이지',
+      icon: ChevronLeft,
+      targetPage: Math.max(1, currentPage - 1),
+      isDisabled: isFirstPage,
+    },
+  ];
+  const nextButtons: PageStepButton[] = [
+    {
+      label: '다음 페이지',
+      icon: ChevronRight,
+      targetPage: Math.min(totalPages, currentPage + 1),
+      isDisabled: isLastPage,
+    },
+    {
+      label: '5페이지 다음',
+      icon: ChevronsRight,
+      targetPage: Math.min(totalPages, currentPage + 5),
+      isDisabled: isLastPage,
+    },
+  ];
+
+  const renderStepButton = ({ label, icon: Icon, targetPage, isDisabled }: PageStepButton) => (
+    <Button
+      key={label}
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label={label}
+      disabled={isDisabled}
+      onClick={() => onPageChange(targetPage)}
+      className={cn(BUTTON_BASE_CLASS, STEP_BUTTON_CLASS)}
+    >
+      <Icon size={16} aria-hidden="true" />
+    </Button>
+  );
 
   return (
     <nav
       aria-label="방명록 페이지 탐색"
       className="flex items-center justify-center gap-1.5 sm:gap-2"
     >
-      <Link
-        href={`?page=${Math.max(1, currentPage - 5)}`}
-        scroll={false}
-        aria-label="5페이지 이전"
-        className={cn(
-          'focus-visible:ring-brand-primary text-brand-secondary hover:bg-brand-neutral-dark/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none',
-          currentPage === 1 && 'pointer-events-none opacity-30',
-        )}
-      >
-        <ChevronsLeft size={16} aria-hidden="true" />
-      </Link>
-
-      <Link
-        href={`?page=${Math.max(1, currentPage - 1)}`}
-        scroll={false}
-        aria-label="이전 페이지"
-        className={cn(
-          'focus-visible:ring-brand-primary text-brand-secondary hover:bg-brand-neutral-dark/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none',
-          currentPage === 1 && 'pointer-events-none opacity-30',
-        )}
-      >
-        <ChevronLeft size={16} aria-hidden="true" />
-      </Link>
+      {prevButtons.map(renderStepButton)}
 
       {pageNumbers.map((pageNum) => (
-        <Link
+        <Button
           key={pageNum}
-          href={`?page=${pageNum}`}
-          scroll={false}
+          type="button"
+          variant="ghost"
+          size="icon-sm"
           aria-current={currentPage === pageNum ? 'page' : undefined}
+          onClick={() => onPageChange(pageNum)}
           className={cn(
-            'focus-visible:ring-brand-primary flex h-8 w-8 items-center justify-center rounded-lg text-sm transition-colors hover:font-bold focus-visible:ring-2 focus-visible:outline-none',
+            BUTTON_BASE_CLASS,
+            'text-sm font-normal hover:font-bold',
             currentPage === pageNum
-              ? 'bg-brand-primary text-brand-neutral-light font-bold'
-              : 'bg-brand-neutral-muted text-brand-secondary hover:bg-brand-neutral-dark/10',
+              ? 'bg-brand-primary text-brand-neutral-light hover:bg-brand-primary hover:text-brand-neutral-light font-bold'
+              : 'bg-brand-neutral-muted text-brand-secondary hover:bg-brand-neutral-dark/10 hover:text-brand-secondary',
           )}
         >
           {pageNum}
-        </Link>
+        </Button>
       ))}
 
-      <Link
-        href={`?page=${Math.min(totalPages, currentPage + 1)}`}
-        scroll={false}
-        aria-label="다음 페이지"
-        className={cn(
-          'focus-visible:ring-brand-primary text-brand-secondary hover:bg-brand-neutral-dark/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none',
-          currentPage === totalPages && 'pointer-events-none opacity-30',
-        )}
-      >
-        <ChevronRight size={16} aria-hidden="true" />
-      </Link>
-
-      <Link
-        href={`?page=${Math.min(totalPages, currentPage + 5)}`}
-        scroll={false}
-        aria-label="5페이지 다음"
-        className={cn(
-          'focus-visible:ring-brand-primary text-brand-secondary hover:bg-brand-neutral-dark/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:outline-none',
-          currentPage === totalPages && 'pointer-events-none opacity-30',
-        )}
-      >
-        <ChevronsRight size={16} aria-hidden="true" />
-      </Link>
+      {nextButtons.map(renderStepButton)}
     </nav>
   );
 };
