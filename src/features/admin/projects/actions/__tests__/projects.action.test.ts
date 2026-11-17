@@ -65,6 +65,7 @@ describe('Projects Actions', () => {
       expect(result.success).toBe(true);
       expect(createProject).toHaveBeenCalled();
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
     });
 
     it('프로젝트 생성 실패 시 롤백을 수행하고 에러를 반환해야 한다', async () => {
@@ -92,6 +93,7 @@ describe('Projects Actions', () => {
       expect(updateProject).toHaveBeenCalled();
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects');
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects/1');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
     });
 
     it('프로젝트 업데이트 실패 시 롤백 수행 후 에러를 반환해야 한다', async () => {
@@ -118,6 +120,7 @@ describe('Projects Actions', () => {
       // Ensure associated images are deleted via folder deletion
       expect(deleteFolder).toHaveBeenCalledWith('projects/1');
       expect(revalidatePath).toHaveBeenCalledWith('/admin/projects');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
     });
   });
 });

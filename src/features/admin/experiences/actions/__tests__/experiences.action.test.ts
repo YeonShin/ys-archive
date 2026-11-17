@@ -56,6 +56,7 @@ describe('Experience Action', () => {
 
       // Next.js 캐시가 무효화되었는지 확인
       expect(revalidatePath).toHaveBeenCalledWith('/admin/experience');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
 
       // 올바른 성공 반환값을 클라이언트에 반환하는지 확인
       expect(result).toEqual({ success: true, message: '생성 완료' });
@@ -105,6 +106,7 @@ describe('Experience Action', () => {
 
       expect(updateExperience).toHaveBeenCalledWith(mockId, mockData);
       expect(revalidatePath).toHaveBeenCalledWith('/admin/experience');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
       expect(result).toEqual({ success: true, message: '수정 완료' });
     });
 
@@ -148,6 +150,7 @@ describe('Experience Action', () => {
 
       expect(deleteExperience).toHaveBeenCalledWith(mockId);
       expect(revalidatePath).toHaveBeenCalledWith('/admin/experience');
+      expect(revalidatePath).toHaveBeenCalledWith('/');
       expect(result).toEqual({ success: true, message: '삭제 완료' });
     });
 

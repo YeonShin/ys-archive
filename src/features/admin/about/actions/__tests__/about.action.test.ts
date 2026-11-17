@@ -1,3 +1,5 @@
+import { revalidatePath } from 'next/cache';
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { deleteFile } from '../../../services/storage.service';
@@ -39,6 +41,7 @@ describe('About Action - submitAboutFormAction', () => {
     if (result.success) {
       expect(result.data).toEqual(mockData);
     }
+    expect(revalidatePath).toHaveBeenCalledWith('/');
     expect(updateAboutData).toHaveBeenCalledWith(mockData);
   });
 

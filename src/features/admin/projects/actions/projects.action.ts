@@ -58,6 +58,7 @@ export async function createProjectAction(
     }
 
     revalidatePath('/admin/projects');
+    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[Projects.createProjectAction] 에러 발생:', error);
@@ -104,6 +105,7 @@ export async function updateProjectAction(
 
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/${id}`);
+    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[Projects.updateProjectAction] 에러 발생:', error);
@@ -131,6 +133,7 @@ export async function deleteProjectAction(prevState: unknown, id: string): Promi
     await deleteFolder(`projects/${id}`);
 
     revalidatePath('/admin/projects');
+    revalidatePath('/');
     return { success: true };
   } catch (error: unknown) {
     console.error('[Projects.deleteProjectAction] 에러 발생:', error);
