@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { deleteFile } from '../../services/storage.service';
 import { updateAboutData } from '../services/about.service';
 import { AboutFormData } from '../types';
@@ -28,6 +30,7 @@ export async function submitAboutFormAction(
       await deleteFile(url).catch(console.error);
     }
 
+    revalidatePath('/');
     return { success: true, data };
   } catch (error: unknown) {
     console.error('[about.action.submitAboutFormAction]', error);

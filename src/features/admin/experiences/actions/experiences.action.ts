@@ -37,6 +37,7 @@ export async function createExperienceAction(
     }
 
     revalidatePath('/admin/experience');
+    revalidatePath('/');
     return { success: true, message: res.message || '생성 완료' };
   } catch (error) {
     console.error('[Experiences.createExperienceAction] 에러 발생:', error);
@@ -76,6 +77,7 @@ export async function updateExperienceAction(
     }
 
     revalidatePath('/admin/experience');
+    revalidatePath('/');
     return { success: true, message: res.message || '수정 완료' };
   } catch (error) {
     console.error('[Experiences.updateExperienceAction] 에러 발생:', error);
@@ -105,6 +107,7 @@ export async function deleteExperienceAction(
     }
 
     revalidatePath('/admin/experience');
+    revalidatePath('/');
     return { success: true, message: res.message || '삭제 완료' };
   } catch (error) {
     console.error('[Experiences.deleteExperienceAction] 에러 발생:', error);
