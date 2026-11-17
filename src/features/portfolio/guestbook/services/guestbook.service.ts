@@ -5,6 +5,7 @@ import { createPublicClient } from '@/lib/supabase/public';
 import { createClient } from '@/lib/supabase/server';
 import { ActionResponse } from '@/types/response';
 
+import { GUESTBOOK_PAGE_SIZE } from '../constants/pagination';
 import {
   CreateGuestbookDto,
   DeleteGuestbookDto,
@@ -13,7 +14,10 @@ import {
   VerifiedGuestbookData,
 } from '../type';
 
-export async function fetchGuestbookData(page = 1, limit = 5): Promise<GuestbookResponse | null> {
+export async function fetchGuestbookData(
+  page = 1,
+  limit = GUESTBOOK_PAGE_SIZE,
+): Promise<GuestbookResponse | null> {
   const supabase = createPublicClient();
 
   const from = (page - 1) * limit;
