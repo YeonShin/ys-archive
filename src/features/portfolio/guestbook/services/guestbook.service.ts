@@ -14,6 +14,38 @@ import {
   VerifiedGuestbookData,
 } from '../type';
 
+const MAX_CONTENT_LENGTH = 200;
+const BCRYPT_SALT_ROUNDS = 10;
+
+interface StoredMessage {
+  content: string | null;
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
+}
+
+// 수정/삭제/비밀번호 확인 공통: 대상 메시지를 찾고 비밀번호가 일치하는지 검증한다.
+async function verifyMessagePassword(id: string, password: string): Promise<StoredMessage> {
+  const supabase = createAdminClient();
+
+  const { data, error } = await supabase
+    .from('guestbook')
+    .select('password, content')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
+    console.error('[guestbook.service.verifyMessagePassword] Failed to fetch message:', error);
+    throw new Error(`메시지를 찾을 수 없습니다. (에러: ${error?.message || 'No data'})`);
+  }
+
+  const isValid = await bcrypt.compare(password, data.password);
+  if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
+
+  return { content: data.content };
+}
+
 export async function fetchGuestbookData(
   page = 1,
   limit = GUESTBOOK_PAGE_SIZE,
@@ -31,7 +63,10 @@ export async function fetchGuestbookData(
       .range(from, to);
 
     if (error || !data) {
-      console.error('[guestbookApi.fetchGuestbookData] Failed to fetch gueestbook data:', error);
+      console.error(
+        '[guestbook.service.fetchGuestbookData] Failed to fetch guestbook data:',
+        error,
+      );
       return null;
     }
 
@@ -49,18 +84,18 @@ export async function fetchGuestbookData(
       currentPage: page,
     };
   } catch (error) {
-    console.error('[guestbookApi.fetchGuestbookData] Unexpected error during fetch:', error);
+    console.error('[guestbook.service.fetchGuestbookData] Unexpected error during fetch:', error);
     return null;
   }
 }
 
 export async function createGuestbookMessage(payload: CreateGuestbookDto): Promise<ActionResponse> {
   try {
-    if (payload.content.length > 200) {
+    if (payload.content.length > MAX_CONTENT_LENGTH) {
       throw new Error('내용은 200자를 초과할 수 없습니다.');
     }
 
-    const hashedPassword = await bcrypt.hash(payload.password, 10);
+    const hashedPassword = await bcrypt.hash(payload.password, BCRYPT_SALT_ROUNDS);
     const supabase = await createClient();
 
     const { error } = await supabase.from('guestbook').insert({
@@ -72,41 +107,27 @@ export async function createGuestbookMessage(payload: CreateGuestbookDto): Promi
     });
 
     if (error) {
-      console.error('[guestbookApi.createGuestbookMessage] Insert error:', error);
+      console.error('[guestbook.service.createGuestbookMessage] Insert error:', error);
       throw new Error('방명록 작성에 실패했습니다.');
     }
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('[guestbookApi.createGuestbookMessage] Unexpected error:', error);
-    const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-    return { success: false, message };
+    console.error('[guestbook.service.createGuestbookMessage] Unexpected error:', error);
+    return { success: false, message: getErrorMessage(error) };
   }
 }
 
 export async function editGuestbookMessage(payload: EditGuestbookDto): Promise<ActionResponse> {
-  const supabase = createAdminClient();
-
   try {
-    if (payload.content && payload.content.length > 200) {
+    if (payload.content && payload.content.length > MAX_CONTENT_LENGTH) {
       throw new Error('내용은 200자를 초과할 수 없습니다.');
     }
 
-    const { data, error: fetchError } = await supabase
-      .from('guestbook')
-      .select('password')
-      .eq('id', payload.id)
-      .single();
+    await verifyMessagePassword(payload.id, payload.password);
 
-    if (fetchError || !data) {
-      console.error('Edit fetchError:', fetchError);
-      throw new Error(`메시지를 찾을 수 없습니다. (에러: ${fetchError?.message || 'No data'})`);
-    }
-
-    const isValid = await bcrypt.compare(payload.password, data.password);
-    if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
-
-    const { error: updateError } = await supabase
+    const supabase = createAdminClient();
+    const { error } = await supabase
       .from('guestbook')
       .update({
         content: payload.content,
@@ -114,13 +135,12 @@ export async function editGuestbookMessage(payload: EditGuestbookDto): Promise<A
       })
       .eq('id', payload.id);
 
-    if (updateError) throw new Error('방명록 수정에 실패했습니다.');
+    if (error) throw new Error('방명록 수정에 실패했습니다.');
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('[guestbookApi.editGuestbookMessage] Unexpected error:', error);
-    const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-    return { success: false, message };
+    console.error('[guestbook.service.editGuestbookMessage] Unexpected error:', error);
+    return { success: false, message: getErrorMessage(error) };
   }
 }
 
@@ -128,32 +148,18 @@ export async function deleteGuestbookMessage({
   id,
   password,
 }: DeleteGuestbookDto): Promise<ActionResponse> {
-  const supabase = createAdminClient();
-
   try {
-    const { data, error: fetchError } = await supabase
-      .from('guestbook')
-      .select('password')
-      .eq('id', id)
-      .single();
+    await verifyMessagePassword(id, password);
 
-    if (fetchError || !data) {
-      console.error('Delete fetchError:', fetchError);
-      throw new Error(`메시지를 찾을 수 없습니다. (에러: ${fetchError?.message || 'No data'})`);
-    }
+    const supabase = createAdminClient();
+    const { error } = await supabase.from('guestbook').delete().eq('id', id);
 
-    const isValid = await bcrypt.compare(password, data.password);
-    if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
-
-    const { error: deleteError } = await supabase.from('guestbook').delete().eq('id', id);
-
-    if (deleteError) throw new Error('삭제 중 오류가 발생했습니다.');
+    if (error) throw new Error('삭제 중 오류가 발생했습니다.');
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('[guestbookApi.deleteGuestbookMessage] Unexpected error:', error);
-    const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-    return { success: false, message };
+    console.error('[guestbook.service.deleteGuestbookMessage] Unexpected error:', error);
+    return { success: false, message: getErrorMessage(error) };
   }
 }
 
@@ -161,27 +167,12 @@ export async function verifyGuestbookPassword({
   id,
   password,
 }: DeleteGuestbookDto): Promise<ActionResponse<VerifiedGuestbookData>> {
-  const supabase = createAdminClient();
-
   try {
-    const { data, error: fetchError } = await supabase
-      .from('guestbook')
-      .select('password, content')
-      .eq('id', id)
-      .single();
+    const { content } = await verifyMessagePassword(id, password);
 
-    if (fetchError || !data) {
-      console.error('Verify fetchError:', fetchError);
-      throw new Error(`메시지를 찾을 수 없습니다. (에러: ${fetchError?.message || 'No data'})`);
-    }
-
-    const isValid = await bcrypt.compare(password, data.password);
-    if (!isValid) throw new Error('비밀번호가 일치하지 않습니다.');
-
-    return { success: true, data: { originalContent: data.content ?? undefined } };
-  } catch (error) {
-    console.error('[guestbookApi.verifyGuestbookPassword] Unexpected error:', error);
-    const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-    return { success: false, message };
+    return { success: true, data: { originalContent: content ?? undefined } };
+  } catch (error: unknown) {
+    console.error('[guestbook.service.verifyGuestbookPassword] Unexpected error:', error);
+    return { success: false, message: getErrorMessage(error) };
   }
 }
