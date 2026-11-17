@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 
 import { useGuestbookActions } from '../hooks/useGuestbookActions';
 import { GuestbookMessage } from '../type';
+import { getPageStatusMessage } from '../utils/guestbookPage';
 import { OptimisticAction } from './Guestbook';
 import GuestbookActionDialog from './GuestbookActionDialog';
 import GuestbookMessageItem from './GuestbookMessageItem';
@@ -57,6 +58,10 @@ const GuestbookMessageList = ({
           </Button>
         </div>
       )}
+
+      <p role="status" aria-live="polite" className="sr-only">
+        {getPageStatusMessage(currentPage, isLoading, hasError)}
+      </p>
 
       <ul
         aria-label="방명록 메시지 목록"

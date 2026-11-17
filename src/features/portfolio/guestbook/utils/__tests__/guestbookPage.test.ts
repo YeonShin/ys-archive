@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { GUESTBOOK_MAX_PAGE } from '../../constants/pagination';
-import { parseGuestbookPage } from '../guestbookPage';
+import { getPageStatusMessage, parseGuestbookPage } from '../guestbookPage';
 
 describe('parseGuestbookPage', () => {
   it('유효한 페이지 번호를 숫자로 변환한다', () => {
@@ -16,4 +16,14 @@ describe('parseGuestbookPage', () => {
       expect(parseGuestbookPage(value)).toBeNull();
     },
   );
+});
+
+describe('getPageStatusMessage', () => {
+  it.each([
+    [3, true, false, '방명록 3페이지를 불러오는 중입니다.'],
+    [3, false, false, '방명록 3페이지를 불러왔습니다.'],
+    [3, false, true, ''],
+  ])('페이지 %i, 로딩 %s, 에러 %s 이면 "%s"를 반환한다', (page, isLoading, hasError, expected) => {
+    expect(getPageStatusMessage(page, isLoading, hasError)).toBe(expected);
+  });
 });
