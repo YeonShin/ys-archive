@@ -7,6 +7,11 @@ import { updateAboutData } from '../../services/about.service';
 import { AboutFormData } from '../../types';
 import { submitAboutFormAction } from '../about.action';
 
+// Next.js 라우팅/캐싱 함수 모킹
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn(),
+}));
+
 vi.mock('../../services/about.service', () => ({
   updateAboutData: vi.fn(),
 }));
