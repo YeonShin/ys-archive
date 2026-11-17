@@ -13,6 +13,11 @@ import ProjectsSkeleton from '@/features/portfolio/projects/components/ProjectsS
 import TechStacksContainer from '@/features/portfolio/tech-stacks/components/TechStacksContainer';
 import TechStacksSkeleton from '@/features/portfolio/tech-stacks/components/TechStacksSkeleton';
 
+// 갱신은 revalidatePath('/')(on-demand)가 맡고, 무효화를 빠뜨렸을 때를 위한 안전망으로 1시간마다 재검증한다.
+export const revalidate = 3600;
+// cookies(), searchParams 같은 동적 API가 들어오면 조용히 동적 렌더링이 되지 않고 빌드가 실패한다.
+export const dynamic = 'error';
+
 const PortfolioPage = () => {
   return (
     <main className="bg-brand-neutral-light flex flex-1 flex-col items-center justify-center font-sans">
