@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 
 import SectionHeader from '@/features/portfolio/components/SectionHeader';
 import Guestbook from '@/features/portfolio/guestbook/components/Guestbook';
-import { GuestbookMessage } from '@/features/portfolio/guestbook/type';
+import { GuestbookResponse } from '@/features/portfolio/guestbook/type';
 import { getContainerVariants, getItemVariants } from '@/lib/animations';
 
 import { Contact } from '../type';
@@ -12,22 +12,13 @@ import ContactItem from './ContactItem';
 
 interface ContactSectionProps {
   contact: Contact[];
-  guestbook: GuestbookMessage[];
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
+  initialGuestbook: GuestbookResponse;
 }
 
 const containerVariants = getContainerVariants();
 const itemVariants = getItemVariants();
 
-const ContactSection = ({
-  contact,
-  guestbook,
-  totalCount,
-  totalPages,
-  currentPage,
-}: ContactSectionProps) => {
+const ContactSection = ({ contact, initialGuestbook }: ContactSectionProps) => {
   return (
     <motion.section
       id="contact"
@@ -67,12 +58,7 @@ const ContactSection = ({
         className="via-brand-primary/30 mb-14 h-px w-full max-w-4xl bg-linear-to-r from-transparent to-transparent"
       />
 
-      <Guestbook
-        guestbook={guestbook}
-        totalCount={totalCount}
-        totalPages={totalPages}
-        currentPage={currentPage}
-      />
+      <Guestbook initialGuestbook={initialGuestbook} />
     </motion.section>
   );
 };

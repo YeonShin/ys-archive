@@ -12,9 +12,13 @@ import { GuestbookMessage } from '../type';
 
 interface UseGuestbookActionsProps {
   onOptimisticUpdate: (action: OptimisticAction) => void;
+  onMutationSuccess: () => Promise<void>;
 }
 
-export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsProps) => {
+export const useGuestbookActions = ({
+  onOptimisticUpdate,
+  onMutationSuccess,
+}: UseGuestbookActionsProps) => {
   const [actionState, setActionState] = useState<{
     type: 'edit' | 'delete' | null;
     message: GuestbookMessage | null;
@@ -53,6 +57,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
       });
 
       if (result.success) {
+        await onMutationSuccess();
         toast.success('방명록이 수정되었습니다.');
         setEditingId(null);
       } else {
@@ -102,6 +107,7 @@ export const useGuestbookActions = ({ onOptimisticUpdate }: UseGuestbookActionsP
         });
 
         if (result.success) {
+          await onMutationSuccess();
           toast.success('삭제에 성공하였습니다.');
 
           setActionState({ type: null, message: null });

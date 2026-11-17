@@ -6,15 +6,14 @@ import { motion } from 'motion/react';
 
 import { getItemVariants } from '@/lib/animations';
 
-import { GuestbookMessage } from '../type';
+import { GUESTBOOK_PAGE_SIZE } from '../constants/pagination';
+import useGuestbookPage from '../hooks/useGuestbookPage';
+import { GuestbookMessage, GuestbookResponse } from '../type';
 import GuestbookForm from './GuestbookForm';
 import GuestbookMessageList from './GuestbookMessageList';
 
 interface GuestBookProps {
-  guestbook: GuestbookMessage[];
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
+  initialGuestbook: GuestbookResponse;
 }
 
 export type OptimisticAction =
@@ -22,7 +21,10 @@ export type OptimisticAction =
   | { type: 'edit'; payload: Partial<GuestbookMessage> & { id: string } }
   | { type: 'delete'; payload: string };
 
-const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBookProps) => {
+const Guestbook = ({ initialGuestbook }: GuestBookProps) => {
+  const { guestbook, totalCount, totalPages, currentPage, isLoading, hasError, goToPage, refresh } =
+    useGuestbookPage(initialGuestbook);
+
   const [optimisticGuestbook, addOptimisticGuestbook] = useOptimistic<
     GuestbookMessage[],
     OptimisticAction
@@ -87,12 +89,20 @@ const Guestbook = ({ guestbook, totalCount, totalPages, currentPage }: GuestBook
         <span className="text-brand-secondary font-mono text-xs">총 {optimisticTotalCount}개</span>
       </header>
 
-      <GuestbookForm onOptimisticUpdate={handleOptimisticUpdate} currentPage={currentPage} />
+      <GuestbookForm
+        onOptimisticUpdate={handleOptimisticUpdate}
+        currentPage={currentPage}
+        onPageChange={goToPage}
+      />
 
       <GuestbookMessageList
-        guestbook={optimisticGuestbook.slice(0, 5)}
+        guestbook={optimisticGuestbook.slice(0, GUESTBOOK_PAGE_SIZE)}
         totalPages={totalPages}
         currentPage={currentPage}
+        isLoading={isLoading}
+        hasError={hasError}
+        onPageChange={goToPage}
+        onRefresh={refresh}
         onOptimisticUpdate={handleOptimisticUpdate}
       />
     </motion.section>

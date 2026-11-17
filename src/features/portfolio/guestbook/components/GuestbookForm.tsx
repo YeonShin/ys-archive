@@ -1,7 +1,5 @@
 import { useState, useTransition } from 'react';
 
-import { useRouter } from 'next/navigation';
-
 import { Lock, LockOpen } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -14,9 +12,10 @@ import { OptimisticAction } from './Guestbook';
 interface GuestbookFormProps {
   onOptimisticUpdate: (action: OptimisticAction) => void;
   currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
-const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) => {
+const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: GuestbookFormProps) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [content, setContent] = useState('');
@@ -24,7 +23,6 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) 
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,9 +63,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage }: GuestbookFormProps) 
         setTimeout(() => setShowSuccess(false), 3000);
 
         if (currentPage !== 1) {
-          const params = new URLSearchParams();
-          params.set('page', '1');
-          router.push(`/?${params.toString()}`);
+          onPageChange(1);
         }
       } else {
         toast.error(result.message);
