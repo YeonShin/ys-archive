@@ -60,7 +60,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       </motion.h1>
       <motion.p
         variants={itemVariants}
-        className="text-brand-secondary text-md max-w-md text-center leading-relaxed"
+        className="text-brand-secondary text-md max-w-xl text-center leading-relaxed"
       >
         {data?.heroDescription || 'React를 이용해 웹 개발을 하고 있습니다.'}
       </motion.p>
