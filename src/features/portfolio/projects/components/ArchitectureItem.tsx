@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import { ProjectArchitecture } from '../type';
@@ -10,48 +11,51 @@ interface ArchitectureItemProps {
 
 const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
   return (
-    <div>
-      <Dialog>
-        <DialogTrigger asChild>
-          <button
-            type="button"
-            className="group bg-brand-neutral-dark/5 focus-visible:ring-brand-primary relative aspect-4/3 w-full cursor-zoom-in overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none"
-          >
-            <Image
-              src={architecture.url}
-              fill
-              sizes="(max-width: 767px) 90vw, 45vw"
-              alt={`${architecture.name} 다이어그램 이미지`}
-              className="absolute"
-            />
-
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 text-left transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
-              <p className="text-xs font-bold text-white">{architecture.name}</p>
-              <p className="text-xs text-white/60">클릭하여 크게 보기</p>
-            </div>
-          </button>
-        </DialogTrigger>
-        <DialogContent
-          showCloseButton={false}
-          className="group max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          aria-label={`${architecture.name} 다이어그램 크게 보기`}
+          className="group bg-brand-neutral-dark/5 hover:bg-brand-neutral-dark/5 focus-visible:ring-brand-primary relative aspect-4/3 h-auto w-full cursor-zoom-in overflow-hidden rounded-xl p-0 whitespace-normal transition-transform duration-300 hover:scale-105 focus-visible:ring-2"
         >
-          <div className="relative overflow-hidden rounded-xl">
-            <Image
-              width={0}
-              height={0}
-              sizes="(max-width: 639px) 100vw, 90vw"
-              src={architecture.url}
-              alt={`architecture ${architecture.name}`}
-              className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
-            />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <p className="text-lg font-bold text-white">{architecture.name}</p>
-              <p className="text-sm text-white/60">{architecture.caption}</p>
-            </div>
+          <Image
+            src={architecture.url}
+            fill
+            sizes="(max-width: 767px) 90vw, 45vw"
+            alt={`${architecture.name} 다이어그램 이미지`}
+            className="object-contain"
+          />
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 text-left transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
+          >
+            <p className="text-xs font-bold text-white">{architecture.name}</p>
+            <p className="text-xs text-white/60">클릭하여 크게 보기</p>
           </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        showCloseButton={false}
+        className="group max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
+      >
+        <div className="relative overflow-hidden rounded-xl">
+          <Image
+            width={0}
+            height={0}
+            sizes="(max-width: 639px) 100vw, 90vw"
+            src={architecture.url}
+            alt={`architecture ${architecture.name}`}
+            className="h-auto max-h-[90vh] w-auto max-w-full object-contain"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col bg-linear-to-t from-black/90 to-transparent p-4 pt-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <p className="text-lg font-bold text-white">{architecture.name}</p>
+            <p className="text-sm text-white/60">{architecture.caption}</p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
