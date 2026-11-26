@@ -37,7 +37,8 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
   return (
     <motion.section
       id="hero"
-      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 md:px-12"
+      tabIndex={-1}
+      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 focus:outline-none md:px-12"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -60,7 +61,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
       </motion.h1>
       <motion.p
         variants={itemVariants}
-        className="text-brand-secondary text-md max-w-xl text-center leading-relaxed"
+        className="text-brand-secondary text-md max-w-2xl text-center leading-relaxed"
       >
         {data?.heroDescription || 'React를 이용해 웹 개발을 하고 있습니다.'}
       </motion.p>
@@ -73,7 +74,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
           className="w-full border-2 p-5 sm:w-auto"
           onClick={() => scrollTo('about')}
         >
-          <ArrowRight /> More About Me
+          <ArrowRight aria-hidden="true" /> More About Me
         </Button>
 
         <Button
@@ -81,7 +82,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
           className="w-full p-5 sm:w-auto"
           onClick={() => scrollTo('projects')}
         >
-          <ArrowRight /> See My Projets
+          <ArrowRight aria-hidden="true" /> See My Projects
         </Button>
       </motion.div>
 
@@ -90,7 +91,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <div className="mx-auto h-12 w-px bg-linear-to-b from-[#c88a54] to-transparent" />
+        <div className="from-brand-primary mx-auto h-12 w-px bg-linear-to-b to-transparent" />
       </motion.div>
     </motion.section>
   );

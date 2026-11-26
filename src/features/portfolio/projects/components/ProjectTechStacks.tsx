@@ -20,6 +20,7 @@ const TechTooltipItem = ({ tech }: { tech: ProjectTechStack }) => {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
+          aria-label={tech.reason ? `${tech.name}, 선택 이유: ${tech.reason}` : tech.name}
           className="bg-brand-neutral-dark text-brand-neutral-muted hover:bg-brand-primary focus-visible:ring-brand-primary cursor-help rounded-lg px-2 py-1.5 font-mono text-xs transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {tech.name}
@@ -30,7 +31,9 @@ const TechTooltipItem = ({ tech }: { tech: ProjectTechStack }) => {
         align="start"
         className="bg-brand-neutral-dark fill-brand-neutral-dark flex flex-col items-center font-mono transition-all duration-300"
       >
-        <p className="text-brand-neutral-light font-bold">{tech.reason}</p>
+        <p className="text-brand-neutral-light font-bold" aria-hidden="true">
+          {tech.reason}
+        </p>
       </TooltipContent>
     </Tooltip>
   );

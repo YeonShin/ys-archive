@@ -28,7 +28,8 @@ const TechStacksSection = ({ data }: { data: TechStacksSectionData | null }) => 
   return (
     <section
       id="tech"
-      className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center px-6 py-24 md:py-32"
+      tabIndex={-1}
+      className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center px-6 py-24 focus:outline-none md:py-32"
     >
       <motion.div
         variants={containerVariants}

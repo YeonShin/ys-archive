@@ -52,7 +52,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html
-      lang="en"
+      lang="ko"
       className={cn(
         'h-full',
         'antialiased',

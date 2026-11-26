@@ -26,7 +26,8 @@ const AboutSection = ({
   return (
     <section
       id="about"
-      className="relative flex min-h-screen w-full items-center justify-center px-6 py-24"
+      tabIndex={-1}
+      className="relative flex min-h-screen w-full items-center justify-center px-6 py-24 focus:outline-none"
     >
       <motion.div
         className="flex w-full max-w-5xl flex-col gap-10"
@@ -52,7 +53,7 @@ const AboutSection = ({
               {data?.profileImageUrl && (
                 <Image
                   src={data.profileImageUrl}
-                  alt="프로필 사진"
+                  alt="프론트엔드 개발자 김연신 프로필 사진"
                   fill
                   sizes="(max-width: 640px) 100vw, 400px"
                   className="object-cover object-center"
@@ -87,11 +88,11 @@ const AboutSection = ({
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="이력서 보기"
+                  aria-label="이력서 보기 (새 창에서 열림)"
                   href={data.resumeUrl}
                   className="hover:text-brand-primary inline-block transition-all duration-300 ease-out hover:translate-x-2"
                 >
-                  <ArrowUpRight /> 이력서 보기
+                  <ArrowUpRight aria-hidden="true" /> 이력서 보기
                 </a>
               </Button>
             )}

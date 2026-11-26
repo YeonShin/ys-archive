@@ -11,17 +11,19 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      aria-label="Toggle Dark Mode"
-      className="bg-brand-neutral-muted text-brand-neutral-dark hover:bg-brand-secondary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-sm transition-colors"
+      aria-label={theme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
+      className="bg-brand-neutral-muted text-brand-neutral-dark hover:bg-brand-secondary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-sm transition-colors focus-visible:ring-2"
     >
       <span className="relative flex h-full w-full items-center justify-center">
         <Sun
+          aria-hidden="true"
           className={cn(
             'absolute h-5 w-5 transition-transform duration-500',
             theme === 'dark' ? 'scale-0 rotate-90' : 'scale-100 rotate-0',
           )}
         />
         <Moon
+          aria-hidden="true"
           className={cn(
             'absolute h-5 w-5 transition-transform duration-500',
             theme === 'dark' ? 'scale-100 rotate-0' : 'scale-0 -rotate-90',

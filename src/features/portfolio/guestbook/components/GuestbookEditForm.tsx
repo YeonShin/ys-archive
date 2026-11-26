@@ -40,7 +40,7 @@ const GuestbookEditForm = ({
             type="button"
             role="switch"
             aria-checked={isPublic}
-            aria-label={isPublic ? '공개 모드' : '비공개 모드'}
+            aria-label="방명록 공개 여부"
             onClick={() => setIsPublic(!isPublic)}
             className={cn(
               'focus-visible:ring-brand-primary flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[11px] transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
@@ -50,12 +50,12 @@ const GuestbookEditForm = ({
             )}
           >
             {isPublic ? (
-              <span className="flex items-center justify-center gap-2">
-                <LockOpen size={12} aria-hidden="true" /> 공개
+              <span aria-hidden="true" className="flex items-center justify-center gap-2">
+                <LockOpen size={12} /> 공개
               </span>
             ) : (
-              <span className="flex items-center justify-center gap-2">
-                <Lock size={12} aria-hidden="true" /> 비공개
+              <span aria-hidden="true" className="flex items-center justify-center gap-2">
+                <Lock size={12} /> 비공개
               </span>
             )}
           </button>

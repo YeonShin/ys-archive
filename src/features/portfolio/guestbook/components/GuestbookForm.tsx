@@ -85,6 +85,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
             type="text"
             placeholder="닉네임"
             aria-label="닉네임"
+            aria-required="true"
           />
           <input
             value={password}
@@ -93,6 +94,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
             type="password"
             placeholder="비밀번호"
             aria-label="비밀번호"
+            aria-required="true"
             maxLength={20}
           />
         </div>
@@ -106,6 +108,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
             maxLength={200}
             placeholder="방명록을 남겨주세요 😊"
             aria-label="방명록 내용"
+            aria-required="true"
           />
           {/* Left Controls (비공개 토글 등) */}
           <div className="absolute bottom-3 left-4 flex items-center gap-1.5">
@@ -113,7 +116,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
               type="button"
               role="switch"
               aria-checked={isPublic}
-              aria-label={isPublic ? '공개 모드' : '비공개 모드'}
+              aria-label="방명록 공개 여부"
               onClick={() => setIsPublic(!isPublic)}
               className={cn(
                 'focus-visible:ring-brand-primary flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[11px] transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
@@ -123,11 +126,11 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
               )}
             >
               {isPublic ? (
-                <span className="flex items-center justify-center gap-2">
+                <span aria-hidden="true" className="flex items-center justify-center gap-2">
                   <LockOpen size={12} /> 공개
                 </span>
               ) : (
-                <span className="flex items-center justify-center gap-2">
+                <span aria-hidden="true" className="flex items-center justify-center gap-2">
                   <Lock size={12} /> 비공개
                 </span>
               )}
@@ -149,7 +152,9 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
       </div>
 
       {showSuccess && (
-        <p className="text-center text-xs text-green-500">방명록이 등록되었습니다 ✓</p>
+        <p aria-live="polite" className="text-center text-xs text-green-500">
+          방명록이 등록되었습니다 ✓
+        </p>
       )}
     </form>
   );

@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
+import { XIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +15,14 @@ import {
   CarouselPrevious,
   useCarousel,
 } from '@/components/ui/carousel';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { isVideoUrl } from '@/lib/media';
 import { cn } from '@/lib/utils';
 
@@ -65,7 +75,7 @@ const CarouselDots = () => {
           )}
           onClick={() => api?.scrollTo(index)}
           aria-label={`${index + 1}번째 슬라이드로 이동`}
-          aria-pressed={index === selectedIndex}
+          aria-current={index === selectedIndex ? 'true' : undefined}
         />
       ))}
     </div>
@@ -89,7 +99,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
   return (
     <>
       {images.length > 0 && (
-        <Carousel className="group relative w-full">
+        <Carousel aria-label="이미지 슬라이드" className="group relative w-full">
           <CarouselContent>
             {images.map((image, index) => {
               const isVideo = isVideoUrl(image.url);
@@ -113,7 +123,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             loop
                             muted
                             playsInline
-                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            aria-hidden="true"
                             className="h-full w-full object-cover"
                           />
                         ) : (
@@ -121,7 +131,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             fill
                             sizes="(max-width: 767px) 100vw, 800px"
                             src={image.url}
-                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            alt=""
                             className="object-cover"
                           />
                         )}
@@ -139,7 +149,29 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                       showCloseButton={false}
                       className="max-w-6xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
                     >
+                      <DialogTitle className="sr-only">
+                        {image.caption
+                          ? `${image.caption} ${isVideo ? '영상' : '이미지'} 확대 보기`
+                          : `${index + 1}번째 스크린샷 ${isVideo ? '영상' : '이미지'} 확대 보기`}
+                      </DialogTitle>
+                      <DialogDescription className="sr-only">
+                        {image.caption ||
+                          `${index + 1}번째 프로젝트 스크린샷 ${isVideo ? '영상' : '이미지'}입니다.`}
+                      </DialogDescription>
+
                       <div className="relative overflow-hidden rounded-xl">
+                        <DialogClose asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="확대 보기 닫기"
+                            className="focus-visible:ring-brand-primary absolute top-3 right-3 z-20 rounded-full bg-black/70 text-white hover:bg-black/90 hover:text-white focus-visible:ring-2"
+                          >
+                            <XIcon aria-hidden="true" />
+                          </Button>
+                        </DialogClose>
+
                         {isVideo ? (
                           <video
                             src={image.url}
@@ -147,7 +179,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             loop
                             muted
                             playsInline
-                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            aria-label={image.caption || `${index + 1}번째 프로젝트 스크린샷 영상`}
                             className="w-full object-contain"
                           />
                         ) : (
@@ -156,7 +188,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             height={0}
                             sizes="(max-width: 639px) 100vw, 90vw"
                             src={image.url}
-                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            alt={image.caption || `${index + 1}번째 프로젝트 스크린샷`}
                             className="w-full object-contain"
                           />
                         )}

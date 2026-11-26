@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Menu } from 'lucide-react';
 
@@ -13,8 +13,10 @@ import { cn } from '@/lib/utils';
 const MobileNav = () => {
   const { activeSection, scrollTo } = useActiveSection(PORTFOLIO_SECTIONS);
   const [open, setOpen] = useState(false);
+  const pendingSectionRef = useRef<string | null>(null);
 
   const handleMenuClick = (id: string) => {
+    pendingSectionRef.current = id;
     scrollTo(id);
     setOpen(false); // 메뉴 클릭 시 서랍 닫기
   };
@@ -33,14 +35,22 @@ const MobileNav = () => {
         </SheetTrigger>
         <SheetContent
           side="left"
+          onCloseAutoFocus={(e) => {
+            if (pendingSectionRef.current) {
+              e.preventDefault();
+              document.getElementById(pendingSectionRef.current)?.focus({ preventScroll: true });
+              pendingSectionRef.current = null;
+            }
+          }}
           className="bg-brand-neutral-light flex w-62.5 flex-col overflow-y-auto p-6"
         >
           <SheetTitle className="text-brand-primary mb-8 text-left">Menu</SheetTitle>
-          <nav className="mb-6 flex flex-1 flex-col gap-6">
+          <nav aria-label="섹션 탐색" className="mb-6 flex flex-1 flex-col gap-6">
             {PORTFOLIO_SECTIONS.map((id) => (
               <button
                 key={id}
                 onClick={() => handleMenuClick(id)}
+                aria-current={activeSection === id ? 'true' : undefined}
                 className={cn(
                   'text-left text-lg font-medium transition-colors',
                   activeSection === id ? 'text-brand-primary' : 'text-brand-neutral-dark',

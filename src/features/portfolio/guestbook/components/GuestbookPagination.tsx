@@ -111,6 +111,7 @@ const GuestbookPagination = ({
           variant="ghost"
           size="icon-sm"
           aria-current={currentPage === pageNum ? 'page' : undefined}
+          aria-label={`${pageNum} 페이지`}
           onClick={() => onPageChange(pageNum)}
           className={cn(
             BUTTON_BASE_CLASS,
