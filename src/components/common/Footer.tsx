@@ -18,7 +18,7 @@ const Footer = () => {
             aria-label="GitHub"
             className="text-brand-neutral-dark hover:text-brand-primary transition-colors"
           >
-            <FiGithub className="h-5 w-5" />
+            <FiGithub aria-hidden="true" className="h-5 w-5" />
           </a>
           <a
             href="https://www.linkedin.com/in/yeon-s-kim/"
@@ -27,7 +27,7 @@ const Footer = () => {
             aria-label="LinkedIn"
             className="text-brand-neutral-dark hover:text-brand-primary transition-colors"
           >
-            <FiLinkedin className="h-5 w-5" />
+            <FiLinkedin aria-hidden="true" className="h-5 w-5" />
           </a>
           <a
             href="https://yeonnim01.tistory.com/"
@@ -36,14 +36,14 @@ const Footer = () => {
             aria-label="Blog"
             className="text-brand-neutral-dark hover:text-brand-primary transition-colors"
           >
-            <FiBookOpen className="h-5 w-5" />
+            <FiBookOpen aria-hidden="true" className="h-5 w-5" />
           </a>
           <a
             href="mailto:yeonshin82@gmail.com"
             aria-label="Email"
             className="text-brand-neutral-dark hover:text-brand-primary transition-colors"
           >
-            <FiMail className="h-5 w-5" />
+            <FiMail aria-hidden="true" className="h-5 w-5" />
           </a>
 
           <div className="bg-brand-neutral-muted/50 mx-2 hidden h-4 w-px md:block"></div>

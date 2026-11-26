@@ -45,7 +45,7 @@ const ContactItem = ({ contact }: ContactItemProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            className="shadow-brand-neutral-muted bg-brand-neutral-muted hover:bg-brand-neutral-muted focus-visible:ring-brand-primary focus:visible:ring-offset-2 hover:border-brand-primary/30 focus:ring-brand-primary flex flex-col items-center justify-center gap-3 rounded-2xl border border-transparent p-5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl focus:ring-4 focus:outline-none focus-visible:ring-2 sm:w-24"
+            className="shadow-brand-neutral-muted bg-brand-neutral-muted hover:bg-brand-neutral-muted focus-visible:ring-brand-primary hover:border-brand-primary/30 focus:ring-brand-primary flex flex-col items-center justify-center gap-3 rounded-2xl border border-transparent p-5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl focus:ring-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:w-24"
             href={contact.url}
             onClick={handleClick}
             target={isExternal ? '_blank' : undefined}

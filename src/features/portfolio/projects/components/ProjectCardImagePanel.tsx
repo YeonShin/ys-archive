@@ -28,10 +28,10 @@ const ProjectCardImagePanel = ({ project }: { project: Project }) => {
       />
 
       {/* 텍스트 컨텐츠 영역 */}
-      <div className="relative z-10 flex flex-col gap-2 p-6 md:p-8">
-        <h3 className="text-3xl leading-tight font-extrabold tracking-tight text-white drop-shadow-xl">
+      <div aria-hidden="true" className="relative z-10 flex flex-col gap-2 p-6 md:p-8">
+        <p className="text-3xl leading-tight font-extrabold tracking-tight text-white drop-shadow-xl">
           {project.title}
-        </h3>
+        </p>
 
         <div className="text-brand-primary flex items-center gap-2 font-mono text-sm font-semibold opacity-100 transition-all duration-300 group-hover:translate-x-2">
           자세히 보기

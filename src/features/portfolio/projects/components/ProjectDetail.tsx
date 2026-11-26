@@ -28,7 +28,8 @@ const ProjectDetail = ({ project, isFullscreen, onToggleFullscreen }: ProjectDet
       <SheetHeader className="flex flex-row items-center justify-between px-8 py-6">
         <div className="from-brand-secondary to-brand-primary absolute inset-x-0 top-0 h-0.75 bg-linear-0" />
         <SheetTitle className="text-brand-secondary box-content font-mono text-sm">
-          Project Details
+          <span aria-hidden="true">Project Details</span>
+          <span className="sr-only">{project.title} 프로젝트 상세 정보</span>
         </SheetTitle>
         <div className="flex items-center gap-1">
           <Button

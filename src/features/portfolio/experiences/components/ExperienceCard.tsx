@@ -91,7 +91,7 @@ const ExperienceCard = ({ experience, index }: ExperienceCardProps): React.JSX.E
               className="text-brand-neutral-dark group-hover:text-brand-neutral-light flex items-start gap-2 text-sm leading-relaxed transition-colors duration-300"
             >
               <div className="text-brand-primary mt-1.25 flex shrink-0 items-center justify-center">
-                <Play size={10} fill="var(--brand-primary)" />
+                <Play aria-hidden="true" size={10} fill="var(--brand-primary)" />
               </div>
               {detail}
             </li>

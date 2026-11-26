@@ -74,7 +74,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
           className="w-full border-2 p-5 sm:w-auto"
           onClick={() => scrollTo('about')}
         >
-          <ArrowRight /> More About Me
+          <ArrowRight aria-hidden="true" /> More About Me
         </Button>
 
         <Button
@@ -82,7 +82,7 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
           className="w-full p-5 sm:w-auto"
           onClick={() => scrollTo('projects')}
         >
-          <ArrowRight /> See My Projets
+          <ArrowRight aria-hidden="true" /> See My Projects
         </Button>
       </motion.div>
 
