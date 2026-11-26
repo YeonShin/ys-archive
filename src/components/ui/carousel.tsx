@@ -122,6 +122,7 @@ function Carousel({
         className={cn('relative', className)}
         role="region"
         aria-roledescription="carousel"
+        aria-label="캐러셀"
         data-slot="carousel"
         {...props}
       >
@@ -186,8 +187,8 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ChevronLeftIcon />
-      <span className="sr-only">Previous slide</span>
+      <ChevronLeftIcon aria-hidden="true" />
+      <span className="sr-only">이전 슬라이드</span>
     </Button>
   );
 }
@@ -216,8 +217,8 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ChevronRightIcon />
-      <span className="sr-only">Next slide</span>
+      <ChevronRightIcon aria-hidden="true" />
+      <span className="sr-only">다음 슬라이드</span>
     </Button>
   );
 }

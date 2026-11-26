@@ -75,7 +75,7 @@ const CarouselDots = () => {
           )}
           onClick={() => api?.scrollTo(index)}
           aria-label={`${index + 1}번째 슬라이드로 이동`}
-          aria-pressed={index === selectedIndex}
+          aria-current={index === selectedIndex ? 'true' : undefined}
         />
       ))}
     </div>
@@ -99,7 +99,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
   return (
     <>
       {images.length > 0 && (
-        <Carousel className="group relative w-full">
+        <Carousel aria-label="이미지 슬라이드" className="group relative w-full">
           <CarouselContent>
             {images.map((image, index) => {
               const isVideo = isVideoUrl(image.url);
@@ -123,7 +123,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             loop
                             muted
                             playsInline
-                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            aria-hidden="true"
                             className="h-full w-full object-cover"
                           />
                         ) : (
@@ -131,7 +131,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             fill
                             sizes="(max-width: 767px) 100vw, 800px"
                             src={image.url}
-                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            alt=""
                             className="object-cover"
                           />
                         )}
@@ -179,7 +179,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             loop
                             muted
                             playsInline
-                            aria-label={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            aria-label={image.caption || `${index + 1}번째 프로젝트 스크린샷 영상`}
                             className="w-full object-contain"
                           />
                         ) : (
@@ -188,7 +188,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                             height={0}
                             sizes="(max-width: 639px) 100vw, 90vw"
                             src={image.url}
-                            alt={image.caption ? image.caption : `screenshot ${index + 1}`}
+                            alt={image.caption || `${index + 1}번째 프로젝트 스크린샷`}
                             className="w-full object-contain"
                           />
                         )}
