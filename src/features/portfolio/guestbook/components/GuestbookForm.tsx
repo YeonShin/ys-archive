@@ -123,11 +123,11 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
               )}
             >
               {isPublic ? (
-                <span className="flex items-center justify-center gap-2">
+                <span aria-hidden="true" className="flex items-center justify-center gap-2">
                   <LockOpen size={12} /> 공개
                 </span>
               ) : (
-                <span className="flex items-center justify-center gap-2">
+                <span aria-hidden="true" className="flex items-center justify-center gap-2">
                   <Lock size={12} /> 비공개
                 </span>
               )}
