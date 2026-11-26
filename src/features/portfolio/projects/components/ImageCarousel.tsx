@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
+import { XIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +15,14 @@ import {
   CarouselPrevious,
   useCarousel,
 } from '@/components/ui/carousel';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { isVideoUrl } from '@/lib/media';
 import { cn } from '@/lib/utils';
 
@@ -139,7 +149,29 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
                       showCloseButton={false}
                       className="max-w-6xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
                     >
+                      <DialogTitle className="sr-only">
+                        {image.caption
+                          ? `${image.caption} ${isVideo ? '영상' : '이미지'} 확대 보기`
+                          : `${index + 1}번째 스크린샷 ${isVideo ? '영상' : '이미지'} 확대 보기`}
+                      </DialogTitle>
+                      <DialogDescription className="sr-only">
+                        {image.caption ||
+                          `${index + 1}번째 프로젝트 스크린샷 ${isVideo ? '영상' : '이미지'}입니다.`}
+                      </DialogDescription>
+
                       <div className="relative overflow-hidden rounded-xl">
+                        <DialogClose asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="확대 보기 닫기"
+                            className="focus-visible:ring-brand-primary absolute top-3 right-3 z-20 rounded-full bg-black/70 text-white hover:bg-black/90 hover:text-white focus-visible:ring-2"
+                          >
+                            <XIcon aria-hidden="true" />
+                          </Button>
+                        </DialogClose>
+
                         {isVideo ? (
                           <video
                             src={image.url}
