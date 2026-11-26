@@ -45,11 +45,12 @@ const MobileNav = () => {
           className="bg-brand-neutral-light flex w-62.5 flex-col overflow-y-auto p-6"
         >
           <SheetTitle className="text-brand-primary mb-8 text-left">Menu</SheetTitle>
-          <nav className="mb-6 flex flex-1 flex-col gap-6">
+          <nav aria-label="섹션 탐색" className="mb-6 flex flex-1 flex-col gap-6">
             {PORTFOLIO_SECTIONS.map((id) => (
               <button
                 key={id}
                 onClick={() => handleMenuClick(id)}
+                aria-current={activeSection === id ? 'true' : undefined}
                 className={cn(
                   'text-left text-lg font-medium transition-colors',
                   activeSection === id ? 'text-brand-primary' : 'text-brand-neutral-dark',
