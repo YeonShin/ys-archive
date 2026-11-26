@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { iconMap, normalizeIconName } from '@/lib/iconMap';
 import { cn } from '@/lib/utils';
@@ -12,20 +14,22 @@ interface TechItemProps {
 }
 
 const TechItem = ({ tech, isFilteredOut }: TechItemProps) => {
+  const [open, setOpen] = useState(false);
+
   const searchKey = tech.icon ? normalizeIconName(tech.icon) : normalizeIconName(tech.name);
   const IconComponent = iconMap[searchKey] || null;
 
   return (
-    <li className="list-none">
-      <Tooltip>
+    <li className="list-none" aria-hidden={isFilteredOut}>
+      <Tooltip open={isFilteredOut ? false : open} onOpenChange={setOpen}>
         <TooltipTrigger asChild>
-          <div
-            tabIndex={0}
-            role="button"
+          <button
+            type="button"
+            disabled={isFilteredOut}
+            onClick={() => setOpen((prev) => !prev)}
             aria-label={`${tech.name}${tech.level ? ` (숙련도: ${tech.level})` : ''}`}
-            aria-disabled={isFilteredOut}
             className={cn(
-              'focus-visible:ring-brand-primary flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:h-16 sm:w-16 md:h-20 md:w-20',
+              'focus-visible:ring-brand-primary flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:h-16 sm:w-16 md:h-20 md:w-20',
               isFilteredOut
                 ? 'pointer-events-none scale-95 opacity-30 blur-sm grayscale'
                 : 'cursor-pointer hover:-translate-y-1 hover:shadow-md',
@@ -45,7 +49,7 @@ const TechItem = ({ tech, isFilteredOut }: TechItemProps) => {
                 {tech.icon ? tech.icon.substring(0, 2) : tech.name.substring(0, 2)}
               </span>
             )}
-          </div>
+          </button>
         </TooltipTrigger>
         <TooltipContent
           side="top"
