@@ -26,7 +26,8 @@ const AboutSection = ({
   return (
     <section
       id="about"
-      className="relative flex min-h-screen w-full items-center justify-center px-6 py-24"
+      tabIndex={-1}
+      className="relative flex min-h-screen w-full items-center justify-center px-6 py-24 focus:outline-none"
     >
       <motion.div
         className="flex w-full max-w-5xl flex-col gap-10"

@@ -22,11 +22,12 @@ const ContactSection = ({ contact, initialGuestbook }: ContactSectionProps) => {
   return (
     <motion.section
       id="contact"
+      tabIndex={-1}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={containerVariants}
-      className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center gap-8 px-6 py-24 md:py-32"
+      className="bg-brand-neutral-light flex min-h-screen w-full flex-col items-center gap-8 px-6 py-24 focus:outline-none md:py-32"
     >
       <div className="flex w-full max-w-4xl flex-col items-center gap-4">
         <SectionHeader title="Contact" korTitle="연락망" className="text-center" />

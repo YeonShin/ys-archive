@@ -54,6 +54,7 @@ export const useActiveSection = (sectionIds: readonly string[]) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      element.focus({ preventScroll: true });
 
       document.body.style.pointerEvents = 'none';
 
