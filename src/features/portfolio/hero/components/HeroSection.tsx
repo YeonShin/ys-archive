@@ -37,7 +37,8 @@ const HeroSection = ({ data }: { data: HeroSectionData | null }) => {
   return (
     <motion.section
       id="hero"
-      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 md:px-12"
+      tabIndex={-1}
+      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-6 px-6 focus:outline-none md:px-12"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"

@@ -24,7 +24,8 @@ const ProjectsSection = ({ data }: { data: ProjectsSectionData | null }) => {
   return (
     <motion.section
       id="projects"
-      className="bg-brand-neutral-muted flex min-h-screen w-full flex-col items-center px-6 py-24 md:py-32"
+      tabIndex={-1}
+      className="bg-brand-neutral-muted flex min-h-screen w-full flex-col items-center px-6 py-24 focus:outline-none md:py-32"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"

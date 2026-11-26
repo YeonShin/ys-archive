@@ -113,7 +113,7 @@ const GuestbookForm = ({ onOptimisticUpdate, currentPage, onPageChange }: Guestb
               type="button"
               role="switch"
               aria-checked={isPublic}
-              aria-label={isPublic ? '공개 모드' : '비공개 모드'}
+              aria-label="방명록 공개 여부"
               onClick={() => setIsPublic(!isPublic)}
               className={cn(
                 'focus-visible:ring-brand-primary flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-[11px] transition-colors duration-200 focus-visible:ring-2 focus-visible:outline-none',
