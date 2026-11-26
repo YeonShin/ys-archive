@@ -1,7 +1,16 @@
 import Image from 'next/image';
 
+import { XIcon } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 import { ProjectArchitecture } from '../type';
 
@@ -40,7 +49,26 @@ const ArchitectureItem = ({ architecture }: ArchitectureItemProps) => {
         showCloseButton={false}
         className="group max-w-5xl border-none bg-transparent p-0 shadow-none ring-0 sm:w-fit sm:max-w-[90vw]"
       >
+        <DialogTitle className="sr-only">
+          {architecture.name} 아키텍처 다이어그램 확대 보기
+        </DialogTitle>
+        <DialogDescription className="sr-only">
+          {architecture.caption || `${architecture.name} 다이어그램 이미지`}
+        </DialogDescription>
+
         <div className="relative overflow-hidden rounded-xl">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              aria-label="다이어그램 확대 보기 닫기"
+              className="focus-visible:ring-brand-primary absolute top-3 right-3 z-20 rounded-full bg-black/70 text-white hover:bg-black/90 hover:text-white focus-visible:ring-2"
+            >
+              <XIcon aria-hidden="true" />
+            </Button>
+          </DialogClose>
+
           <Image
             width={0}
             height={0}
