@@ -6,6 +6,7 @@ import AdminLoginForm from '@/features/admin/auth/components/AdminLoginForm';
 export const metadata: Metadata = {
   title: 'Admin Login | YS_Archive',
   description: 'Login to access the admin dashboard',
+  robots: { index: false, follow: false },
 };
 
 const AdminLoginPage = () => {
