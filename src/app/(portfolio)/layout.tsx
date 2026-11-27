@@ -2,13 +2,9 @@ import Footer from '@/components/common/Footer';
 import ThemeToggle from '@/components/common/ThemeToggle';
 import DotNavigation from '@/features/portfolio/components/DotNavigation';
 import MobileNav from '@/features/portfolio/components/MobileNav';
+import { SITE_URL } from '@/lib/site';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://portfolio.yeonshin.kro.kr').replace(
-  /\/$/,
-  '',
-);
-
-const jsonLd = {
+const JSON_LD = {
   '@context': 'https://schema.org',
   '@graph': [
     {
@@ -39,7 +35,7 @@ const PortfolioLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
       <DotNavigation />
       <MobileNav />

@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 
 import { Toaster } from '@/components/ui/sonner';
+import { SITE_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/providers/theme-provider';
 
@@ -20,11 +21,6 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
-
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://portfolio.yeonshin.kro.kr').replace(
-  /\/$/,
-  '',
-);
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
