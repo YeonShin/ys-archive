@@ -50,6 +50,28 @@ export const metadata: Metadata = {
     shortcut: '/favicons/favicon-16x16.png',
     apple: '/favicons/apple-icon.png',
   },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: '/',
+    siteName: 'YS-Archive',
+    title: '프론트엔드 김연신 | 포트폴리오',
+    description: '프론트엔드 개발자 김연신 포트폴리오 입니다.',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: '프론트엔드 개발자 김연신 포트폴리오',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '프론트엔드 김연신 | 포트폴리오',
+    description: '프론트엔드 개발자 김연신 포트폴리오 입니다.',
+    images: ['/opengraph-image.png'],
+  },
 };
 
 const themeInitializerScript = `
