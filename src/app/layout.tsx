@@ -21,10 +21,30 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://portfolio.yeonshin.kro.kr').replace(
+  /\/$/,
+  '',
+);
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: '/' },
   title: '프론트엔드 김연신 | 포트폴리오',
   description: '프론트엔드 개발자 김연신 포트폴리오 입니다.',
-  keywords: ['프론트엔드', '개발자'],
+  keywords: [
+    '프론트엔드',
+    '개발자',
+    'Frontend Developer',
+    '김연신',
+    '포트폴리오',
+    'React',
+    'Next.js',
+    'TypeScript',
+    '웹 개발자',
+  ],
+  authors: [{ name: '김연신', url: 'https://github.com/YeonShin' }],
+  creator: '김연신',
+  publisher: '김연신',
   icons: {
     icon: '/favicons/favicon.ico',
     shortcut: '/favicons/favicon-16x16.png',
