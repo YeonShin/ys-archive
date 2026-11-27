@@ -72,6 +72,14 @@ export const metadata: Metadata = {
     description: '프론트엔드 개발자 김연신 포트폴리오 입니다.',
     images: ['/opengraph-image.png'],
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      ...(process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION
+        ? { 'naver-site-verification': process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION }
+        : {}),
+    },
+  },
 };
 
 const themeInitializerScript = `
